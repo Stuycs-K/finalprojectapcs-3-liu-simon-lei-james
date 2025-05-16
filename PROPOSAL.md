@@ -6,7 +6,7 @@ Simon Liu, James Lei
        
 # IDEAS:
 
-A recreation of the game Civilation 6 with two players. Players will be able to modify board tiles, generate resources and construct units to attack the other player. These civilizations will have tech trees that lead to victory conditions. These include science and domination.
+A recreation of the game Civilization 6 with two players. Players will be able to modify board tiles, generate resources and construct units to attack the other player. These civilizations will have tech trees that lead to victory conditions. These include science and domination.
 
 Link to the game: https://store.steampowered.com/app/289070/Sid_Meiers_Civilization_VI/
 
