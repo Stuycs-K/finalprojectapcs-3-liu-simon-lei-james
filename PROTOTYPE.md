@@ -1,6 +1,9 @@
 
 # Technical Details:
 
+Period 3, James Lei, Simon Liu
+The Moderately Competent Idealists
+
 The design of this game is similar to that of the final project from last semester, but an expanded version. There will be multiple instances of abstract classes. BFS will be used in order to determine the locations where a player can move with a certain number of steps.
 
 Critical Features:
