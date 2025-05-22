@@ -28,10 +28,13 @@ public class Tile {
     return coordinate;
   }
   // Does not account for weighted tiles
-  public boolean withinRange(Tile other, int range) {
+  public int distanceTo(Tile other) {
     Coordinate otherCoordinate = other.getCoordinate();
     int dx = Math.abs(otherCoordinate.getX() - coordinate.getX());
     int dy = Math.abs(otherCoordinate.getY() - coordinate.getY());
-    return dx + dy <= range;
+    return dx + dy;
+  }
+  public boolean withinRange(Tile other, int range) {
+    return distanceTo(other) <= range;
   }
 }
