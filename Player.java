@@ -3,11 +3,14 @@ abstract class Character extends Entity {
   private Resource health;
   private Tile position;
   private Resource movement;
-  public Character(String name, int maxHealth, Tile startingPosition) {
+  protected Resource actions;
+  public Character(String name, int maxHealth, int maxMovement, Tile startingPosition) {
     super("Character");
     this.name = name;
     position = startingPosition;
-    health = new Resource(maxHealth);
+    movement = new Resource(maxMovement, "Movement");
+    health = new Resource(maxHealth, "Health");
+    actions = new Resource(3, "Actions");
   }
   public String getName() {
     return name;
@@ -15,11 +18,24 @@ abstract class Character extends Entity {
   public String getHealth() {
     return health.toString();
   }
+  public String getActions() {
+    return actions.toString();
+  }
+  public String getMovement() {
+    return movement.toString();
+  }
   public Tile getPosition() {
     return position;
   }
+  protected boolean consumeActions(int amount) {
+    return actions.consume(amount);
+  }
+  public void endTurn() {
+    movement.restore();
+    actions.restore();
+  }
   public boolean moveTo(Tile newPosition) {
-    if (!consume(position.distanceTo(newPosition))) return false;
+    if (!movement.consume(position.distanceTo(newPosition))) return false;
     position = newPosition;
     return true;
   }
