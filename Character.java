@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 abstract class Character extends Entity {
   private String name;
   private Resource health;
