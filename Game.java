@@ -25,7 +25,13 @@ public class Game{
   public static void run(){
     while (!victory && !enemyVictory){
       checkVictory();
+      turn++;
+      if (playerPhase){
 
+      }
+      else{
+        
+      }
     }
   }
 
