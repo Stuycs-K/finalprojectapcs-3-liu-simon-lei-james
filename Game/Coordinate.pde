@@ -10,4 +10,7 @@ public class Coordinate {
   public int getY() {
     return y;
   }
+  public boolean equals(Coordinate other) {
+    return other.getX() == getX() && other.getY() == getY();
+  }
 }

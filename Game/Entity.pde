@@ -6,5 +6,5 @@ abstract public class Entity {
   public String getType() {
     return type;
   }
-  abstract void draw();
+  abstract void display();
 }
