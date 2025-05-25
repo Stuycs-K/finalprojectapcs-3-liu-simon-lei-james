@@ -1,4 +1,4 @@
-public class Entity {
+abstract public class Entity {
   private String type;
   public Entity(String type) {
     this.type = type;
@@ -6,4 +6,5 @@ public class Entity {
   public String getType() {
     return type;
   }
+  abstract void draw();
 }
