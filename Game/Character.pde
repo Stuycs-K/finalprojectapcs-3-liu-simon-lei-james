@@ -37,11 +37,24 @@ abstract class Character extends Entity {
   public boolean moveTo(Tile newPosition) {
     if (!movement.consume(position.distanceTo(newPosition))) return false;
     position.removeEntity();
-    board.reset();
+    toUpdate.add(position);
+    ArrayList<Tile> path = position.pathTo(newPosition);
+    Thread newThread = new Thread(() -> {
+      boolean prev = Game.tick;
+      while (Game.tick == prev) {System.out.print("");};
+      for (Tile tile : path) {
+        tile.removeEntity();
+        toUpdate.add(position);
+        position = tile;
+        toUpdate.add(tile);
+        tile.addEntity(this);
+        prev = Game.tick;
+        while (Game.tick == prev) {System.out.print("");};
+      }
+    });
+    newThread.start();
+    position.addEntity(this);
     position.display();
-    position = newPosition;
-    newPosition.addEntity(this);
-    display();
     return true;
   }
   public ArrayList<Tile> movementRange() {

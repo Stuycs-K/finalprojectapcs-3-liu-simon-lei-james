@@ -13,4 +13,7 @@ public class Coordinate {
   public boolean equals(Coordinate other) {
     return other.getX() == getX() && other.getY() == getY();
   }
+  public Coordinate shift(int[] distances) {
+    return new Coordinate(x + distances[0], y + distances[1]);
+  }
 }

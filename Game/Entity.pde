@@ -1,4 +1,5 @@
 abstract public class Entity {
+  abstract public void display();
   private String type;
   public Entity(String type) {
     this.type = type;
@@ -6,5 +7,4 @@ abstract public class Entity {
   public String getType() {
     return type;
   }
-  abstract void display();
 }
