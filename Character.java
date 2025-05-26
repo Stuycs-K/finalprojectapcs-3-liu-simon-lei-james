@@ -39,4 +39,11 @@ abstract class Character extends Entity {
     position = newPosition;
     return true;
   }
+  public boolean damage(int ouch){
+    health-= ouch;
+    if (health <= 0){
+      return true;
+    }
+    return false;
+  }
 }
