@@ -8,7 +8,19 @@ public class Tile {
   private Entity entity;
   private Coordinate coordinate;
   public void display() {
+    display("None");
+  }
+  public void display(String tint) {
+    switch (tint) {
+      case "Blue":
+        tint(0, 125, 250);
+        break;
+      case "Red":
+        tint(250, 125, 0);
+        break;
+    }
     image(board.images.get(terrain), WIDTH * coordinate.getX(), HEIGHT * coordinate.getY(), HEIGHT, WIDTH);
+    noTint();
     if (hasEntity()) {
       getEntity().display();
     }
@@ -40,7 +52,6 @@ public class Tile {
   }
   public ArrayList<Tile> pathTo(Tile other) {
     int[][] visited = new int[rows][cols];
-    int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
     PriorityQueue<Node> bfs = new PriorityQueue<Node>(4, new Comparator<Node>() {
       public int compare(Node first, Node second) {
         return first.getDistance() - second.getDistance();
@@ -55,6 +66,7 @@ public class Tile {
       Node current = bfs.remove();
       Coordinate coordinate = current.getCoordinate();
       if (board.get(current.getCoordinate()) == null) continue;
+      if (board.checkTile(board.get(current.getCoordinate())).equals("Enemy")) continue;
       int distance = current.getDistance() + board.movementPenalties.get(board.get(coordinate).getTerrain());
       
       // Backtracking
@@ -97,13 +109,5 @@ public class Tile {
       output += board.movementPenalties.get(tile.getTerrain());
     }
     return output;
-  }
-  public void tintBlue() {
-    tint(0, 125, 250);
-    display();
-    noTint();
-    if (hasEntity()) {
-      getEntity().display();
-    }
   }
 }

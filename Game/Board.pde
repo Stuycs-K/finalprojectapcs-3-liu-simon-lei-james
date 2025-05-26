@@ -26,13 +26,16 @@ public class Board {
     }
     initializeConstants();
   }
+  
   public Tile get(int x, int y) {
     if (x < 0 || x >= cols || y < 0 || y >= rows) return null;
     return board[y][x];
   }
+  
   public Tile get(Coordinate coordinate) {
     return get(coordinate.getX(), coordinate.getY());
   }
+  
   public void display() {
     for (Tile[] row : board) {
       for (Tile tile : row) {
@@ -43,30 +46,25 @@ public class Board {
   public ArrayList<Tile> tilesInRange(Tile tile, int range) {
     ArrayList<Tile> output = new ArrayList<Tile>();
     int[][] visited = new int[board.length][board[0].length];
-    Queue<Coordinate> bfs = new LinkedList<Coordinate>();
-    Queue<Integer> distances = new LinkedList<Integer>();
-    int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    Queue<Node> bfs = new LinkedList<Node>();
     output.add(tile);
     for (int[] direction : directions) {
-      bfs.add(new Coordinate(tile.getCoordinate().getX() + direction[0], tile.getCoordinate().getY() + direction[1]));
-      distances.add(0);
+      bfs.add(new Node(tile.getCoordinate().shift(direction), 0));
     }
-    bfs.add(tile.getCoordinate());
-    distances.add(0);
     while (! bfs.isEmpty()) {
-      Coordinate current = bfs.remove();
-      if (current.getX() < 0 || current.getX() >= board[0].length || current.getY() < 0 || current.getY() >= board.length) continue;
-      
-      int distance = distances.remove() + movementPenalties.get(get(current).getTerrain());
+      Node current = bfs.remove();
+      Coordinate coordinate = current.getCoordinate();
+      if (coordinate.outOfRange()) continue;
+      if (coordinate.equals(tile.getCoordinate())) continue;
+      int distance = current.getDistance() + movementPenalties.get(get(coordinate).getTerrain());
       if (distance > range) continue;
       
-      if (visited[current.getY()][current.getX()] != 0 && visited[current.getY()][current.getX()] < distance) continue;
-      visited[current.getY()][current.getX()] = distance;
+      if (visited[coordinate.getY()][coordinate.getX()] != 0 && visited[coordinate.getY()][coordinate.getX()] < distance) continue;
+      visited[coordinate.getY()][coordinate.getX()] = distance;
       
-      output.add(board[current.getY()][current.getX()]);
+      output.add(get(coordinate));
       for (int[] direction : directions) {
-        bfs.add(new Coordinate(current.getX() + direction[0], current.getY() + direction[1]));
-        distances.add(distance);
+        bfs.add(new Node(current.getCoordinate().shift(direction), distance));
       }
     }
     return output;

@@ -16,4 +16,7 @@ public class Coordinate {
   public Coordinate shift(int[] distances) {
     return new Coordinate(x + distances[0], y + distances[1]);
   }
+  public boolean outOfRange() {
+    return x < 0 || x >= cols || y < 0 || y >= rows;
+  }
 }
