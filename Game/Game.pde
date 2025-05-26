@@ -17,7 +17,7 @@ void setup() {
   board = new Board(rows, cols);
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
-  players.add(new Player("myrmidon", 10, 10, board.get(10, 10)));
+  players.add(new Player("lord", 10, 10, board.get(10, 10)));
   enemies.add(new Enemy("slime", 10, 10, board.get(12, 13)));
   for (Player player : players) {
     player.getPosition().addEntity(player);
@@ -66,7 +66,13 @@ void mouseClicked() {
     case "Tile":
       if (prevClick != null && board.checkTile(prevClick).equals("Player")) {
         board.getPlayer(prevClick).moveTo(clickLocation);
-        System.out.println(board.getPlayer(prevClick).getMovement());
+      }
+      break;
+    case "Enemy":
+      if (prevClick != null && board.checkTile(prevClick).equals("Player")) {
+        if (board.getPlayer(prevClick).moveTo(clickLocation)) {
+          board.getPlayer(prevClick).mainAttack(board.getEnemy(clickLocation));
+        };
       }
       break;
   }

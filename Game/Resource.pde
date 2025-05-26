@@ -26,4 +26,9 @@ public class Resource {
     current -= amount;
     return true;
   }
+  public Resource copy() {
+    Resource output = new Resource(max, name);
+    output.consume(max - current);
+    return output;
+  }
 }

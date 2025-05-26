@@ -63,6 +63,7 @@ public class Board {
       visited[coordinate.getY()][coordinate.getX()] = distance;
       
       output.add(get(coordinate));
+      if (checkTile(get(coordinate)).equals("Enemy")) continue;
       for (int[] direction : directions) {
         bfs.add(new Node(current.getCoordinate().shift(direction), distance));
       }
@@ -76,6 +77,12 @@ public class Board {
   public Player getPlayer(Tile tile) {
     for (Player player : players) {
       if (player.getPosition().getCoordinate().equals(tile.getCoordinate())) return player;
+    }
+    return null;
+  }
+  public Enemy getEnemy(Tile tile) {
+    for (Enemy enemy : enemies) {
+      if (enemy.getPosition().getCoordinate().equals(tile.getCoordinate())) return enemy;
     }
     return null;
   }

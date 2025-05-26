@@ -19,4 +19,7 @@ public class Coordinate {
   public boolean outOfRange() {
     return x < 0 || x >= cols || y < 0 || y >= rows;
   }
+  public String toString() {
+    return "(" + x + ", " + y + ")";
+  }
 }

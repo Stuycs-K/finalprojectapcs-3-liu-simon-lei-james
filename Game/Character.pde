@@ -21,8 +21,8 @@ abstract class Character extends Entity {
   public String getActions() {
     return actions.toString();
   }
-  public String getMovement() {
-    return movement.toString();
+  public Resource getMovement() {
+    return movement.copy();
   }
   public Tile getPosition() {
     return position;
@@ -38,6 +38,7 @@ abstract class Character extends Entity {
     if (!movement.consume(position.distanceTo(newPosition))) return false;
     position.removeEntity();
     ArrayList<Tile> path = position.pathTo(newPosition);
+    if (newPosition.hasEntity() && newPosition.getEntity().getType() != "Chest") path.remove(path.size() - 1);
     Thread newThread = new Thread(() -> {
       boolean prev = Game.tick;
       while (Game.tick == prev) {System.out.print("");};
@@ -52,6 +53,7 @@ abstract class Character extends Entity {
       }
     });
     newThread.start();
+    position.addEntity(this);
     return true;
   }
   public ArrayList<Tile> movementRange() {

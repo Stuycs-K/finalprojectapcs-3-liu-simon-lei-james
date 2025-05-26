@@ -4,10 +4,11 @@ public class Enemy extends Character {
   }
   public void target(Player player) {
     ArrayList<Tile> path = getPosition().pathTo(player.getPosition());
-    int index = 0;
-    while (index < path.size() && moveTo(path.get(index))) {
-      index++;
-      System.out.println(getMovement());
+    int index = -2;
+    Resource movement = getMovement();
+    for (Tile tile : path) {
+      if (movement.consume(board.movementPenalties.get(tile.getTerrain()))) index++;
     }
+    if (index != -1) moveTo(path.get(index));
   }
 }

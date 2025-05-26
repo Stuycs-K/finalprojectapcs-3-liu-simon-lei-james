@@ -65,8 +65,8 @@ public class Tile {
     while (! bfs.isEmpty()) {
       Node current = bfs.remove();
       Coordinate coordinate = current.getCoordinate();
+      if (coordinate.outOfRange()) continue;
       if (board.get(current.getCoordinate()) == null) continue;
-      if (board.checkTile(board.get(current.getCoordinate())).equals("Enemy")) continue;
       int distance = current.getDistance() + board.movementPenalties.get(board.get(coordinate).getTerrain());
       
       // Backtracking
@@ -82,6 +82,7 @@ public class Tile {
               Collections.reverse(path);
               return path;
             }
+            if (newCoordinate.outOfRange()) continue;
             if (visited[newCoordinate.getY()][newCoordinate.getX()] == 0) continue;
             if (minNeighbor == null || minDistance > visited[newCoordinate.getY()][newCoordinate.getX()]) {
               minNeighbor = board.get(newCoordinate);
@@ -92,6 +93,7 @@ public class Tile {
         }
       }
       
+      if (board.checkTile(board.get(current.getCoordinate())).equals("Enemy")) continue;
       if (coordinate.equals(getCoordinate())) continue;
       if (visited[coordinate.getY()][coordinate.getX()] != 0 && visited[coordinate.getY()][coordinate.getX()] <= distance) continue;
       visited[coordinate.getY()][coordinate.getX()] = distance;
