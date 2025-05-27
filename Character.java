@@ -46,4 +46,11 @@ abstract class Character extends Entity {
     }
     return false;
   }
+  public boolean heal(int healing){
+    if (health > 0){
+      health+= healing;
+      return true;
+    }
+    return false;
+  }
 }
