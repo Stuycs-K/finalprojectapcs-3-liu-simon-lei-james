@@ -9,6 +9,9 @@ public class Resource {
   public String getName() {
     return name;
   }
+  public Pair<Integer, Integer> getCurrent() {
+    return new Pair<Integer, Integer>(current, max);
+  }
   public String toString() {
     return current + " / " + max;
   }
@@ -22,5 +25,10 @@ public class Resource {
     if (amount > current) return false;
     current -= amount;
     return true;
+  }
+  public Resource copy() {
+    Resource output = new Resource(max, name);
+    output.consume(max - current);
+    return output;
   }
 }
