@@ -2,12 +2,22 @@ public class Weapon extends Item{
 
   private int durability;
   private int power;
-
+  private String name;
+  
+  public Weapon(int durability, int power, String name){
+    this.durability = durability;
+    this.power = power;
+    this.name = name;
+  }
+  
   public int getDurability(){
     return durability;
   }
   public int getPower(){
     return power;
+  }
+  public String toString(){
+    return name;
   }
 
   public boolean reduceDurability(int tear){
@@ -15,11 +25,8 @@ public class Weapon extends Item{
     return durability <= 0;
   }
 
-  public void mainAttack(Character other){
+  public int mainAttack(Character other){
     int damage = getPower();
-    if (other.damage(damage)){
-      System.out.println(other.getName() + " defeated");
-    }
-    System.out.println(other.getHealth());
+    return damage;
   }
 }
