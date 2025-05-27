@@ -10,16 +10,16 @@ public class Weapon extends Item{
     return power;
   }
 
-  public boolean reduceDurability(int break){
-    durability-= break;
+  public boolean reduceDurability(int tear){
+    durability-= tear;
     return durability <= 0;
   }
 
   public void mainAttack(Character other){
     int damage = getPower();
-    if (other.damage(damage) <= 0){
-      System.out.println(Character.getName() + " defeated")
+    if (other.damage(damage)){
+      System.out.println(other.getName() + " defeated");
     }
-    System.out.println()
+    System.out.println(other.getHealth());
   }
 }

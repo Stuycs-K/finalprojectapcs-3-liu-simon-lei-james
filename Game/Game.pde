@@ -64,21 +64,25 @@ void mouseClicked() {
   String type = clickLocation.getEntity();
   switch (type) {
     case "Player":
-      ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
-      for (Tile tile : range) {
-        tile.transform("Blue");
-        if (tile.getEntity().equals("Enemy")) tile.transform("Red");
+      if (!board.getPlayer(clickLocation).getActions().substring(0,1).equals("0")){
+        ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
+        for (Tile tile : range) {
+          tile.transform("Blue");
+          if (tile.getEntity().equals("Enemy")) tile.transform("Red");
+        }
       }
       break;
     case "Tile":
       if (highlighted != null && highlighted.getEntity().equals("Player")) {
         board.getPlayer(highlighted).moveTo(clickLocation);
+        board.getPlayer(highlighted).consumeActions(3);
       }
       break;
     case "Enemy":
       if (highlighted != null && highlighted.getEntity().equals("Player")) {
         if (board.getPlayer(highlighted).moveTo(clickLocation)) {
           board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
+          board.getPlayer(highlighted).consumeActions(3);
         };
       }
       break;

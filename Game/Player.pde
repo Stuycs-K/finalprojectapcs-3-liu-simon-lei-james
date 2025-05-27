@@ -7,7 +7,7 @@ public class Player extends Character {
     System.out.println("Enemy health: " + other.getHealth());
   }
   public void secondaryAttack(Enemy other) {
-    int damage = (int)Math.random(5) + 2;
+    int damage = (int)(Math.random() * 5) + 2;
     other.damage(damage);
     System.out.println("Enemy health: " + other.getHealth());
   }
