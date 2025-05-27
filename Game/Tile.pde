@@ -1,114 +1,129 @@
 import java.util.PriorityQueue;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.LinkedList;
 
 public class Tile {
   public static final int HEIGHT = 16, WIDTH = 16;
+
+  // Possible Values: None, Red, Blue
+  private String hue;
   private String terrain;
-  private Entity entity;
+  private volatile Entity entity;
   private Coordinate coordinate;
-  public void display() {
-    display("None");
+
+  public Tile(String terrain, int x, int y) {
+    this.terrain = terrain;
+    coordinate = new Coordinate(x, y);
+    hue = "None";
   }
-  public void display(String tint) {
-    switch (tint) {
-      case "Blue":
-        tint(0, 125, 250);
-        break;
-      case "Red":
-        tint(250, 125, 0);
-        break;
+
+  public void display() {
+    switch (hue) {
+    case "Blue":
+      tint(0, 125, 250);
+      break;
+    case "Red":
+      tint(250, 125, 0);
+      break;
     }
+
     image(board.images.get(terrain), WIDTH * coordinate.getX(), HEIGHT * coordinate.getY(), HEIGHT, WIDTH);
     noTint();
-    if (hasEntity()) {
-      getEntity().display();
-    }
+    if (hasEntity()) entity.display();
   }
+  
+  public void transform(String newColor) {
+    hue = newColor;
+    display();
+  }
+
   public boolean hasEntity() {
     return entity != null;
+  }
+  public String getEntity() {
+    if (!hasEntity()) return "Tile";
+    return entity.getType();
   }
   public void removeEntity() {
     entity = null;
   }
-  public Entity getEntity() {
-    return entity;
-  }
   public void addEntity(Entity newEntity) {
     entity = newEntity;
   }
-  public Tile(String terrain, int x, int y) {
-    this.terrain = terrain;
-    this.coordinate = new Coordinate(x, y);
-  }
+
   public Coordinate getCoordinate() {
     return coordinate;
   }
+
   public String getTerrain() {
     return terrain;
   }
   public void setTerrain(String newTerrain) {
     terrain = newTerrain;
   }
-  public ArrayList<Tile> pathTo(Tile other) {
-    int[][] visited = new int[rows][cols];
-    PriorityQueue<Node> bfs = new PriorityQueue<Node>(4, new Comparator<Node>() {
-      public int compare(Node first, Node second) {
-        return first.getDistance() - second.getDistance();
-      }
-    });
-    
-    for (int[] direction : directions) {
-      bfs.add(new Node(getCoordinate().shift(direction), 0));
+
+  public ArrayList<Tile> getNeighbors() {
+    ArrayList<Tile> neighbors = new ArrayList<Tile>();
+    for (int[] direction : DIRECTIONS) {
+      Coordinate newCoordinate = getCoordinate().shift(direction);
+      if (!newCoordinate.outOfRange()) neighbors.add(board.get(newCoordinate));
     }
-    
-    while (! bfs.isEmpty()) {
-      Node current = bfs.remove();
-      Coordinate coordinate = current.getCoordinate();
-      if (coordinate.outOfRange()) continue;
-      if (board.get(current.getCoordinate()) == null) continue;
-      int distance = current.getDistance() + board.movementPenalties.get(board.get(coordinate).getTerrain());
-      
+    return neighbors;
+  }
+
+  public LinkedList<Tile> pathTo(Tile other) {
+    int[][] distances = new int[ROWS][COLUMNS];
+
+    Pair<Integer, Tile> start = new Pair<Integer, Tile>(0, this); // Distance, Tile
+    PriorityQueue<Pair<Integer, Tile>> bfs = new PriorityQueue<Pair<Integer, Tile>>(4, start.getComparator());
+
+    distances[getCoordinate().getY()][getCoordinate().getX()] = -1; // Starting Tile
+    bfs.add(start);
+
+    while (!bfs.isEmpty()) {
+      Pair<Integer, Tile> current = bfs.remove();
+
+      Tile tile = current.getSecond();
+      Coordinate coordinate = tile.getCoordinate();
+
       // Backtracking
       if (coordinate.equals(other.getCoordinate())) {
-        ArrayList<Tile> path = new ArrayList<Tile>();
-        while (! coordinate.equals(getCoordinate())) {
-          path.add(board.get(coordinate));
+        LinkedList<Tile> path = new LinkedList<Tile>();
+
+        while (!coordinate.equals(getCoordinate())) {
+          path.push(board.get(coordinate));
           Tile minNeighbor = null;
-          int minDistance = -1;
-          for (int[] direction : directions) {
-            Coordinate newCoordinate = coordinate.shift(direction);
-            if (newCoordinate.equals(getCoordinate())) {
-              Collections.reverse(path);
-              return path;
-            }
-            if (newCoordinate.outOfRange()) continue;
-            if (visited[newCoordinate.getY()][newCoordinate.getX()] == 0) continue;
-            if (minNeighbor == null || minDistance > visited[newCoordinate.getY()][newCoordinate.getX()]) {
-              minNeighbor = board.get(newCoordinate);
-              minDistance = visited[newCoordinate.getY()][newCoordinate.getX()];
+          int minDistance = -2; // Impossible Value
+          for (Tile neighbor : board.get(coordinate).getNeighbors()) {
+            Coordinate newCoordinate = neighbor.getCoordinate();
+            if (distances[newCoordinate.getY()][newCoordinate.getX()] == 0) continue;
+            if (minDistance == -2 || minDistance > distances[newCoordinate.getY()][newCoordinate.getX()]) {
+              minNeighbor = neighbor;
+              minDistance = distances[newCoordinate.getY()][newCoordinate.getX()];
             }
           }
-          coordinate = minNeighbor.getCoordinate(); 
+          coordinate = minNeighbor.getCoordinate();
         }
+        return path;
       }
-      
-      if (board.checkTile(board.get(current.getCoordinate())).equals("Enemy")) continue;
-      if (coordinate.equals(getCoordinate())) continue;
-      if (visited[coordinate.getY()][coordinate.getX()] != 0 && visited[coordinate.getY()][coordinate.getX()] <= distance) continue;
-      visited[coordinate.getY()][coordinate.getX()] = distance;
-      
-      for (int[] direction : directions) {
-        bfs.add(new Node(coordinate.shift(direction), distance));
+
+      if (coordinate != getCoordinate() && tile.hasEntity()) continue;
+      if (distances[coordinate.getY()][coordinate.getX()] > 0 && distances[coordinate.getY()][coordinate.getX()] <= current.getFirst()) continue;
+      if (distances[coordinate.getY()][coordinate.getX()] != -1) distances[coordinate.getY()][coordinate.getX()] = current.getFirst();
+
+      for (Tile neighbor : tile.getNeighbors()) {
+        int distance = current.getFirst() + board.movementPenalties.get(neighbor.getTerrain());
+        bfs.add(new Pair<Integer, Tile>(distance, neighbor));
       }
     }
     return null;
   }
+
   public int distanceTo(Tile other) {
-    ArrayList<Tile> path = pathTo(other);
+    LinkedList<Tile> path = pathTo(other);
     int output = 0;
-    for (Tile tile : path) {
-      output += board.movementPenalties.get(tile.getTerrain());
+    while (!path.isEmpty()) {
+      output += board.movementPenalties.get(path.pop().getTerrain());
     }
     return output;
   }

@@ -36,28 +36,32 @@ abstract class Character extends Entity {
   }
   public boolean moveTo(Tile newPosition) {
     if (!movement.consume(position.distanceTo(newPosition))) return false;
-    position.removeEntity();
-    ArrayList<Tile> path = position.pathTo(newPosition);
-    if (newPosition.hasEntity() && newPosition.getEntity().getType() != "Chest") path.remove(path.size() - 1);
+
+    LinkedList<Tile> path = position.pathTo(newPosition);
+    if (newPosition.hasEntity()) path.removeLast();
+    if (path.size() > 0) {
+      position.removeEntity();
+      path.peekLast().addEntity(this);
+    }
+    
     Thread newThread = new Thread(() -> {
-      boolean prev = Game.tick;
-      while (Game.tick == prev) {System.out.print("");};
-      for (Tile tile : path) {
+      while (!path.isEmpty()) {
+        int start = TICK;
+        while (TICK == start) sleep(100);
+        Tile tile = path.pop();
+        tile.display();
         position.removeEntity();
-        toUpdate.add(position);
+        updateQueue.add(position);
         position = tile;
-        toUpdate.add(tile);
         position.addEntity(this);
-        prev = Game.tick;
-        while (Game.tick == prev) {System.out.print("");};
+        updateQueue.add(position);
       }
     });
     newThread.start();
-    position.addEntity(this);
     return true;
   }
   public ArrayList<Tile> movementRange() {
-    return board.tilesInRange(getPosition(), movement.getCurrent());
+    return board.tilesInRange(getPosition(), movement.getCurrent().getFirst());
   }
   public void display() {
     Coordinate coordinate = getPosition().getCoordinate();

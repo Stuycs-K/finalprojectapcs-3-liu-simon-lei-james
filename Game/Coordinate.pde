@@ -17,7 +17,7 @@ public class Coordinate {
     return new Coordinate(x + distances[0], y + distances[1]);
   }
   public boolean outOfRange() {
-    return x < 0 || x >= cols || y < 0 || y >= rows;
+    return x < 0 || x >= COLUMNS || y < 0 || y >= ROWS;
   }
   public String toString() {
     return "(" + x + ", " + y + ")";

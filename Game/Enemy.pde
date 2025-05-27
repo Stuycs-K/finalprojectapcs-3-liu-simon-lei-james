@@ -3,12 +3,16 @@ public class Enemy extends Character {
     super(name, maxHealth, maxMovement, startingPosition, "Enemy");
   }
   public void target(Player player) {
-    ArrayList<Tile> path = getPosition().pathTo(player.getPosition());
-    int index = -2;
+    LinkedList<Tile> path = getPosition().pathTo(player.getPosition());
+    int index = -1;
     Resource movement = getMovement();
-    for (Tile tile : path) {
-      if (movement.consume(board.movementPenalties.get(tile.getTerrain()))) index++;
+    Tile current = null, next;
+    while (!path.isEmpty()) {
+      next = path.pop();
+      if (!movement.consume(board.movementPenalties.get(next.getTerrain()))) break; // No Movement
+      current = next;
+      index++;
     }
-    if (index != -1) moveTo(path.get(index));
+    if (index != -1) moveTo(current);
   }
 }
