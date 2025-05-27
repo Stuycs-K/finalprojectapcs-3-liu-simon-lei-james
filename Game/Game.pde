@@ -23,6 +23,7 @@ public static void sleep(int time) {
 
 void setup() {
   size(16 * 30, 16 * 20 + 50);
+  background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
   actionBar = new ActionBar();
   
@@ -45,7 +46,9 @@ void setup() {
 void draw() {
   if (frameCount % GAME_SPEED == 0) {
     TICK++;
-    if (highlighted == null || !highlighted.getEntity().equals("Player")) board.reset(); 
+    if (highlighted == null || highlighted.getEntity().equals("Enemy")) {
+      board.reset();
+    }
   }
   if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
     try {
