@@ -27,6 +27,9 @@ abstract class Character extends Entity {
   public Tile getPosition() {
     return position;
   }
+  public boolean damage(int ouch){
+    return health.consume(ouch);
+  }
   protected boolean consumeActions(int amount) {
     return actions.consume(amount);
   }
@@ -43,7 +46,7 @@ abstract class Character extends Entity {
       position.removeEntity();
       path.peekLast().addEntity(this);
     }
-    
+
     Thread newThread = new Thread(() -> {
       while (!path.isEmpty()) {
         int start = TICK;

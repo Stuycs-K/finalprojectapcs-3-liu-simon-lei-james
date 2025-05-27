@@ -23,25 +23,25 @@ public static void sleep(int time) {
 void setup() {
   size(16 * 30, 16 * 20);
   board = new Board(ROWS, COLUMNS);
-  
+
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
   for (int i = 0; i < 3; i++) players.add(new Player("lord", 10, 10, board.getRandomTile()));
   for (int i = 0; i < 3; i++) enemies.add(new Enemy("slime", 10, 10, board.getRandomTile()));
-  
+
   for (Player player : players) {
     player.getPosition().addEntity(player);
   }
   for (Enemy enemy : enemies) {
     enemy.getPosition().addEntity(enemy);
   }
-  
+
   board.display();
 }
 
 void draw() {
   if (frameCount % GAME_SPEED == 0) TICK++;
-  if (frameCount % GAME_SPEED != 0 !updateQueue.isEmpty()) {
+  if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
     try {
       updateQueue.remove().display();
     } catch (NoSuchElementException e) {}
