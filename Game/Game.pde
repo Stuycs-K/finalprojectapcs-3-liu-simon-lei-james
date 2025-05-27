@@ -1,13 +1,14 @@
 import java.util.Random;
 import java.util.NoSuchElementException;
 
-public static final int COLUMNS = 30, ROWS = 20;
-public static final int GAME_SPEED = 32;
+public static final int COLUMNS = 30, ROWS = 20, ACTION_BAR_SIZE = 50;
+public static final int GAME_SPEED = 16; // Speed the Board Updates; Lower = Faster
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 public volatile static int TICK = 0;
 
 public volatile static Board board;
+public static ActionBar actionBar;
 public static ArrayList<Player> players;
 public static ArrayList<Enemy> enemies;
 
@@ -21,8 +22,9 @@ public static void sleep(int time) {
 }
 
 void setup() {
-  size(16 * 30, 16 * 20);
+  size(16 * 30, 16 * 20 + 50);
   board = new Board(ROWS, COLUMNS);
+  actionBar = new ActionBar();
   
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
@@ -37,11 +39,15 @@ void setup() {
   }
   
   board.display();
+  actionBar.display(players.get(0));
 }
 
 void draw() {
-  if (frameCount % GAME_SPEED == 0) TICK++;
-  if (frameCount % GAME_SPEED != 0 !updateQueue.isEmpty()) {
+  if (frameCount % GAME_SPEED == 0) {
+    TICK++;
+    if (highlighted == null || !highlighted.getEntity().equals("Player")) board.reset(); 
+  }
+  if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
     try {
       updateQueue.remove().display();
     } catch (NoSuchElementException e) {}
@@ -60,28 +66,33 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
-  Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
-  String type = clickLocation.getEntity();
-  switch (type) {
-    case "Player":
-      ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
-      for (Tile tile : range) {
-        tile.transform("Blue");
-        if (tile.getEntity().equals("Enemy")) tile.transform("Red");
-      }
-      break;
-    case "Tile":
-      if (highlighted != null && highlighted.getEntity().equals("Player")) {
-        board.getPlayer(highlighted).moveTo(clickLocation);
-      }
-      break;
-    case "Enemy":
-      if (highlighted != null && highlighted.getEntity().equals("Player")) {
-        if (board.getPlayer(highlighted).moveTo(clickLocation)) {
-          board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
-        };
-      }
-      break;
+  // On Board
+  if (mouseY < height - 100) {
+    Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
+    String type = clickLocation.getEntity();
+    switch (type) {
+      case "Player":
+        ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
+        for (Tile tile : range) {
+          tile.transform("Blue");
+          if (tile.getEntity().equals("Enemy")) tile.transform("Red");
+        }
+        break;
+      case "Tile":
+        if (highlighted != null && highlighted.getEntity().equals("Player")) {
+          board.getPlayer(highlighted).moveTo(clickLocation);
+        }
+        break;
+      case "Enemy":
+        if (highlighted != null && highlighted.getEntity().equals("Player")) {
+          if (board.getPlayer(highlighted).moveTo(clickLocation)) {
+            board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
+          };
+        }
+        break;
+    }
+    highlighted = clickLocation;
+  } else {
+    
   }
-  highlighted = clickLocation;
 }
