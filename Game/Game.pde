@@ -1,19 +1,22 @@
 import java.util.Random;
 import java.util.NoSuchElementException;
 
+public static final int FONT_SIZE = 8;
+public static final int ACTION_BAR_SIZE = FONT_SIZE * 6 - 2;
 public static final int COLUMNS = 30, ROWS = 20;
-public static final int GAME_SPEED = 32;
+public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 public volatile static int TICK = 0;
 
 public volatile static Board board;
+public static ActionBar actionBar;
 public static ArrayList<Player> players;
 public static ArrayList<Enemy> enemies;
 public static int turn;
 
 public static Tile highlighted;
-public volatile static Queue<Tile> updateQueue = new LinkedList<Tile>();
+
 
 public static void sleep(int time) {
   try {
@@ -22,8 +25,10 @@ public static void sleep(int time) {
 }
 
 void setup() {
-  size(16 * 30, 16 * 20);
+  size(16 * 30, 16 * 20 + 46);
+  background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
+<<<<<<< HEAD
   turn = 0;
 
   players = new ArrayList<Player>();
@@ -31,6 +36,23 @@ void setup() {
   for (int i = 0; i < 3; i++) players.add(new Player("lord", 10, 10, board.getRandomTile()));
   for (int i = 0; i < 3; i++) enemies.add(new Enemy("slime", 10, 10, board.getRandomTile()));
 
+=======
+  actionBar = new ActionBar();
+  
+  players = new ArrayList<Player>();
+  enemies = new ArrayList<Enemy>();
+  for (int i = 0; i < 3; i++) {
+    Tile spawnLocation = board.getRandomTile();
+    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+    players.add(new Player("lord", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+  }
+  for (int i = 0; i < 3; i++) {
+    Tile spawnLocation = board.getRandomTile();
+    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+    enemies.add(new Enemy("slime", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+  }
+  
+>>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
   for (Player player : players) {
     player.getPosition().addEntity(player);
   }
@@ -39,18 +61,25 @@ void setup() {
   }
 
   board.display();
+  actionBar.write("Welcome to our game. Please click on a player to begin.");
 }
 
 void draw() {
+  board.display();
+  actionBar.update();
   if (frameCount % GAME_SPEED == 0) TICK++;
+<<<<<<< HEAD
   if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
     try {
       updateQueue.remove().display();
     } catch (NoSuchElementException e) {}
   }
+=======
+>>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
 }
 
 void keyPressed() {
+  board.reset();
   for (Player player : players) {
     player.endTurn();
   }
@@ -64,17 +93,28 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
+<<<<<<< HEAD
   Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
   String type = clickLocation.getEntity();
   switch (type) {
     case "Player":
       int action = board.getPlayer(clickLocation).getActions().getFirst();
       if (!(action == 0)){
+=======
+  // On Board
+  if (mouseY < height - ACTION_BAR_SIZE) {
+    Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
+    String type = clickLocation.getEntity();
+    switch (type) {
+      case "Player":
+        actionBar.display(board.getPlayer(clickLocation));
+>>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
         ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
         for (Tile tile : range) {
           tile.transform("Blue");
           if (tile.getEntity().equals("Enemy")) tile.transform("Red");
         }
+<<<<<<< HEAD
       }
       break;
     case "Tile":
@@ -97,6 +137,31 @@ void mouseClicked() {
         };
       }
       break;
+=======
+        highlighted = clickLocation;
+        break;
+      case "Tile":
+        if (highlighted != null && highlighted.getEntity().equals("Player")) {
+          board.getPlayer(highlighted).moveTo(clickLocation); // Selected player goes to tile
+          highlighted = null;
+        }
+        break;
+      case "Enemy":
+        actionBar.display(board.getEnemy(clickLocation));
+        if (highlighted != null && highlighted.getEntity().equals("Player")) {
+          // Selected player moves to and attacks enemy
+          if (board.getPlayer(highlighted).moveTo(clickLocation)) {
+            board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
+          }
+          highlighted = null;
+        } else {
+          clickLocation.transform("Red");
+          highlighted = clickLocation;
+        }
+        break;
+    }
+  } else {
+    
+>>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
   }
-  highlighted = clickLocation;
 }

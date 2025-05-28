@@ -121,6 +121,7 @@ public class Tile {
 
   public int distanceTo(Tile other) {
     LinkedList<Tile> path = pathTo(other);
+    if (path == null) return -1;
     int output = 0;
     while (!path.isEmpty()) {
       output += board.movementPenalties.get(path.pop().getTerrain());
