@@ -16,13 +16,12 @@ public class Player extends Character {
     else{
      int damage = weapon.mainAttack(this);
      other.damage(damage);
-     if other.
     }
-    System.out.println("Enemy health: " + other.getHealth());
+    System.out.println("Enemy health: " + other.getHP());
   }
   public void secondaryAttack(Enemy other) {
     int damage = (int)(Math.random() * 5) + 2;
     other.damage(damage);
-    System.out.println("Enemy health: " + other.getHealth());
+    System.out.println("Enemy health: " + other.getHP());
   }
 }

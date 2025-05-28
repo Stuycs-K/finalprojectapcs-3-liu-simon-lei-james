@@ -15,12 +15,19 @@ abstract class Character extends Entity {
   public String getName() {
     return name;
   }
-  public String getHealth() {
+  public Pair<Integer, Integer> getHealth() {
+    return health.getCurrent();
+  } //changed the return value of this function to make other parts easier to code. Will revert if needed
+  public Pair<Integer, Integer> getActions() {
+    return actions.getCurrent();
+  } //ditto
+  public String getHP(){
     return health.toString();
   }
-  public String getActions() {
+  public String actionPointsLeft(){
     return actions.toString();
   }
+  
   public Resource getMovement() {
     return movement.copy();
   }

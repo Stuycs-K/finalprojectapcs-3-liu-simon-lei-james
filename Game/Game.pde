@@ -10,6 +10,7 @@ public volatile static int TICK = 0;
 public volatile static Board board;
 public static ArrayList<Player> players;
 public static ArrayList<Enemy> enemies;
+public static int turn;
 
 public static Tile highlighted;
 public volatile static Queue<Tile> updateQueue = new LinkedList<Tile>();
@@ -23,6 +24,7 @@ public static void sleep(int time) {
 void setup() {
   size(16 * 30, 16 * 20);
   board = new Board(ROWS, COLUMNS);
+  turn = 0;
 
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
@@ -56,6 +58,8 @@ void keyPressed() {
     enemy.target(players.get(0));
     enemy.endTurn();
   }
+  turn++;
+  System.out.println(turn);
 }
 
 void mouseClicked() {
@@ -64,7 +68,8 @@ void mouseClicked() {
   String type = clickLocation.getEntity();
   switch (type) {
     case "Player":
-      if (!board.getPlayer(clickLocation).getActions().substring(0,1).equals("0")){
+      int action = board.getPlayer(clickLocation).getActions().getFirst();
+      if (!(action == 0)){
         ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
         for (Tile tile : range) {
           tile.transform("Blue");
@@ -82,6 +87,12 @@ void mouseClicked() {
       if (highlighted != null && highlighted.getEntity().equals("Player")) {
         if (board.getPlayer(highlighted).moveTo(clickLocation)) {
           board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
+          int enemyCurrentHealth = board.getEnemy(clickLocation).getHealth().getFirst();
+          if (enemyCurrentHealth <= 0){
+            System.out.println("enemy defeated!");
+            enemies.remove(board.getEnemy(clickLocation));
+            clickLocation.removeEntity();
+          }
           board.getPlayer(highlighted).consumeActions(3);
         };
       }

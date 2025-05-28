@@ -25,7 +25,7 @@ public class Weapon extends Item{
     return durability <= 0;
   }
 
-  public int mainAttack(Character other){
+  public int mainAttack(Character other){ //character is a parameter to call its strength stat
     int damage = getPower();
     return damage;
   }
