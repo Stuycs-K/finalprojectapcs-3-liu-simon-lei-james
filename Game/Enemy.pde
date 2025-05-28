@@ -15,4 +15,13 @@ public class Enemy extends Character {
     }
     if (index != -1) moveTo(current);
   }
+  public void mainAttack(Player me){
+    me.damage(2);
+    System.out.println("player health: " + me.getHP());
+  }
+  public void secondaryAttack(Player me){
+    int damage = (int)(Math.random() * 2 - 2) + 2;
+    me.damage(damage);
+    System.out.println("player health: " + me.getHP());
+  }
 }
