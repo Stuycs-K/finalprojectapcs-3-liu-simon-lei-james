@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.NoSuchElementException;
 
 public static final int COLUMNS = 30, ROWS = 20, ACTION_BAR_SIZE = 50;
-public static final int GAME_SPEED = 16; // Speed the Board Updates; Lower = Faster
+public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 public volatile static int TICK = 0;
@@ -13,7 +13,7 @@ public static ArrayList<Player> players;
 public static ArrayList<Enemy> enemies;
 
 public static Tile highlighted;
-public volatile static Queue<Tile> updateQueue = new LinkedList<Tile>();
+
 
 public static void sleep(int time) {
   try {
@@ -44,17 +44,8 @@ void setup() {
 }
 
 void draw() {
-  if (frameCount % GAME_SPEED == 0) {
-    TICK++;
-    if (highlighted == null || highlighted.getEntity().equals("Enemy")) {
-      board.reset();
-    }
-  }
-  if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
-    try {
-      updateQueue.remove().display();
-    } catch (NoSuchElementException e) {}
-  }
+  board.display();
+  if (frameCount % GAME_SPEED == 0) TICK++;
 }
 
 void keyPressed() {
@@ -70,11 +61,12 @@ void keyPressed() {
 void mouseClicked() {
   board.reset();
   // On Board
-  if (mouseY < height - 100) {
+  if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
     String type = clickLocation.getEntity();
     switch (type) {
       case "Player":
+        actionBar.display(board.getPlayer(clickLocation));
         ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
         for (Tile tile : range) {
           tile.transform("Blue");
@@ -83,14 +75,18 @@ void mouseClicked() {
         break;
       case "Tile":
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
-          board.getPlayer(highlighted).moveTo(clickLocation);
+          board.getPlayer(highlighted).moveTo(clickLocation); // Selected player goes to tile
         }
         break;
       case "Enemy":
+        actionBar.display(board.getEnemy(clickLocation));
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
+          // Selected player moves to and attacks enemy
           if (board.getPlayer(highlighted).moveTo(clickLocation)) {
             board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
-          };
+          }
+        } else {
+          clickLocation.transform("Red");
         }
         break;
     }

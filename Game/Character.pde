@@ -4,9 +4,12 @@ abstract class Character extends Entity {
   private Tile position;
   private Resource movement;
   protected Resource actions;
+  private PImage img;
+  
   public Character(String name, int maxHealth, int maxMovement, Tile startingPosition, String type) {
     super(type);
     this.name = name;
+    img = loadImage(getName() + ".png");
     position = startingPosition;
     movement = new Resource(maxMovement, "Movement");
     health = new Resource(maxHealth, "Health");
@@ -35,7 +38,9 @@ abstract class Character extends Entity {
     actions.restore();
   }
   public boolean moveTo(Tile newPosition) {
-    if (!movement.consume(position.distanceTo(newPosition))) return false;
+    int distance = position.distanceTo(newPosition);
+    if (distance == -1) return false;
+    if (!movement.consume(distance)) return false;
 
     LinkedList<Tile> path = position.pathTo(newPosition);
     if (newPosition.hasEntity()) path.removeLast();
@@ -47,14 +52,11 @@ abstract class Character extends Entity {
     Thread newThread = new Thread(() -> {
       while (!path.isEmpty()) {
         int start = TICK;
-        while (TICK == start) sleep(100);
-        Tile tile = path.pop();
-        tile.display();
+        while (TICK == start) sleep(1);
         position.removeEntity();
-        updateQueue.add(position);
+        Tile tile = path.pop();
         position = tile;
         position.addEntity(this);
-        updateQueue.add(position);
       }
     });
     newThread.start();
@@ -65,7 +67,6 @@ abstract class Character extends Entity {
   }
   public void display() {
     Coordinate coordinate = getPosition().getCoordinate();
-    PImage img = loadImage(getName() + ".png");
     image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
   }
 }
