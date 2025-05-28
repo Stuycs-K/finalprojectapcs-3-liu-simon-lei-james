@@ -1,9 +1,9 @@
 abstract class Character extends Entity {
   private String name;
   private Resource health;
-  private Tile position;
   private Resource movement;
   protected Resource actions;
+  private Tile position;
   private PImage img;
   
   public Character(String name, int maxHealth, int maxMovement, Tile startingPosition, String type) {
@@ -15,28 +15,28 @@ abstract class Character extends Entity {
     health = new Resource(maxHealth, "Health");
     actions = new Resource(3, "Actions");
   }
+  
   public String getName() {
     return name;
   }
-  public String getHealth() {
-    return health.toString();
+  public Resource getHealth() {
+    return health;
   }
-  public String getActions() {
-    return actions.toString();
+  public Resource getActions() {
+    return actions;
   }
   public Resource getMovement() {
-    return movement.copy();
+    return movement;
   }
   public Tile getPosition() {
     return position;
   }
-  protected boolean consumeActions(int amount) {
-    return actions.consume(amount);
-  }
+  
   public void endTurn() {
     movement.restore();
     actions.restore();
   }
+  
   public boolean moveTo(Tile newPosition) {
     int distance = position.distanceTo(newPosition);
     if (distance == -1) return false;
@@ -62,9 +62,11 @@ abstract class Character extends Entity {
     newThread.start();
     return true;
   }
+  
   public ArrayList<Tile> movementRange() {
     return board.tilesInRange(getPosition(), movement.getCurrent().getFirst());
   }
+  
   public void display() {
     Coordinate coordinate = getPosition().getCoordinate();
     image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);

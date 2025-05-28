@@ -16,7 +16,6 @@ public static ArrayList<Enemy> enemies;
 
 public static Tile highlighted;
 
-
 public static void sleep(int time) {
   try {
     Thread.sleep(time);

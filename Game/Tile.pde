@@ -128,4 +128,12 @@ public class Tile {
     }
     return output;
   }
+  
+  public int getMovementPenalty() {
+    return board.movementPenalties.get(terrain);
+  }
+  
+  public boolean equals(Tile other) {
+    return coordinate.equals(other.getCoordinate());
+  }
 }

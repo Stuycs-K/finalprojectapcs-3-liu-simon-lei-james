@@ -20,7 +20,7 @@ public class Enemy extends Character {
     Tile current = null, next;
     while (!path.isEmpty()) {
       next = path.pop();
-      if (!movement.consume(board.movementPenalties.get(next.getTerrain()))) break; // No Movement
+      if (!movement.consume(next.getMovementPenalty())) break; // No Movement
       current = next;
       index++;
     }
