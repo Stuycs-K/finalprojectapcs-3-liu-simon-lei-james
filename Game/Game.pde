@@ -1,7 +1,9 @@
 import java.util.Random;
 import java.util.NoSuchElementException;
 
-public static final int COLUMNS = 30, ROWS = 20, ACTION_BAR_SIZE = 50;
+public static final int FONT_SIZE = 8;
+public static final int ACTION_BAR_SIZE = FONT_SIZE * 6 - 2;
+public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
@@ -22,15 +24,23 @@ public static void sleep(int time) {
 }
 
 void setup() {
-  size(16 * 30, 16 * 20 + 50);
+  size(16 * 30, 16 * 20 + 46);
   background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
   actionBar = new ActionBar();
   
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
-  for (int i = 0; i < 3; i++) players.add(new Player("lord", 10, 10, board.getRandomTile()));
-  for (int i = 0; i < 3; i++) enemies.add(new Enemy("slime", 10, 10, board.getRandomTile()));
+  for (int i = 0; i < 3; i++) {
+    Tile spawnLocation = board.getRandomTile();
+    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+    players.add(new Player("lord", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+  }
+  for (int i = 0; i < 3; i++) {
+    Tile spawnLocation = board.getRandomTile();
+    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+    enemies.add(new Enemy("slime", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+  }
   
   for (Player player : players) {
     player.getPosition().addEntity(player);
@@ -40,15 +50,17 @@ void setup() {
   }
   
   board.display();
-  actionBar.display(players.get(0));
+  actionBar.write("Welcome to our game. Please click on a player to begin.");
 }
 
 void draw() {
   board.display();
+  actionBar.update();
   if (frameCount % GAME_SPEED == 0) TICK++;
 }
 
 void keyPressed() {
+  board.reset();
   for (Player player : players) {
     player.endTurn();
   }
@@ -72,10 +84,12 @@ void mouseClicked() {
           tile.transform("Blue");
           if (tile.getEntity().equals("Enemy")) tile.transform("Red");
         }
+        highlighted = clickLocation;
         break;
       case "Tile":
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
           board.getPlayer(highlighted).moveTo(clickLocation); // Selected player goes to tile
+          highlighted = null;
         }
         break;
       case "Enemy":
@@ -85,12 +99,13 @@ void mouseClicked() {
           if (board.getPlayer(highlighted).moveTo(clickLocation)) {
             board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
           }
+          highlighted = null;
         } else {
           clickLocation.transform("Red");
+          highlighted = clickLocation;
         }
         break;
     }
-    highlighted = clickLocation;
   } else {
     
   }
