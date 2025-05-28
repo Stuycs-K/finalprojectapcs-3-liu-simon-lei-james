@@ -2,8 +2,19 @@ public class Enemy extends Character {
   public Enemy(String name, int maxHealth, int maxMovement, Tile startingPosition) {
     super(name, maxHealth, maxMovement, startingPosition, "Enemy");
   }
-  public void target(Player player) {
-    LinkedList<Tile> path = getPosition().pathTo(player.getPosition());
+  public void takeTurn() {
+    int minDistance = -2;
+    Player closestPlayer = null;
+    for (Player player : players) {
+      int distance = getPosition().distanceTo(player.getPosition());
+      if (minDistance == -2 || minDistance > distance) {
+        minDistance = distance;
+        closestPlayer = player;
+      }
+    }
+    
+    LinkedList<Tile> path = getPosition().pathTo(closestPlayer.getPosition());
+    
     int index = -1;
     Resource movement = getMovement();
     Tile current = null, next;

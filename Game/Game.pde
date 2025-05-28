@@ -65,7 +65,7 @@ void keyPressed() {
     player.endTurn();
   }
   for (Enemy enemy : enemies) {
-    enemy.target(players.get(0));
+    enemy.takeTurn();
     enemy.endTurn();
   }
 }
