@@ -13,6 +13,7 @@ public volatile static Board board;
 public static ActionBar actionBar;
 public static ArrayList<Player> players;
 public static ArrayList<Enemy> enemies;
+public static int turn;
 
 public static Tile highlighted;
 
@@ -26,8 +27,10 @@ void setup() {
   size(16 * 30, 16 * 20 + 46);
   background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
-  actionBar = new ActionBar();
+  turn = 0;
   
+  actionBar = new ActionBar();
+
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
   for (int i = 0; i < 3; i++) {
@@ -40,14 +43,14 @@ void setup() {
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
     enemies.add(new Enemy("slime", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
   }
-  
+
   for (Player player : players) {
     player.getPosition().addEntity(player);
   }
   for (Enemy enemy : enemies) {
     enemy.getPosition().addEntity(enemy);
   }
-  
+
   board.display();
   actionBar.write("Welcome to our game. Please click on a player to begin.");
 }
@@ -67,6 +70,8 @@ void keyPressed() {
     enemy.takeTurn();
     enemy.endTurn();
   }
+  turn++;
+  System.out.println(turn);
 }
 
 void mouseClicked() {
@@ -83,8 +88,7 @@ void mouseClicked() {
           tile.transform("Blue");
           if (tile.getEntity().equals("Enemy")) tile.transform("Red");
         }
-        highlighted = clickLocation;
-        break;
+      break;
       case "Tile":
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
           board.getPlayer(highlighted).moveTo(clickLocation); // Selected player goes to tile
@@ -106,6 +110,6 @@ void mouseClicked() {
         break;
     }
   } else {
-    
+
   }
 }

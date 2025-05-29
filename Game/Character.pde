@@ -1,11 +1,14 @@
 abstract class Character extends Entity {
-  private String name;
+  private String name, role;
   private Resource health;
   private Resource movement;
   protected Resource actions;
   private Tile position;
   private PImage img;
+  private ArrayList<Condition> conditions;
   
+  private int strength, speed, defense; //only way to change after initialized is through status conditions.
+
   public Character(String name, int maxHealth, int maxMovement, Tile startingPosition, String type) {
     super(type);
     this.name = name;
@@ -14,8 +17,15 @@ abstract class Character extends Entity {
     movement = new Resource(maxMovement, "Movement");
     health = new Resource(maxHealth, "Health");
     actions = new Resource(3, "Actions");
+    conditions = new ArrayList<Condition>();
+    role = type;
+    if (role.equals("lord")){
+      strength = 7;
+      speed = 5;
+      defense = 5;
+    }
   }
-  
+
   public String getName() {
     return name;
   }
@@ -25,6 +35,16 @@ abstract class Character extends Entity {
   public Resource getActions() {
     return actions;
   }
+  public int getStrength(){
+    return strength;
+  }
+  public int getSpeed(){
+    return speed;
+  }
+  public int getDefense(){
+    return defense;
+  }
+
   public Resource getMovement() {
     return movement;
   }
@@ -32,11 +52,20 @@ abstract class Character extends Entity {
     return position;
   }
   
-  public void endTurn() {
-    movement.restore();
-    actions.restore();
-  }
   
+  public boolean damage(int ouch){
+    return health.consume(ouch);
+  }
+  protected boolean consumeActions(int amount) {
+    return actions.consume(amount);
+  }
+  public void endTurn() {
+    if (!hasCondition("sleeping")){
+      movement.restore();
+      actions.restore();
+    }
+  }
+
   public boolean moveTo(Tile newPosition) {
     int distance = position.distanceTo(newPosition);
     if (distance == -1) return false;
@@ -48,7 +77,7 @@ abstract class Character extends Entity {
       position.removeEntity();
       path.peekLast().addEntity(this);
     }
-    
+
     Thread newThread = new Thread(() -> {
       while (!path.isEmpty()) {
         int start = TICK;
@@ -62,13 +91,59 @@ abstract class Character extends Entity {
     newThread.start();
     return true;
   }
-  
+
   public ArrayList<Tile> movementRange() {
     return board.tilesInRange(getPosition(), movement.getCurrent().getFirst());
   }
-  
+
   public void display() {
     Coordinate coordinate = getPosition().getCoordinate();
     image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
+  }
+
+  public String getConditions(){
+    String all = "conditions: ";
+    for (Condition condition: conditions){
+      all+= condition.getName() + ", ";
+    }
+    return all;
+  }
+  public int applyCondition(String name){
+    if (!hasCondition(name)){
+      conditions.add(new Condition(name, 3));
+    }
+    if (name.equals("poison")){
+      damage(health.getCurrent().getSecond() / 8);
+    }
+    if (name.equals("bleeding")){
+      defense/= 2;
+    }
+    if (name.equals("sleeping")){
+      actions.consume(3);
+    }
+      
+    reduceCondition(name, 1);
+    return conditions.get(getCondition(name)).getDuration();
+  }
+  public void reduceCondition(String name, int reduce){
+    conditions.get(getCondition(name)).reduceDuration(reduce);
+  }
+  public boolean hasCondition(String name){
+    for (Condition condition: conditions){
+      if (condition.getName().equals(name)){
+        return true;
+      }
+    }
+    return false;
+  }
+  public int getCondition(String name){
+    if (hasCondition(name)){
+      for (Condition condition: conditions){
+        if (condition.getName().equals(name)){
+          return conditions.indexOf(condition);
+        }
+      }
+    }
+    return -1;
   }
 }
