@@ -28,3 +28,9 @@ This document must be updated daily every time you finish a work session.
 - Changed enemies to target the closest player
 - Implemented the Consumable and HealthPotion classes
 - Changed the way Resources are obtained from Character
+
+### 2025-05-28 - Cleaning Up Development
+- Created an ending message when everyone dies
+- Fixed the implementation of various status effects
+- Sorted out the way damage is dealt
+- Reworked structure to allow for multiple character classes
