@@ -72,21 +72,22 @@ public class Board {
       if (!coordinate.equals(tile.getCoordinate()) && currentTile.hasEntity()) continue;
       
       for (Tile neighbor : currentTile.getNeighbors()) {
-        int distance = current.getFirst() + movementPenalties.get(neighbor.getTerrain());
+        int distance = current.getFirst() + neighbor.getMovementPenalty();
         bfs.add(new Pair<Integer, Tile>(distance, neighbor));
       }
     }
     return output;
   }
+  
   public Player getPlayer(Tile tile) {
     for (Player player : players) {
-      if (player.getPosition().getCoordinate().equals(tile.getCoordinate())) return player;
+      if (player.getPosition().equals(tile)) return player;
     }
     return null;
   }
   public Enemy getEnemy(Tile tile) {
     for (Enemy enemy : enemies) {
-      if (enemy.getPosition().getCoordinate().equals(tile.getCoordinate())) return enemy;
+      if (enemy.getPosition().equals(tile)) return enemy;
     }
     return null;
   }

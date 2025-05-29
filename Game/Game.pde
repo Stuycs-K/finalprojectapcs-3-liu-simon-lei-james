@@ -17,7 +17,6 @@ public static int turn;
 
 public static Tile highlighted;
 
-
 public static void sleep(int time) {
   try {
     Thread.sleep(time);
@@ -78,7 +77,7 @@ void keyPressed() {
     player.endTurn();
   }
   for (Enemy enemy : enemies) {
-    enemy.target(players.get(0));
+    enemy.takeTurn();
     enemy.endTurn();
   }
   turn++;
