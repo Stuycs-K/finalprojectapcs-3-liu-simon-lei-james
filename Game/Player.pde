@@ -12,13 +12,15 @@ public class Player extends Character {
   }
 
   public void mainAttack(Enemy other) {
-    if (weapon == null){
-      other.damage(5); //replace with damage formula once weapons are implemented
+    if (actions.getCurrent().getFirst() >= 2){
+      if (weapon == null){
+        other.damage(5); //replace with damage formula once weapons are implemented
+      }
+      else{
+       weapon.mainAttack(other);
+      }
+       consumeActions(2);
     }
-    else{
-     weapon.mainAttack(other);
-    }
-     consumeActions(2);
   }
   public void secondaryAttack(Enemy other) {
     Random rand = new Random();
