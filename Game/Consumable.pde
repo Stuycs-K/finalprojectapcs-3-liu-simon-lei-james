@@ -13,7 +13,7 @@ abstract class Consumable extends Item {
     return uses.consume(amount);
   }
   protected boolean empty() {
-    return uses.getCurrent().getFirst() == 0;
+    return uses.getCurrent() == 0;
   }
   public Resource getUses() {
     return uses.copy();

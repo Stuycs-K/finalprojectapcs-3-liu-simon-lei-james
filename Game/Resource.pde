@@ -9,8 +9,11 @@ public class Resource {
   public String getName() {
     return name;
   }
-  public Pair<Integer, Integer> getCurrent() {
-    return new Pair<Integer, Integer>(current, max);
+  public int getCurrent() {
+    return current;
+  }
+  public int getMax() {
+    return max;
   }
   public String toString() {
     return current + " / " + max;

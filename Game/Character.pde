@@ -53,8 +53,28 @@ abstract class Character extends Entity {
   }
   
   
-  public boolean damage(int ouch){
-    return health.consume(ouch);
+  public void damage(int ouch){
+    if (!health.consume(ouch) || health.getCurrent() == 0) {
+      actionBar.reset();
+      if (getType().equals("Player")) {
+        players.remove(board.getPlayer(position));
+        position.removeEntity();
+        if (players.size() == 0) {
+          actionBar.write("You Lost!");
+          board.reset();
+          noLoop();
+        }
+      } else {
+        enemies.remove(board.getEnemy(position));
+        position.removeEntity();
+        if (enemies.size() == 0) {
+          actionBar.write("You won!");
+          board.reset();
+          noLoop();
+        }
+      }
+      position.transform("None");
+    }
   }
   protected boolean consumeActions(int amount) {
     return actions.consume(amount);
@@ -93,7 +113,7 @@ abstract class Character extends Entity {
   }
 
   public ArrayList<Tile> movementRange() {
-    return board.tilesInRange(getPosition(), movement.getCurrent().getFirst());
+    return board.tilesInRange(getPosition(), movement.getCurrent());
   }
 
   public void display() {
@@ -112,14 +132,16 @@ abstract class Character extends Entity {
     if (!hasCondition(name)){
       conditions.add(new Condition(name, 3));
     }
-    if (name.equals("poison")){
-      damage(health.getCurrent().getSecond() / 8);
-    }
-    if (name.equals("bleeding")){
-      defense/= 2;
-    }
-    if (name.equals("sleeping")){
+    switch (name) {
+      case "Poison":
+      damage(health.getMax() / 8);
+      break;
+      case "Bleeding":
+      defense /= 2;
+      break;
+      case "Sleeping":
       actions.consume(3);
+      break;
     }
       
     reduceCondition(name, 1);

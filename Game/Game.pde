@@ -71,7 +71,6 @@ void keyPressed() {
     enemy.endTurn();
   }
   turn++;
-  System.out.println(turn);
 }
 
 void mouseClicked() {
@@ -88,6 +87,7 @@ void mouseClicked() {
           tile.transform("Blue");
           if (tile.getEntity().equals("Enemy")) tile.transform("Red");
         }
+        highlighted = clickLocation;
       break;
       case "Tile":
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
@@ -97,6 +97,7 @@ void mouseClicked() {
         break;
       case "Enemy":
         actionBar.display(board.getEnemy(clickLocation));
+        clickLocation.transform("Red");
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
           // Selected player moves to and attacks enemy
           if (board.getPlayer(highlighted).moveTo(clickLocation)) {
@@ -104,7 +105,6 @@ void mouseClicked() {
           }
           highlighted = null;
         } else {
-          clickLocation.transform("Red");
           highlighted = clickLocation;
         }
         break;

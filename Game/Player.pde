@@ -12,7 +12,7 @@ public class Player extends Character {
   }
 
   public void mainAttack(Enemy other) {
-    if (actions.getCurrent().getFirst() >= 2){
+    if (actions.getCurrent() >= 2){
       if (weapon == null){
         other.damage(5); //replace with damage formula once weapons are implemented
       }

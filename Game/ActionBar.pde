@@ -14,16 +14,18 @@ public class ActionBar {
     textLeading(16);
   }
   private void reset() {
+    current = null;
     fill(90, 67, 33, 255);
     rect(topRight.getFirst(), topRight.getSecond(), dimensions.getFirst(), dimensions.getSecond(), 5);
     fill(255);
   }
   public void write(String s) {
+    reset();
     text(s, topRight.getFirst() + FONT_SIZE, topRight.getSecond() + FONT_SIZE, topRight.getFirst() + dimensions.getFirst() - FONT_SIZE * 2, topRight.getSecond() + dimensions.getSecond() - FONT_SIZE * 2);
   }
   public void display(Character character) {
-    current = character;
     reset();
+    current = character;
     text("Health: " + character.getHealth(), topRight.getFirst() + FONT_SIZE, topRight.getSecond() + FONT_SIZE * 2);
     text("Movement: " + character.getMovement(), topRight.getFirst() + FONT_SIZE, topRight.getSecond() + FONT_SIZE * 4);
     // strokeWeight(7);

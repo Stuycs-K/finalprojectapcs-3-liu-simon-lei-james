@@ -13,8 +13,10 @@ public class Enemy extends Character {
         closestPlayer = player;
       }
     }
+    if (closestPlayer == null) return;
 
     LinkedList<Tile> path = getPosition().pathTo(closestPlayer.getPosition());
+    if (path == null) return;
 
     int index = -1;
     Resource movement = getMovement().copy();
@@ -25,16 +27,31 @@ public class Enemy extends Character {
       current = next;
       index++;
     }
-    if (index != -1) moveTo(current);
+    if (index != -1) {
+      moveTo(current);
+      if (current.getEntity().equals("Player")) {
+        mainAttack(board.getPlayer(current));
+        Tile copy = current;
+        int indexCopy = index;
+        Thread thread = new Thread(() -> {
+          for (int i = 0; i <= indexCopy; i++) {
+            int start = TICK;
+            while (TICK == start) sleep(1);
+          }
+          copy.transform("Red");
+          int start = TICK;
+          while (TICK == start) sleep(1);
+          copy.transform("None");
+        });
+        thread.start();
+      }
+    }
   }
-  public void mainAttack(Player me){
-    me.damage(2);
-    System.out.println("player health: " + me.getHealth());
+  public void mainAttack(Player other){
+    other.damage(2);
   }
-  public void secondaryAttack(Player me){
-    Random rand = new Random();
-    int damage = (rand.nextInt(2) - 2) + 2;
-    me.damage(damage);
-    System.out.println("player health: " + me.getHealth());
+  public void secondaryAttack(Player other){
+    int damage = (RANDOM.nextInt(2) - 2) + 2;
+    other.damage(damage);
   }
 }

@@ -1,4 +1,4 @@
-public class Condition{
+public class Condition {
   private String name;
   private int duration;
 
@@ -24,6 +24,6 @@ public class Condition{
   }
 
   public void increaseDuration(int time){ //when would increasing duration be used?
-    duration+= time;
+    duration += time;
   }
 }
