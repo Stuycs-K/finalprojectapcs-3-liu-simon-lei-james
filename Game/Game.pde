@@ -64,11 +64,6 @@ void draw() {
   board.display();
   actionBar.update();
   if (frameCount % GAME_SPEED == 0) TICK++;
-  if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
-    try {
-      updateQueue.remove().display();
-    } catch (NoSuchElementException e) {}
-  }
 }
 
 void keyPressed() {
@@ -86,12 +81,6 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
-  Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
-  String type = clickLocation.getEntity();
-  switch (type) {
-    case "Player":
-      int action = board.getPlayer(clickLocation).getActions().getFirst();
-      if (!(action == 0)){
   // On Board
   if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
@@ -105,28 +94,6 @@ void mouseClicked() {
           if (tile.getEntity().equals("Enemy")) tile.transform("Red");
         }
       break;
-    case "Tile":
-      if (highlighted != null && highlighted.getEntity().equals("Player")) {
-        board.getPlayer(highlighted).moveTo(clickLocation);
-        board.getPlayer(highlighted).consumeActions(3);
-      }
-      break;
-    case "Enemy":
-      if (highlighted != null && highlighted.getEntity().equals("Player")) {
-        if (board.getPlayer(highlighted).moveTo(clickLocation)) {
-          board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
-          int enemyCurrentHealth = board.getEnemy(clickLocation).getHealth().getFirst();
-          if (enemyCurrentHealth <= 0){
-            System.out.println("enemy defeated!");
-            enemies.remove(board.getEnemy(clickLocation));
-            clickLocation.removeEntity();
-          }
-          board.getPlayer(highlighted).consumeActions(3);
-        };
-      }
-      break;
-        highlighted = clickLocation;
-        break;
       case "Tile":
         if (highlighted != null && highlighted.getEntity().equals("Player")) {
           board.getPlayer(highlighted).moveTo(clickLocation); // Selected player goes to tile

@@ -5,6 +5,7 @@ abstract class Character extends Entity {
   protected Resource actions;
   private Tile position;
   private PImage img;
+  private ArrayList<Condition> conditions;
 
   public Character(String name, int maxHealth, int maxMovement, Tile startingPosition, String type) {
     super(type);
@@ -14,6 +15,7 @@ abstract class Character extends Entity {
     movement = new Resource(maxMovement, "Movement");
     health = new Resource(maxHealth, "Health");
     actions = new Resource(3, "Actions");
+    conditions = new ArrayList<Condition>();
   }
 
   public String getName() {
@@ -76,5 +78,44 @@ abstract class Character extends Entity {
   public void display() {
     Coordinate coordinate = getPosition().getCoordinate();
     image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
+  }
+
+  public String getConditions(){
+    String all = "conditions: ";
+    for (Condition condition: conditions){
+      all+= condition.getName() + ", ";
+    }
+    return all;
+  }
+  public int applyCondition(String name){
+    for (Condition condition: conditions){
+      if (condition.getName() == name){
+        //check name of condition and then decide what to do based on condition
+        reduceCondition(name, 1);
+        return condition.getDuration();
+      }
+    }
+    return -1;
+  }
+  public void reduceCondition(String name, int reduce){
+    conditions.get(getCondition(name)).reduceDuration(reduce);
+  }
+  public boolean hasCondition(String name){
+    for (Condition condition: conditions){
+      if (condition.getName().equals(name)){
+        return true;
+      }
+    }
+    return false;
+  }
+  public int getCondition(String name){
+    if (hasCondition(name)){
+      for (Condition condition: conditions){
+        if (condition.getName().equals(name)){
+          return conditions.indexOf(condition);
+        }
+      }
+    }
+    return -1;
   }
 }

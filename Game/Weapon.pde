@@ -3,13 +3,13 @@ public class Weapon extends Item{
   private int durability;
   private int power;
   private String name;
-  
+
   public Weapon(int durability, int power, String name){
+    super(name, "weapon");
     this.durability = durability;
     this.power = power;
-    this.name = name;
   }
-  
+
   public int getDurability(){
     return durability;
   }

@@ -1,3 +1,4 @@
+import java.util.Random;
 public class Enemy extends Character {
   public Enemy(String name, int maxHealth, int maxMovement, Tile startingPosition) {
     super(name, maxHealth, maxMovement, startingPosition, "Enemy");
@@ -24,15 +25,16 @@ public class Enemy extends Character {
       current = next;
       index++;
     }
-    if (index != -1) moveTo(path.get(index));
+    if (index != -1) moveTo(current);
   }
   public void mainAttack(Player me){
     me.damage(2);
-    System.out.println("player health: " + me.getHP());
+    System.out.println("player health: " + me.getHealth());
   }
   public void secondaryAttack(Player me){
-    int damage = (int)(Math.random() * 2 - 2) + 2;
+    Random rand = new Random();
+    int damage = (rand.nextInt(2) - 2) + 2;
     me.damage(damage);
-    System.out.println("player health: " + me.getHP());
+    System.out.println("player health: " + me.getHealth());
   }
 }
