@@ -28,12 +28,7 @@ void setup() {
   background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
   turn = 0;
-
-  players = new ArrayList<Player>();
-  enemies = new ArrayList<Enemy>();
-  for (int i = 0; i < 3; i++) players.add(new Player("lord", 10, 10, board.getRandomTile()));
-  for (int i = 0; i < 3; i++) enemies.add(new Enemy("slime", 10, 10, board.getRandomTile()));
-
+  
   actionBar = new ActionBar();
 
   players = new ArrayList<Player>();

@@ -1,11 +1,13 @@
 abstract class Character extends Entity {
-  private String name;
+  private String name, role;
   private Resource health;
   private Resource movement;
   protected Resource actions;
   private Tile position;
   private PImage img;
   private ArrayList<Condition> conditions;
+  
+  private int strength, speed, defense; //only way to change after initialized is through status conditions.
 
   public Character(String name, int maxHealth, int maxMovement, Tile startingPosition, String type) {
     super(type);
@@ -16,6 +18,12 @@ abstract class Character extends Entity {
     health = new Resource(maxHealth, "Health");
     actions = new Resource(3, "Actions");
     conditions = new ArrayList<Condition>();
+    role = type;
+    if (role.equals("lord")){
+      strength = 7;
+      speed = 5;
+      defense = 5;
+    }
   }
 
   public String getName() {
@@ -27,6 +35,15 @@ abstract class Character extends Entity {
   public Resource getActions() {
     return actions;
   }
+  public int getStrength(){
+    return strength;
+  }
+  public int getSpeed(){
+    return speed;
+  }
+  public int getDefense(){
+    return defense;
+  }
 
   public Resource getMovement() {
     return movement;
@@ -34,6 +51,8 @@ abstract class Character extends Entity {
   public Tile getPosition() {
     return position;
   }
+  
+  
   public boolean damage(int ouch){
     return health.consume(ouch);
   }
@@ -41,8 +60,10 @@ abstract class Character extends Entity {
     return actions.consume(amount);
   }
   public void endTurn() {
-    movement.restore();
-    actions.restore();
+    if (!hasCondition("sleeping")){
+      movement.restore();
+      actions.restore();
+    }
   }
 
   public boolean moveTo(Tile newPosition) {
@@ -88,14 +109,21 @@ abstract class Character extends Entity {
     return all;
   }
   public int applyCondition(String name){
-    for (Condition condition: conditions){
-      if (condition.getName() == name){
-        //check name of condition and then decide what to do based on condition
-        reduceCondition(name, 1);
-        return condition.getDuration();
-      }
+    if (!hasCondition(name)){
+      conditions.add(new Condition(name, 3));
     }
-    return -1;
+    if (name.equals("poison")){
+      damage(health.getCurrent().getSecond() / 8);
+    }
+    if (name.equals("bleeding")){
+      defense/= 2;
+    }
+    if (name.equals("sleeping")){
+      actions.consume(3);
+    }
+      
+    reduceCondition(name, 1);
+    return conditions.get(getCondition(name)).getDuration();
   }
   public void reduceCondition(String name, int reduce){
     conditions.get(getCondition(name)).reduceDuration(reduce);

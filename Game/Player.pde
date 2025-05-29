@@ -8,6 +8,7 @@ public class Player extends Character {
 
   public void giveWeapon(Weapon weapon){
     this.weapon = weapon;
+    weapon.setWielder(this);
   }
 
   public void mainAttack(Enemy other) {
@@ -15,10 +16,9 @@ public class Player extends Character {
       other.damage(5); //replace with damage formula once weapons are implemented
     }
     else{
-     int damage = weapon.mainAttack(this);
-     other.damage(damage);
-     consumeActions(2);
+     weapon.mainAttack(other);
     }
+     consumeActions(2);
   }
   public void secondaryAttack(Enemy other) {
     Random rand = new Random();
