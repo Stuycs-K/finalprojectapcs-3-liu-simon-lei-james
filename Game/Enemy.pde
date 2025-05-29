@@ -30,7 +30,7 @@ public class Enemy extends Character {
     if (index != -1) {
       moveTo(current);
       if (current.getEntity().equals("Player")) {
-        mainAttack(board.getPlayer(current));
+        attack(board.getPlayer(current));
         Tile copy = current;
         int indexCopy = index;
         Thread thread = new Thread(() -> {
@@ -47,11 +47,7 @@ public class Enemy extends Character {
       }
     }
   }
-  public void mainAttack(Player other){
+  public void attack(Player other){
     other.damage(2);
-  }
-  public void secondaryAttack(Player other){
-    int damage = (RANDOM.nextInt(2) - 2) + 2;
-    other.damage(damage);
   }
 }
