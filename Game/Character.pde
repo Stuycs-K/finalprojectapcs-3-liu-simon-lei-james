@@ -1,50 +1,41 @@
 abstract class Character extends Entity {
-  private String name, role;
+  private String name;
+  private String characterClass;
+  
   private Resource health;
   private Resource movement;
-  protected Resource actions;
+  
+  private HashMap<String, Integer> currentStats, defaultStats;
+  
   private Tile position;
   private PImage img;
   private ArrayList<Condition> conditions;
-  
-  private int strength, speed, defense; //only way to change after initialized is through status conditions.
 
-  public Character(String name, int maxHealth, int maxMovement, Tile startingPosition, String type) {
-    super(type);
-    this.name = name;
-    img = loadImage(getName() + ".png");
-    position = startingPosition;
+  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
+    super(characterClass);
+    this.name = "John";
+    this.characterClass = characterClass;
+    this.currentStats = stats;
+    this.defaultStats = stats;
+    
     movement = new Resource(maxMovement, "Movement");
     health = new Resource(maxHealth, "Health");
-    actions = new Resource(3, "Actions");
+    
+    img = loadImage(getName() + ".png");
+    position = startingPosition;
+    
     conditions = new ArrayList<Condition>();
-    role = type;
-    if (role.equals("lord")){
-      strength = 7;
-      speed = 5;
-      defense = 5;
-    }
   }
 
   public String getName() {
     return name;
   }
+  public String getType() {
+    return characterClass;
+  }
   public Resource getHealth() {
     return health;
   }
-  public Resource getActions() {
-    return actions;
-  }
-  public int getStrength(){
-    return strength;
-  }
-  public int getSpeed(){
-    return speed;
-  }
-  public int getDefense(){
-    return defense;
-  }
-
   public Resource getMovement() {
     return movement;
   }
@@ -52,6 +43,9 @@ abstract class Character extends Entity {
     return position;
   }
   
+  public int getStat(String stat) {
+    return currentStats.get(stat);
+  }
   
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
@@ -76,13 +70,20 @@ abstract class Character extends Entity {
       position.transform("None");
     }
   }
-  protected boolean consumeActions(int amount) {
-    return actions.consume(amount);
-  }
+  
   public void endTurn() {
-    if (!hasCondition("sleeping")){
+    if (!hasCondition("Sleeping")) {
       movement.restore();
-      actions.restore();
+    }
+    if (hasCondition("Poison")) {
+      damage(health.getMax() / 8);
+    }
+    for (int i = 0; i < conditions.size(); i++) {
+      conditions.get(i).reduceDuration();
+      if (conditions.get(i).getDuration() == 0) {
+        removeCondition(conditions.get(i).toString());
+        i--;
+      }
     }
   }
 
@@ -120,52 +121,57 @@ abstract class Character extends Entity {
     Coordinate coordinate = getPosition().getCoordinate();
     image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
   }
+  
+  public Condition getCondition(String name) {
+    for (Condition condition : conditions){
+      if (condition.toString().equals(name)){
+        return condition;
+      }
+    }
+    return null;
+  }
 
-  public String getConditions(){
-    String all = "conditions: ";
-    for (Condition condition: conditions){
-      all+= condition.getName() + ", ";
+  public String getConditions() {
+    String all = "Conditions: ";
+    for (Condition condition : conditions){
+      all += condition + ": " + condition.getDuration();
     }
     return all;
   }
-  public int applyCondition(String name){
-    if (!hasCondition(name)){
+  
+  public void removeCondition(String name) {
+    switch (name) {
+      case "Bleeding":
+      currentStats.replace("Defense", defaultStats.get("Defense"));
+    }
+    for (int i = 0; i < conditions.size(); i++) {
+      if (conditions.get(i).toString().equals(name)) {
+        conditions.remove(i);
+        return;
+      }
+    }
+  }
+  
+  public void applyCondition(String name) {
+    if (hasCondition(name)) {
+      getCondition(name).reset();
+    } else {
       conditions.add(new Condition(name, 3));
     }
     switch (name) {
-      case "Poison":
-      damage(health.getMax() / 8);
-      break;
       case "Bleeding":
-      defense /= 2;
-      break;
-      case "Sleeping":
-      actions.consume(3);
+      currentStats.replace("Defense", defaultStats.get("Defense") / 2);
       break;
     }
-      
-    reduceCondition(name, 1);
-    return conditions.get(getCondition(name)).getDuration();
   }
-  public void reduceCondition(String name, int reduce){
-    conditions.get(getCondition(name)).reduceDuration(reduce);
-  }
-  public boolean hasCondition(String name){
+  
+  public boolean hasCondition(String name) {
     for (Condition condition: conditions){
-      if (condition.getName().equals(name)){
+      if (condition.toString().equals(name)){
         return true;
       }
     }
     return false;
   }
-  public int getCondition(String name){
-    if (hasCondition(name)){
-      for (Condition condition: conditions){
-        if (condition.getName().equals(name)){
-          return conditions.indexOf(condition);
-        }
-      }
-    }
-    return -1;
-  }
+
 }

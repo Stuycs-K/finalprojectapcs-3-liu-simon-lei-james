@@ -1,7 +1,6 @@
-import java.util.Random;
 public class Enemy extends Character {
-  public Enemy(String name, int maxHealth, int maxMovement, Tile startingPosition) {
-    super(name, maxHealth, maxMovement, startingPosition, "Enemy");
+  public Enemy(int maxHealth, int maxMovement, Tile startingPosition, String enemyClass, HashMap<String, Integer> stats) {
+    super(maxHealth, maxMovement, startingPosition, enemyClass, stats);
   }
   public void takeTurn() {
     int minDistance = -2;

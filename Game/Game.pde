@@ -9,6 +9,9 @@ public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 public volatile static int TICK = 0;
 
+private static final String[] playerClasses = {"Lord", "Archer", "Barbarian", "Mage", "Rogue"};
+private static final String[] enemyClasses = {"Slime"};
+
 public volatile static Board board;
 public static ActionBar actionBar;
 public static ArrayList<Player> players;
