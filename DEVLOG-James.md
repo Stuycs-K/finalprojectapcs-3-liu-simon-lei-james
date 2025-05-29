@@ -23,3 +23,8 @@ This document must be updated daily every time you finish a work session.
 - Created a basic UI setup to display health and movement
 - Fixed rendering issue with enemies staying at their previous locations
 - Stole a font for use in the UI
+
+### 2025-05-28 - Creating Items
+- Changed enemies to target the closest player
+- Implemented the Consumable and HealthPotion classes
+- Changed the way Resources are obtained from Character

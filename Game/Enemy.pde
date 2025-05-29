@@ -16,7 +16,7 @@ public class Enemy extends Character {
     LinkedList<Tile> path = getPosition().pathTo(closestPlayer.getPosition());
     
     int index = -1;
-    Resource movement = getMovement();
+    Resource movement = getMovement().copy();
     Tile current = null, next;
     while (!path.isEmpty()) {
       next = path.pop();
