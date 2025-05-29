@@ -1,29 +1,22 @@
 public class Condition {
   private String name;
-  private int duration;
+  private Resource duration;
 
   public Condition(String name, int duration){
     this.name = name;
-    this.duration = duration;
+    this.duration = new Resource(duration, "Duration");
   }
 
 
   public String getName(){
     return name;
   }
-  public int getDuration(){
+  public Resource getDuration(){
     return duration;
   }
 
   public boolean reduceDuration(int time){
-    if (duration <= 0){
-      return false;
-    }
-    duration-= time;
-    return true;
+    return duration.consume(time);
   }
 
-  public void increaseDuration(int time){ //when would increasing duration be used?
-    duration += time;
-  }
 }
