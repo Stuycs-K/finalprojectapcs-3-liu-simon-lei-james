@@ -28,7 +28,6 @@ void setup() {
   size(16 * 30, 16 * 20 + 46);
   background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
-<<<<<<< HEAD
   turn = 0;
 
   players = new ArrayList<Player>();
@@ -36,9 +35,8 @@ void setup() {
   for (int i = 0; i < 3; i++) players.add(new Player("lord", 10, 10, board.getRandomTile()));
   for (int i = 0; i < 3; i++) enemies.add(new Enemy("slime", 10, 10, board.getRandomTile()));
 
-=======
   actionBar = new ActionBar();
-  
+
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
   for (int i = 0; i < 3; i++) {
@@ -51,8 +49,7 @@ void setup() {
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
     enemies.add(new Enemy("slime", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
   }
-  
->>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
+
   for (Player player : players) {
     player.getPosition().addEntity(player);
   }
@@ -68,14 +65,11 @@ void draw() {
   board.display();
   actionBar.update();
   if (frameCount % GAME_SPEED == 0) TICK++;
-<<<<<<< HEAD
   if (frameCount % GAME_SPEED != 0 && !updateQueue.isEmpty()) {
     try {
       updateQueue.remove().display();
     } catch (NoSuchElementException e) {}
   }
-=======
->>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
 }
 
 void keyPressed() {
@@ -93,14 +87,12 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
-<<<<<<< HEAD
   Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
   String type = clickLocation.getEntity();
   switch (type) {
     case "Player":
       int action = board.getPlayer(clickLocation).getActions().getFirst();
       if (!(action == 0)){
-=======
   // On Board
   if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
@@ -108,14 +100,11 @@ void mouseClicked() {
     switch (type) {
       case "Player":
         actionBar.display(board.getPlayer(clickLocation));
->>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
         ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
         for (Tile tile : range) {
           tile.transform("Blue");
           if (tile.getEntity().equals("Enemy")) tile.transform("Red");
         }
-<<<<<<< HEAD
-      }
       break;
     case "Tile":
       if (highlighted != null && highlighted.getEntity().equals("Player")) {
@@ -137,7 +126,6 @@ void mouseClicked() {
         };
       }
       break;
-=======
         highlighted = clickLocation;
         break;
       case "Tile":
@@ -161,7 +149,6 @@ void mouseClicked() {
         break;
     }
   } else {
-    
->>>>>>> 7bc6e24219b4b5edd6b80e482098f799f3ff0bd3
+
   }
 }
