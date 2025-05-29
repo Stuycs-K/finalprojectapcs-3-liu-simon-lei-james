@@ -1,6 +1,6 @@
 public class Sword extends Weapon{
   private String type;
-  
+
   public Sword(String type){
     this.type = type;
     if (type.equals("iron")){
