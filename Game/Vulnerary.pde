@@ -4,7 +4,6 @@ public class HealthPotion extends Consumable {
   }
   public boolean use(Character character) {
     character.getHealth().restore(10);
-    consume(1);
-    return empty();
+    return consume();
   }
 }

@@ -21,7 +21,7 @@ abstract class Character extends Entity {
     movement = new Resource(maxMovement, "Movement");
     health = new Resource(maxHealth, "Health");
     
-    img = loadImage(getName() + ".png");
+    img = loadImage(characterClass.toLowerCase() + ".png");
     position = startingPosition;
     
     conditions = new ArrayList<Condition>();

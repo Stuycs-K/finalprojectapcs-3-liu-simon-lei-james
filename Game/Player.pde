@@ -1,13 +1,12 @@
 public class Player extends Character {
   private Weapon weapon;
 
-  public Player(String name, int maxHealth, int maxMovement, Tile startingPosition) {
-    super(name, maxHealth, maxMovement, startingPosition, "Player");
+  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats);
   }
 
   public void giveWeapon(Weapon weapon){
     this.weapon = weapon;
-    weapon.setWielder(this);
   }
 
   public void mainAttack(Enemy other) {
@@ -15,7 +14,7 @@ public class Player extends Character {
       other.damage(5);
     }
     else {
-     weapon.mainAttack(other);
+     weapon.attack(this, other);
     }
   }
 }

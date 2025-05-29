@@ -36,15 +36,20 @@ void setup() {
 
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
+  
+  HashMap<String, Integer> stats = new HashMap<String, Integer>();
+  stats.put("Defense", 1);
+  stats.put("Strength", 1);
+  
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    players.add(new Player("lord", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+    players.add(new Player(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Lord", stats));
   }
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    enemies.add(new Enemy("slime", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+    enemies.add(new Enemy(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Slime", stats));
   }
 
   for (Player player : players) {
@@ -82,6 +87,7 @@ void mouseClicked() {
   if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
     String type = clickLocation.getEntity();
+    System.out.println(type);
     switch (type) {
       case "Player":
         actionBar.display(board.getPlayer(clickLocation));
