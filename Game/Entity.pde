@@ -4,7 +4,6 @@ abstract public class Entity {
   abstract public void display();
   private String type;
   public Entity(String type) {
-    System.out.println(Arrays.asList(playerClasses));
     if (Arrays.asList(playerClasses).contains(type)) {
       this.type = "Player";
     } else if (Arrays.asList(enemyClasses).contains(type)) {
@@ -14,7 +13,6 @@ abstract public class Entity {
     }
   }
   public String getType() {
-    System.out.println("HERE" + type);
     return type;
   }
 }

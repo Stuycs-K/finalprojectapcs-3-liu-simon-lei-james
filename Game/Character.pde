@@ -30,7 +30,7 @@ abstract class Character extends Entity {
   public String getName() {
     return name;
   }
-  public String getType() {
+  public String getCharacterClass() {
     return characterClass;
   }
   public Resource getHealth() {

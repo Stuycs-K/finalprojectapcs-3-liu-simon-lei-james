@@ -87,7 +87,6 @@ void mouseClicked() {
   if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
     String type = clickLocation.getEntity();
-    System.out.println(type);
     switch (type) {
       case "Player":
         actionBar.display(board.getPlayer(clickLocation));

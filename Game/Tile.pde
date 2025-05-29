@@ -18,7 +18,6 @@ public class Tile {
   }
 
   public void display() {
-    if (hasEntity()) hue = "Blue";
     switch (hue) {
     case "Blue":
       tint(0, 125, 250);
