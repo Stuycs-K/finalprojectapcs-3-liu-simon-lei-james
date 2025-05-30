@@ -30,4 +30,10 @@ abstract class Weapon extends Item{
     target.damage(damage);
     reduceDurability(1);
   }
+  
+  public void critical(Character wielder, Character target){
+    int damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense");
+    target.damage(damage);
+    reduceDurability(1);
+  }
 }
