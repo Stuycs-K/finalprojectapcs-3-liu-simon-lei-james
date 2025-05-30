@@ -40,9 +40,8 @@ public class Tile {
   public boolean hasEntity() {
     return entity != null;
   }
-  public String getEntity() {
-    if (!hasEntity()) return "Tile";
-    return entity.getType();
+  public Entity getEntity() {
+    return entity;
   }
   public void removeEntity() {
     entity = null;

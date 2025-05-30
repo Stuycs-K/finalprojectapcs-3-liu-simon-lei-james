@@ -1,5 +1,5 @@
 public class Player extends Character {
-  private ArrayList<String> weaponProficencies;
+  private ArrayList<String> weaponProficiencies;
   private Weapon weapon;
   private ArrayList<Item> inventory;
   
@@ -13,12 +13,13 @@ public class Player extends Character {
   }
   
   public ArrayList<Weapon> getWeapons() {
-    ArrayList<Weapon> output;
+    ArrayList<Weapon> output = new ArrayList<Weapon>();
     for (Item item : inventory) {
       if (item instanceof Weapon) {
         output.add((Weapon) item);
       }
     }
+    return output;
   }
 
   public void equip(Weapon weapon){

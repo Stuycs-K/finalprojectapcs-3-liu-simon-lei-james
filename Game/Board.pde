@@ -79,19 +79,6 @@ public class Board {
     return output;
   }
   
-  public Player getPlayer(Tile tile) {
-    for (Player player : players) {
-      if (player.getPosition().equals(tile)) return player;
-    }
-    return null;
-  }
-  public Enemy getEnemy(Tile tile) {
-    for (Enemy enemy : enemies) {
-      if (enemy.getPosition().equals(tile)) return enemy;
-    }
-    return null;
-  }
-  
   public Tile getRandomTile() {
     return get(new Coordinate(RANDOM.nextInt(COLUMNS), RANDOM.nextInt(ROWS)));
   }

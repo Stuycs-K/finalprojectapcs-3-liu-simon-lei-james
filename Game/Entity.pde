@@ -4,13 +4,13 @@ abstract public class Entity {
   abstract public void display();
   private String type;
   protected Tile position;
-  public Entity(String type, Tile startingPosition) {
-    if (Arrays.asList(playerClasses).contains(type)) {
+  public Entity(Tile startingPosition) {
+    if (this instanceof Player) {
       this.type = "Player";
-    } else if (Arrays.asList(enemyClasses).contains(type)) {
+    } else if (this instanceof Enemy) {
       this.type = "Enemy";
     } else {
-      this.type = type;
+      this.type = "Chest";
     }
     position = startingPosition;
   }

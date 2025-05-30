@@ -46,8 +46,8 @@ abstract class Character extends Entity {
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       actionBar.reset();
-      if (getType().equals("Player")) {
-        players.remove(board.getPlayer(position));
+      if (this instanceof Player) {
+        players.remove((Player) this);
         position.removeEntity();
         if (players.size() == 0) {
           actionBar.write("You Lost!");
@@ -55,10 +55,10 @@ abstract class Character extends Entity {
           noLoop();
         }
       } else {
-        enemies.remove(board.getEnemy(position));
+        enemies.remove((Enemy) this);
         position.removeEntity();
-        if (enemies.size() == 0) {
-          actionBar.write("You won!");
+        if (players.size() == 0) {
+          actionBar.write("You Lost!");
           board.reset();
           noLoop();
         }

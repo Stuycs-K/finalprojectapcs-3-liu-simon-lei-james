@@ -28,8 +28,8 @@ public class Enemy extends Character {
     }
     if (index != -1) {
       moveTo(current);
-      if (current.getEntity().equals("Player")) {
-        attack(board.getPlayer(current));
+      if (current.getEntity() instanceof Player) {
+        attack((Player) current.getEntity());
         Tile copy = current;
         int indexCopy = index;
         Thread thread = new Thread(() -> {
