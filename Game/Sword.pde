@@ -6,7 +6,7 @@ public class Sword extends Weapon{
     super(durability, power, type);
     this.type = type;
   }
-  
+
   public boolean calculateCondition(Character wielder){ //wielder called to see class. If the character is a rogue, then increased chance to inflict any status effect
     Random rand = new Random();
     if (wielder.getCharacterClass().equals("Rogue")){
@@ -14,7 +14,7 @@ public class Sword extends Weapon{
     }
     return rand.nextInt(100) <= 10;
   }
-  
+
   public void attack(Character wielder, Character target){
     super.attack(wielder, target);
     if (type.equals("Brave")){ //Brave weapons attack twice consecutively independently from doubling based on speed.
