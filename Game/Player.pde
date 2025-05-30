@@ -1,15 +1,33 @@
 public class Player extends Character {
+  private ArrayList<String> weaponProficencies;
   private Weapon weapon;
-
-  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
+  private ArrayList<Item> inventory;
+  
+  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
     super(maxHealth, maxMovement, startingPosition, characterClass, stats);
+    this.weaponProficiencies = weaponProficiencies;
+  }
+  
+  public void giveItem(Item item) {
+    inventory.add(item);
+  }
+  
+  public ArrayList<Weapon> getWeapons() {
+    ArrayList<Weapon> output;
+    for (Item item : inventory) {
+      if (item instanceof Weapon) {
+        output.add((Weapon) item);
+      }
+    }
   }
 
-  public void giveWeapon(Weapon weapon){
-    this.weapon = weapon;
+  public void equip(Weapon weapon){
+    if (weaponProficiencies.contains(weapon.getType())) {
+      this.weapon = weapon;
+    }
   }
 
-  public void mainAttack(Enemy other) {
+  public void attack(Enemy other) {
     if (weapon == null){
       other.damage(5);
     }

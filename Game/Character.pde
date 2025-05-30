@@ -7,12 +7,11 @@ abstract class Character extends Entity {
 
   private HashMap<String, Integer> currentStats, defaultStats;
 
-  private Tile position;
   private PImage img;
   private ArrayList<Condition> conditions;
 
   public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
-    super(characterClass);
+    super(characterClass, startingPosition);
     this.name = "John";
     this.characterClass = characterClass;
     this.currentStats = stats;
@@ -39,10 +38,7 @@ abstract class Character extends Entity {
   public Resource getMovement() {
     return movement;
   }
-  public Tile getPosition() {
-    return position;
-  }
-
+  
   public int getStat(String stat) {
     return currentStats.get(stat);
   }
