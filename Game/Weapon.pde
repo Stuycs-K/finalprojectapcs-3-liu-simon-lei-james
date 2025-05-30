@@ -1,12 +1,12 @@
 abstract class Weapon extends Item{
 
-  private Resource durability;
+  private int durability;
   private int power;
   private String name;
 
   public Weapon(int durability, int power, String name){
     super(name, "Weapon");
-    this.durability = new Resource(durability, "Durability");
+    this.durability = durability;
     this.power = power;
   }
 
