@@ -1,23 +1,19 @@
-import java.util.Arrays;
-
 abstract public class Entity {
-  abstract public void display();
-  private String type;
+  private PImage img;
+  
   protected Tile position;
-  public Entity(Tile startingPosition) {
-    if (this instanceof Player) {
-      this.type = "Player";
-    } else if (this instanceof Enemy) {
-      this.type = "Enemy";
-    } else {
-      this.type = "Chest";
-    }
+  
+  public Entity(Tile startingPosition, String imageName) {
     position = startingPosition;
+    img = loadImage(imageName.toLowerCase() + ".png");
   }
+  
   public Tile getPosition() {
     return position;
   }
-  public String getType() {
-    return type;
+  
+  public void display() {
+    Coordinate coordinate = getPosition().getCoordinate();
+    image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
   }
 }

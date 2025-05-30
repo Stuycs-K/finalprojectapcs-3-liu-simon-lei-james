@@ -1,5 +1,6 @@
 public class Player extends Character {
   private ArrayList<String> weaponProficiencies;
+  
   private Weapon weapon;
   private ArrayList<Item> inventory;
   
@@ -28,7 +29,7 @@ public class Player extends Character {
     }
   }
 
-  public void attack(Enemy other) {
+  public void attack(Character other) { // To be made abstract
     if (weapon == null){
       other.damage(5);
     }

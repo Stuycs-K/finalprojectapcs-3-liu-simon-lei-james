@@ -44,7 +44,7 @@ void setup() {
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    players.add(new Player(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Lord", stats));
+    players.add(new Player(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Lord", stats, new ArrayList<String>()));
   }
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
@@ -83,41 +83,30 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
-  // On Board
   if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
-    String type = clickLocation.getEntity();
-    switch (type) {
-      case "Player":
-        actionBar.display(board.getPlayer(clickLocation));
-        ArrayList<Tile> range = board.getPlayer(clickLocation).movementRange();
-        for (Tile tile : range) {
-          tile.transform("Blue");
-          if (tile.getEntity().equals("Enemy")) tile.transform("Red");
-        }
+    Entity entity = clickLocation.getEntity();
+    if (entity == null) {
+      if (highlighted != null && highlighted.getEntity() instanceof Player) {
+        ((Player) highlighted.getEntity()).moveTo(clickLocation);
+        highlighted = null;
+      }
+    } else if (entity instanceof Player) {
+      actionBar.display((Player) entity);
+      ArrayList<Tile> range = ((Player) entity).movementRange();
+      for (Tile tile : range) {
+        tile.transform("Blue");
+        if (tile.getEntity() instanceof Enemy) tile.transform("Red");
+      }
+      highlighted = clickLocation;
+    } else if (entity instanceof Enemy) {
+      actionBar.display((Enemy) entity);
+      if (highlighted != null && highlighted.getEntity() instanceof Player) {
+        ((Player) highlighted.getEntity()).moveTo(clickLocation);
+        highlighted = null;
+      } else {
         highlighted = clickLocation;
-      break;
-      case "Tile":
-        if (highlighted != null && highlighted.getEntity().equals("Player")) {
-          board.getPlayer(highlighted).moveTo(clickLocation); // Selected player goes to tile
-          highlighted = null;
-        }
-        break;
-      case "Enemy":
-        actionBar.display(board.getEnemy(clickLocation));
-        clickLocation.transform("Red");
-        if (highlighted != null && highlighted.getEntity().equals("Player")) {
-          // Selected player moves to and attacks enemy
-          if (board.getPlayer(highlighted).moveTo(clickLocation)) {
-            board.getPlayer(highlighted).mainAttack(board.getEnemy(clickLocation));
-          }
-          highlighted = null;
-        } else {
-          highlighted = clickLocation;
-        }
-        break;
+      }
     }
-  } else {
-
   }
 }

@@ -1,5 +1,4 @@
-abstract class Weapon extends Item{
-
+abstract class Weapon extends Item {
   private int durability;
   private int power;
   private String name;
