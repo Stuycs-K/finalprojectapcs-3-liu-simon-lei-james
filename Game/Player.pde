@@ -3,7 +3,7 @@ public class Player extends Character {
 
   public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
     super(maxHealth, maxMovement, startingPosition, characterClass, stats);
-    
+
   }
 
   public void giveWeapon(Weapon weapon){

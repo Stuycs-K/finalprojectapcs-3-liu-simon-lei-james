@@ -5,7 +5,7 @@ public class Sword extends Weapon{
     super(durability, power, weight, 1, type, "Sword");
     this.type = type;
   }
-  
+
   public String getType(){
     return type;
   }

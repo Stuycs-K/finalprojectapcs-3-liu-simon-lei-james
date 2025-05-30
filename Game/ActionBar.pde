@@ -1,13 +1,13 @@
 public class ActionBar { 
   public Pair<Integer, Integer> topRight; // X, Y
   public Pair<Integer, Integer> dimensions; // Width, Height
-  
+
   public Character current;
-  
+
   public ActionBar() {
     topRight = new Pair<Integer, Integer>(2, height - ACTION_BAR_SIZE + 2);
     dimensions = new Pair<Integer, Integer>(width - 4, ACTION_BAR_SIZE - 4);
-    
+
     reset();
     PFont font = createFont("font.ttf", FONT_SIZE);
     textFont(font);

@@ -41,7 +41,7 @@ void setup() {
   stats.put("Defense", 1);
   stats.put("Strength", 1);
   stats.put("Speed", 1);
-  
+
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
