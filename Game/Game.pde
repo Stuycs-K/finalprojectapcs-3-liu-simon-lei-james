@@ -40,7 +40,8 @@ void setup() {
   HashMap<String, Integer> stats = new HashMap<String, Integer>();
   stats.put("Defense", 1);
   stats.put("Strength", 1);
-
+  stats.put("Speed", 1);
+  
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
@@ -54,6 +55,7 @@ void setup() {
 
   for (Player player : players) {
     player.getPosition().addEntity(player);
+    player.giveWeapon(new Sword(30, 7, 5, "Brave"));
   }
   for (Enemy enemy : enemies) {
     enemy.getPosition().addEntity(enemy);
