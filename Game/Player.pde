@@ -1,30 +1,20 @@
-import java.util.Random;
 public class Player extends Character {
   private Weapon weapon;
 
-  public Player(String name, int maxHealth, int maxMovement, Tile startingPosition) {
-    super(name, maxHealth, maxMovement, startingPosition, "Player");
+  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats);
   }
 
   public void giveWeapon(Weapon weapon){
     this.weapon = weapon;
-    weapon.setWielder(this);
   }
 
   public void mainAttack(Enemy other) {
-    if (actions.getCurrent() >= 2){
-      if (weapon == null){
-        other.damage(5); //replace with damage formula once weapons are implemented
-      }
-      else{
-       weapon.mainAttack(other);
-      }
-       consumeActions(2);
+    if (weapon == null){
+      other.damage(5);
     }
-  }
-  public void secondaryAttack(Enemy other) {
-    Random rand = new Random();
-    int damage = rand.nextInt(5) + 2;
-    other.damage(damage);
+    else {
+     weapon.attack(this, other);
+    }
   }
 }

@@ -10,7 +10,7 @@ abstract class Weapon extends Item{
     this.power = power;
   }
 
-  public Resource getDurability(){
+  public int getDurability(){
     return durability;
   }
   public int getPower(){
@@ -21,8 +21,13 @@ abstract class Weapon extends Item{
   }
 
   public boolean reduceDurability(int tear){
-    return durability.consume(tear);
+    durability -= tear;
+    return durability <= 0;
   }
 
-  abstract void mainAttack(Character weilder, Character target){ //character is a parameter to call its strength stat}
+  public void attack(Character wielder, Character target){ //character is a parameter to call its strength stat
+    int damage = wielder.getStat("Strength") + power - target.getStat("Defense");
+    target.damage(damage);
+    reduceDurability(1);
+  }
 }

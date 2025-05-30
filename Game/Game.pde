@@ -9,6 +9,9 @@ public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 public volatile static int TICK = 0;
 
+private static final String[] playerClasses = {"Lord", "Archer", "Barbarian", "Mage", "Rogue"};
+private static final String[] enemyClasses = {"Slime"};
+
 public volatile static Board board;
 public static ActionBar actionBar;
 public static ArrayList<Player> players;
@@ -28,20 +31,25 @@ void setup() {
   background(92, 160, 72);
   board = new Board(ROWS, COLUMNS);
   turn = 0;
-  
+
   actionBar = new ActionBar();
 
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
+
+  HashMap<String, Integer> stats = new HashMap<String, Integer>();
+  stats.put("Defense", 1);
+  stats.put("Strength", 1);
+
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    players.add(new Player("lord", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+    players.add(new Player(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Lord", stats));
   }
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    enemies.add(new Enemy("slime", RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation));
+    enemies.add(new Enemy(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Slime", stats));
   }
 
   for (Player player : players) {

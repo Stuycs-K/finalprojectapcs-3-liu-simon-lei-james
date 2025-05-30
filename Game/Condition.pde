@@ -7,16 +7,19 @@ public class Condition {
     this.duration = new Resource(duration, "Duration");
   }
 
-
-  public String getName(){
+  public String toString(){
     return name;
   }
-  public Resource getDuration(){
-    return duration;
+
+  public int getDuration(){
+    return duration.getCurrent();
   }
 
-  public boolean reduceDuration(int time){
-    return duration.consume(time);
+  public void reset() {
+    duration.restore();
   }
 
+  public void reduceDuration(){
+    duration.consume(1);
+  }
 }
