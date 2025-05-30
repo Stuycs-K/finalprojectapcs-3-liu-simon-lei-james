@@ -16,3 +16,6 @@ At home, significant progress was made to developing the attack functions, with 
 
 ### 2025-05-28 - implemented stats and conditions
 I started implementation of conditions, creating the class as well as making some basic status conditions like poison and sleep. I plan to add other conditions later, like berserk (units become unable to be controlled for 3 turns and will target both player characters and enemies) or silence (units can't use magic, which will be implemented later). Additionally, stats were also implemented to go with the status conditions, and the mainAttack of player character has been altered accordingly.
+
+### 2025-05-29 - implementation of weapon classes
+I have begun creating the weapon classes. Sword, Axe, and Bow all have a barebones class, and I intend to add more types to them, along with potentially other weapons like lances. For now, accuracy and hit rates will be left for later, once other more essential features are added.
