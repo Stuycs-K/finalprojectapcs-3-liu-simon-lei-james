@@ -4,7 +4,7 @@ public class Lord extends Player{ //note: there can only be one lord, the lord's
     super(maxHealth, 5, startingPosition, "Lord", stats);
     stats.replace("Strength", stats.get("Strength") + 7);
     stats.replace("Speed", stats.get("Speed") + 7);
-    stats.replace("Defense", stats.get("Defense") + 5);
+    stats.replace("Defense", stats.get("Defense") + 5); 
   }
   
 }
