@@ -52,7 +52,6 @@ abstract class Character extends Entity {
         if (players.size() == 0) {
           actionBar.write("You Lost!");
           board.reset();
-          noLoop();
         }
       } else {
         enemies.remove((Enemy) this);

@@ -1,10 +1,12 @@
-public class Lord extends Player{ //note: there can only be one lord, the lord's death is a lose condition. Stats will likely be much greater than other classes as a result
-  
-  public Lord(int maxHealth, Tile startingPosition, HashMap<String, Integer> stats) {
-    super(maxHealth, 5, startingPosition, "Lord", stats);
-    stats.replace("Strength", stats.get("Strength") + 7);
-    stats.replace("Speed", stats.get("Speed") + 7);
-    stats.replace("Defense", stats.get("Defense") + 5);
+import java.util.Arrays;
+
+public class Lord extends Player {
+  // Note: there can only be one lord, the lord's death is a lose condition. Stats will likely be much greater than other classes as a result
+  public Lord(Tile startingPosition) {
+    super(10, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
+      put("Strength", 7);
+      put("Speed", 9);
+      put("Defense", 5);
+    }}, new ArrayList<String>(Arrays.asList("Sword")));
   }
-  
 }

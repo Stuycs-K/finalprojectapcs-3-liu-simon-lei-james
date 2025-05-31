@@ -26,7 +26,7 @@ abstract class Weapon extends Item {
   public int getRange(){
     return maxRange;
   }
-  public String weaponType(){
+  public String getWeaponType(){
     return weaponType;
   }
   public String toString(){

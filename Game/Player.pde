@@ -1,15 +1,15 @@
-public class Player extends Character {
+abstract class Player extends Character {
   private ArrayList<String> weaponProficiencies;
   
   private Weapon weapon;
-  private ArrayList<Item> inventory;
+  private ArrayList<Item> inventory = new ArrayList<Item>();
   
   public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
     super(maxHealth, maxMovement, startingPosition, characterClass, stats);
     this.weaponProficiencies = weaponProficiencies;
   }
   
-  public void giveItem(Item item) {
+  public void give(Item item) {
     inventory.add(item);
   }
   
@@ -23,18 +23,18 @@ public class Player extends Character {
     return output;
   }
 
-  public void equip(Weapon weapon){
-    if (weaponProficiencies.contains(weapon.getType())) {
+  public void equip(Weapon weapon) {
+    if (weaponProficiencies.contains(weapon.getWeaponType())) {
       this.weapon = weapon;
     }
   }
 
-  public void attack(Character other) { // To be made abstract
+  public void attack(Character other) {
     if (weapon == null){
       other.damage(5);
     }
     else {
-     weapon.attack(this, other);
+      weapon.attack(this, other);
     }
   }
 }

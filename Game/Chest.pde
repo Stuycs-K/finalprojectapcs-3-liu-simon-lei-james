@@ -3,11 +3,11 @@ public class Chest extends Entity {
   
   public Chest(Tile startingPosition) {
     super(startingPosition, "Chest");
-    content = new Sword(40, 5, "Iron"); 
+    content = new Sword(40, 5, 6, "Iron"); 
   }
   
   public void collect(Player player) {
-    player.giveItem(content);
+    player.give(content);
     position.removeEntity();
   }
 }

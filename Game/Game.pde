@@ -47,7 +47,7 @@ void setup() {
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    players.add(new Player(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Lord", stats, new ArrayList<String>()));
+    players.add(new Lord(spawnLocation));
   }
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
@@ -57,7 +57,9 @@ void setup() {
 
   for (Player player : players) {
     player.getPosition().addEntity(player);
-    player.giveWeapon(new Sword(30, 7, 5, "Brave"));
+    Weapon sword = new Sword(30, 7, 5, "Brave");
+    player.give(sword);
+    player.equip(sword);
   }
   for (Enemy enemy : enemies) {
     enemy.getPosition().addEntity(enemy);
@@ -96,6 +98,7 @@ void mouseClicked() {
         ((Player) highlighted.getEntity()).moveTo(clickLocation);
         highlighted = null;
       }
+      actionBar.reset();
     } else if (entity instanceof Player) {
       actionBar.display((Player) entity);
       ArrayList<Tile> range = ((Player) entity).movementRange();
@@ -111,6 +114,7 @@ void mouseClicked() {
         highlighted = null;
       } else {
         highlighted = clickLocation;
+        highlighted.transform("Red");
       }
     }
   }

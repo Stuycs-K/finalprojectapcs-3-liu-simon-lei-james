@@ -1,4 +1,4 @@
-public class Sword extends Weapon{
+public class Sword extends Weapon {
   private String type; //intended types for now: Iron: 40 durability, 5 power; Silver: 20 durability, 10 power; Brave: 30 durability, 7 power, special ability to attack twice
 
   public Sword(int durability, int power, int weight, String type){
