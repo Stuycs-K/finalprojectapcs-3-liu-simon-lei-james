@@ -1,24 +1,26 @@
 import java.util.Random;
 import java.util.NoSuchElementException;
 
-public static final int FONT_SIZE = 8;
-public static final int ACTION_BAR_SIZE = FONT_SIZE * 6 - 2;
-public static final int COLUMNS = 30, ROWS = 20;
-public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
-public volatile static int TICK = 0;
 
-private static final String[] playerClasses = {"Lord", "Archer", "Barbarian", "Mage", "Rogue"};
-private static final String[] enemyClasses = {"Slime"};
+public static final int FONT_SIZE = 8;
+public static final int ACTION_BAR_SIZE = FONT_SIZE * 6 - 2;
 
-public volatile static Board board;
+public static final int COLUMNS = 30, ROWS = 20;
+public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
+
+private static final String[] PLAYER_CLASSES = {"Lord", "Archer", "Barbarian", "Mage", "Rogue"};
+private static final String[] ENEMY_CLASSES = {"Slime"};
+
+public volatile static int tick = 0;
+private static int turn = 0;
+private static Tile highlighted;
+
+public static Board board;
 public static ActionBar actionBar;
 public static ArrayList<Player> players;
 public static ArrayList<Enemy> enemies;
-public static int turn;
-
-public static Tile highlighted;
 
 public static void sleep(int time) {
   try {
@@ -29,14 +31,14 @@ public static void sleep(int time) {
 void setup() {
   size(16 * 30, 16 * 20 + 46);
   background(92, 160, 72);
+  
   board = new Board(ROWS, COLUMNS);
-  turn = 0;
-
   actionBar = new ActionBar();
 
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
 
+  // CHANGE - Add to character subclasses
   HashMap<String, Integer> stats = new HashMap<String, Integer>();
   stats.put("Defense", 1);
   stats.put("Strength", 1);
@@ -66,9 +68,10 @@ void setup() {
 void draw() {
   board.display();
   actionBar.update();
-  if (frameCount % GAME_SPEED == 0) TICK++;
+  if (frameCount % GAME_SPEED == 0) tick++;
 }
 
+// CHANGE - Replace with an end turn button
 void keyPressed() {
   board.reset();
   for (Player player : players) {

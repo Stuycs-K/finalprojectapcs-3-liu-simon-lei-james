@@ -2,7 +2,7 @@ public class ActionBar {
   public Pair<Integer, Integer> topRight; // X, Y
   public Pair<Integer, Integer> dimensions; // Width, Height
   
-  public Character current;
+  public Character highlighted;
   
   public ActionBar() {
     topRight = new Pair<Integer, Integer>(2, height - ACTION_BAR_SIZE + 2);
@@ -14,7 +14,7 @@ public class ActionBar {
     textLeading(16);
   }
   private void reset() {
-    current = null;
+    highlighted = null;
     fill(90, 67, 33, 255);
     rect(topRight.getFirst(), topRight.getSecond(), dimensions.getFirst(), dimensions.getSecond(), 5);
     fill(255);
@@ -25,15 +25,15 @@ public class ActionBar {
   }
   public void display(Character character) {
     reset();
-    current = character;
+    highlighted = character;
     text("Health: " + character.getHealth(), topRight.getFirst() + FONT_SIZE, topRight.getSecond() + FONT_SIZE * 2);
     text("Movement: " + character.getMovement(), topRight.getFirst() + FONT_SIZE, topRight.getSecond() + FONT_SIZE * 4);
     // strokeWeight(7);
     // line(topRight.getFirst() + 10, topRight.getSecond() + 10, topRight.getFirst() + 110, topRight.getSecond() + 10);
   }
   public void update() {
-    if (current != null) {
-      display(current);
+    if (highlighted != null) {
+      display(highlighted);
     }
   }
 }
