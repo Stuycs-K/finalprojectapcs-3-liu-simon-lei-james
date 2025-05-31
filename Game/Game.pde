@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.NoSuchElementException;
 
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
@@ -38,31 +37,19 @@ void setup() {
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
 
-  // CHANGE - Add to character subclasses
-  HashMap<String, Integer> stats = new HashMap<String, Integer>();
-  stats.put("Defense", 1);
-  stats.put("Strength", 1);
-  stats.put("Speed", 1);
-
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    players.add(new Lord(spawnLocation));
+    Player player = new Lord(spawnLocation);
+    players.add(player);
+    spawnLocation.addEntity(player);
   }
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    enemies.add(new Enemy(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Slime", stats));
-  }
-
-  for (Player player : players) {
-    player.getPosition().addEntity(player);
-    Weapon sword = new Sword(30, 7, 5, "Brave");
-    player.give(sword);
-    player.equip(sword);
-  }
-  for (Enemy enemy : enemies) {
-    enemy.getPosition().addEntity(enemy);
+    Enemy enemy = new Slime(spawnLocation);
+    enemies.add(enemy);
+    spawnLocation.addEntity(enemy);
   }
 
   board.display();
@@ -86,21 +73,35 @@ void keyPressed() {
     enemy.endTurn();
   }
   turn++;
+  actionBar.write("Turn " + turn);
 }
 
 void mouseClicked() {
   board.reset();
   if (mouseY < height - ACTION_BAR_SIZE) {
     Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
+    if (mouseButton == RIGHT) { // Clear Highlight
+      if (highlighted != null) highlighted.transform("None");
+      highlighted = null;
+      actionBar.removeHighlighted();
+      return;
+    }
     Entity entity = clickLocation.getEntity();
     if (entity == null) {
       if (highlighted != null && highlighted.getEntity() instanceof Player) {
-        ((Player) highlighted.getEntity()).moveTo(clickLocation);
+        if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
+          clickLocation.transform("Blue");
+          actionBar.focus(clickLocation);
+        } else {
+          actionBar.removeHighlighted();
+        }
         highlighted = null;
+      } else {
+        clickLocation.transform("Blue");
+        actionBar.focus(clickLocation);
       }
-      actionBar.reset();
     } else if (entity instanceof Player) {
-      actionBar.display((Player) entity);
+      actionBar.focus(clickLocation);
       ArrayList<Tile> range = ((Player) entity).movementRange();
       for (Tile tile : range) {
         tile.transform("Blue");
@@ -108,9 +109,12 @@ void mouseClicked() {
       }
       highlighted = clickLocation;
     } else if (entity instanceof Enemy) {
-      actionBar.display((Enemy) entity);
+      actionBar.focus(clickLocation);
       if (highlighted != null && highlighted.getEntity() instanceof Player) {
-        ((Player) highlighted.getEntity()).moveTo(clickLocation);
+        if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
+          clickLocation.transform("Red");
+          actionBar.focus(clickLocation);
+        }
         highlighted = null;
       } else {
         highlighted = clickLocation;

@@ -45,7 +45,7 @@ abstract class Character extends Entity {
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       sleep(10);
-      actionBar.reset();
+      actionBar.write(getCharacterClass() + " " + getName() + " died!");
       if (this instanceof Player) {
         players.remove((Player) this);
         position.removeEntity();
