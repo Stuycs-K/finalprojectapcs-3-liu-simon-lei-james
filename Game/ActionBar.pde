@@ -7,7 +7,7 @@ public class ActionBar {
   public ActionBar() {
     topRight = new Pair<Integer, Integer>(2, height - ACTION_BAR_SIZE + 2);
     dimensions = new Pair<Integer, Integer>(width - 4, ACTION_BAR_SIZE - 4);
-    
+
     reset();
     PFont font = createFont("font.ttf", FONT_SIZE);
     textFont(font);
