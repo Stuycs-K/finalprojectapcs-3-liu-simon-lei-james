@@ -58,9 +58,8 @@ abstract class Character extends Entity {
         enemies.remove((Enemy) this);
         position.removeEntity();
         if (enemies.size() == 0) {
-          actionBar.write("You Lost!");
+          actionBar.write("You Won!");
           board.reset();
-          noLoop();
         }
       }
       position.transform("None");
@@ -105,8 +104,8 @@ abstract class Character extends Entity {
     boolean copy = action;
     Thread newThread = new Thread(() -> {
       while (!path.isEmpty()) {
-        int start = TICK;
-        while (TICK == start) sleep(1);
+        int start = tick;
+        while (tick == start) sleep(1);
         position.removeEntity();
         Tile tile = path.pop();
         position = tile;
@@ -116,8 +115,8 @@ abstract class Character extends Entity {
         if (newPosition.getEntity() instanceof Character) {
           attack((Character) newPosition.getEntity());
           newPosition.transform("Red");
-          int start = TICK;
-          while (TICK == start) sleep(1);
+          int start = tick;
+          while (tick == start) sleep(1);
           newPosition.transform("None");
         }
       }
