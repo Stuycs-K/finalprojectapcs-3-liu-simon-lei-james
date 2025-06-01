@@ -29,8 +29,14 @@ This document must be updated daily every time you finish a work session.
 - Implemented the Consumable and HealthPotion classes
 - Changed the way Resources are obtained from Character
 
-### 2025-05-28 - Cleaning Up Development
+### 2025-05-29 - Cleaning Up Development
 - Created an ending message when everyone dies
 - Fixed the implementation of various status effects
 - Sorted out the way damage is dealt
 - Reworked structure to allow for multiple character classes
+
+### 2025-05-30 - More UI Work / Items
+- Implemented chests that can store items for players
+- Changed Enemy to abstract and prepared templates for character subclasses
+- Added random spawning system for testing
+- Added additional messages for turns and deaths

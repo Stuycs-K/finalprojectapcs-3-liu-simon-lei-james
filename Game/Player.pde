@@ -13,11 +13,11 @@ abstract class Player extends Character {
     inventory.add(item);
   }
 
-  public ArrayList<Weapon> getWeapons() {
-    ArrayList<Weapon> output = new ArrayList<Weapon>();
+  public ArrayList<Item> getInventory(String type) {
+    ArrayList<Item> output = new ArrayList<Item>();
     for (Item item : inventory) {
-      if (item instanceof Weapon) {
-        output.add((Weapon) item);
+      if (item.getType().equals(type)) {
+        output.add(item);
       }
     }
     return output;
@@ -27,6 +27,11 @@ abstract class Player extends Character {
     if (weaponProficiencies.contains(weapon.getWeaponClass())) {
       this.weapon = weapon;
     }
+  }
+
+  public String getWeapon() {
+    if (weapon == null) return "No Weapon";
+    return weapon.toString();
   }
 
   public void attack(Character other) {

@@ -8,6 +8,7 @@ public class Chest extends Entity {
 
   public void collect(Player player) {
     player.give(content);
+    actionBar.write(player.getCharacterClass() + " " + player.getName() + " recieved one " + content);
     position.removeEntity();
   }
 }

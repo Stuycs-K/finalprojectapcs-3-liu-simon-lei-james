@@ -45,7 +45,7 @@ abstract class Character extends Entity {
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       sleep(10);
-      actionBar.reset();
+      actionBar.write(getCharacterClass() + " " + getName() + " died!");
       if (this instanceof Player) {
         players.remove((Player) this);
         position.removeEntity();
@@ -113,6 +113,13 @@ abstract class Character extends Entity {
       if (copy) {
         if (newPosition.getEntity() instanceof Character) {
           attack((Character) newPosition.getEntity());
+          newPosition.transform("Red");
+          int start = tick;
+          while (tick == start) sleep(1);
+          newPosition.transform("None");
+        }
+        if (newPosition.getEntity() instanceof Chest) {
+          ((Chest) newPosition.getEntity()).collect((Player) this);
           newPosition.transform("Red");
           int start = tick;
           while (tick == start) sleep(1);

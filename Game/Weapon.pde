@@ -4,13 +4,15 @@ abstract class Weapon extends Item {
   private int weight;
   private int maxRange;
   private String weaponClass;
+  private String material;
 
-  public Weapon(int durability, int power, int weight, int maxRange, String name, String weaponClass){
-    super(name, "Weapon");
+  public Weapon(int durability, int power, int weight, int maxRange, String material, String weaponClass){
+    super(material + " " + weaponClass, "Weapon");
     this.durability = durability;
     this.power = power;
     this.weight = weight;
     this.maxRange = maxRange;
+    this.material = material;
     this.weaponClass = weaponClass;
   }
 
@@ -29,8 +31,8 @@ abstract class Weapon extends Item {
   public String getWeaponClass(){
     return weaponClass;
   }
-  public String toString(){
-    return name;
+  public String getMaterial() {
+    return material;
   }
 
   public boolean reduceDurability(int tear){
@@ -61,8 +63,8 @@ abstract class Weapon extends Item {
     }
   }
 
-  public void critical(Character wielder, Character target){ 
-    int damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense"); /* this is the fe4/fe5 implementation. Criticals are more effective against units 
+  public void critical(Character wielder, Character target){
+    int damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense"); /* this is the fe4/fe5 implementation. Criticals are more effective against units
                                                                                              with high defense and less effective against units with low defense when compared
                                                                                              with the more conventional critical system used in other games (a simple 3x damage) */
     target.damage(damage);

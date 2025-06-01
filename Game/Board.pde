@@ -2,7 +2,7 @@ import java.util.Queue;
 import java.util.LinkedList;
 
 public class Board {
-  private final String[] TERRAINS = {"plains", "forest", "hills"};
+  private final String[] TERRAINS = {"Plains", "Forest", "Hills"};
 
   private HashMap<String, PImage> images = new HashMap<String, PImage>();
   private HashMap<String, Integer> movementPenalties = new HashMap<String, Integer>();
@@ -11,11 +11,11 @@ public class Board {
 
   private void initializeConstants() {
     for (String terrain : TERRAINS) {
-      images.put(terrain, loadImage(terrain + ".png"));
+      images.put(terrain, loadImage(terrain.toLowerCase() + ".png"));
     }
-    movementPenalties.put("plains", 1);
-    movementPenalties.put("forest", 2);
-    movementPenalties.put("hills", 2);
+    movementPenalties.put("Plains", 1);
+    movementPenalties.put("Forest", 2);
+    movementPenalties.put("Hills", 2);
   }
 
   public Board(int rows, int cols) {
