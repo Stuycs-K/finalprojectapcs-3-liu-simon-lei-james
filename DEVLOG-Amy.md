@@ -22,3 +22,6 @@ I have begun creating the weapon classes. Sword, Axe, and Bow all have a barebon
 
 ### 2025-05-30 - beginning implementation of character subclasses and magic
 Character subclasses are now being created, Lord being the first. My intended implementation is for the program to pass a HashMap of generated stats into the function, then adding a base stat to each stat. Along with minor tweaks to other areas in the code, I am also starting to add magic to the game. Magic will act similarly to weapons, however damage will be calculated through the wielder's magic stat and the target's resistance stat rather than strength and defense. This will inevitably make magic hit harder than regular attacks since resistance will be lower than defense on all units except Mages, so measures will be taken to make sure Mages are properly balanced, like giving them worse movement or much worse physical bulk.
+
+### 2025-05-31 - finished implementation of character subclasses and sprites
+I have completed the subclasses for every character class, having given each unique stats, and made minor adjustments to some files to match proper syntax and the updated uml diagram. Additionally, i have added a sprite for each of the new classes.
