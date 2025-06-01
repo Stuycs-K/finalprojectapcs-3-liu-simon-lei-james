@@ -1,11 +1,13 @@
 public class Resource {
   private int current, max;
   private String name;
+
   public Resource(int max, String name) {
     this.max = max;
     this.name = name;
     current = max;
   }
+
   public String getName() {
     return name;
   }
@@ -15,9 +17,11 @@ public class Resource {
   public int getMax() {
     return max;
   }
+
   public String toString() {
     return current + " / " + max;
   }
+
   public void restore() {
     current = max;
   }
@@ -29,6 +33,7 @@ public class Resource {
     current -= amount;
     return true;
   }
+
   public Resource copy() {
     Resource output = new Resource(max, name);
     output.consume(max - current);

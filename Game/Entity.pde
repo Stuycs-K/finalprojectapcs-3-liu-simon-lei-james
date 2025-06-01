@@ -1,18 +1,19 @@
-import java.util.Arrays;
-
 abstract public class Entity {
-  abstract public void display();
-  private String type;
-  public Entity(String type) {
-    if (Arrays.asList(playerClasses).contains(type)) {
-      this.type = "Player";
-    } else if (Arrays.asList(enemyClasses).contains(type)) {
-      this.type = "Enemy";
-    } else {
-      this.type = type;
-    }
+  private PImage img;
+
+  protected Tile position;
+
+  public Entity(Tile startingPosition, String imageName) {
+    position = startingPosition;
+    img = loadImage(imageName.toLowerCase() + ".png");
   }
-  public String getType() {
-    return type;
+
+  public Tile getPosition() {
+    return position;
+  }
+
+  public void display() {
+    Coordinate coordinate = getPosition().getCoordinate();
+    image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
   }
 }

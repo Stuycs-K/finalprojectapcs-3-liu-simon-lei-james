@@ -2,6 +2,7 @@ public class Enemy extends Character {
   public Enemy(int maxHealth, int maxMovement, Tile startingPosition, String enemyClass, HashMap<String, Integer> stats) {
     super(maxHealth, maxMovement, startingPosition, enemyClass, stats);
   }
+
   public void takeTurn() {
     int minDistance = -2;
     Player closestPlayer = null;
@@ -28,25 +29,10 @@ public class Enemy extends Character {
     }
     if (index != -1) {
       moveTo(current);
-      if (current.getEntity().equals("Player")) {
-        attack(board.getPlayer(current));
-        Tile copy = current;
-        int indexCopy = index;
-        Thread thread = new Thread(() -> {
-          for (int i = 0; i <= indexCopy; i++) {
-            int start = TICK;
-            while (TICK == start) sleep(1);
-          }
-          copy.transform("Red");
-          int start = TICK;
-          while (TICK == start) sleep(1);
-          copy.transform("None");
-        });
-        thread.start();
-      }
     }
   }
-  public void attack(Player other){
+
+  public void attack(Character other) { // To be made abstract
     other.damage(2);
   }
 }

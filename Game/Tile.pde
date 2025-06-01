@@ -31,7 +31,7 @@ public class Tile {
     noTint();
     if (hasEntity()) entity.display();
   }
-  
+
   public void transform(String newColor) {
     hue = newColor;
     display();
@@ -40,9 +40,8 @@ public class Tile {
   public boolean hasEntity() {
     return entity != null;
   }
-  public String getEntity() {
-    if (!hasEntity()) return "Tile";
-    return entity.getType();
+  public Entity getEntity() {
+    return entity;
   }
   public void removeEntity() {
     entity = null;
@@ -128,11 +127,11 @@ public class Tile {
     }
     return output;
   }
-  
+
   public int getMovementPenalty() {
     return board.movementPenalties.get(terrain);
   }
-  
+
   public boolean equals(Tile other) {
     return coordinate.equals(other.getCoordinate());
   }

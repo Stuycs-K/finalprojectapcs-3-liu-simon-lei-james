@@ -7,21 +7,20 @@ abstract class Character extends Entity {
 
   private HashMap<String, Integer> currentStats, defaultStats;
 
-  private Tile position;
-  private PImage img;
   private ArrayList<Condition> conditions;
 
   public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
-    super(characterClass);
+    super(startingPosition, characterClass);
+
     this.name = "John";
     this.characterClass = characterClass;
+
     this.currentStats = stats;
     this.defaultStats = stats;
 
     movement = new Resource(maxMovement, "Movement");
     health = new Resource(maxHealth, "Health");
 
-    img = loadImage(characterClass.toLowerCase() + ".png");
     position = startingPosition;
 
     conditions = new ArrayList<Condition>();
@@ -39,37 +38,34 @@ abstract class Character extends Entity {
   public Resource getMovement() {
     return movement;
   }
-  public Tile getPosition() {
-    return position;
-  }
-
   public int getStat(String stat) {
     return currentStats.get(stat);
   }
 
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
+      sleep(10);
       actionBar.reset();
-      if (getType().equals("Player")) {
-        players.remove(board.getPlayer(position));
+      if (this instanceof Player) {
+        players.remove((Player) this);
         position.removeEntity();
         if (players.size() == 0) {
           actionBar.write("You Lost!");
           board.reset();
-          noLoop();
         }
       } else {
-        enemies.remove(board.getEnemy(position));
+        enemies.remove((Enemy) this);
         position.removeEntity();
         if (enemies.size() == 0) {
-          actionBar.write("You won!");
+          actionBar.write("You Won!");
           board.reset();
-          noLoop();
         }
       }
       position.transform("None");
     }
   }
+
+  abstract void attack(Character target);
 
   public void endTurn() {
     if (!hasCondition("Sleeping")) {
@@ -92,21 +88,36 @@ abstract class Character extends Entity {
     if (distance == -1) return false;
     if (!movement.consume(distance)) return false;
 
+    boolean action = false;
+
     LinkedList<Tile> path = position.pathTo(newPosition);
-    if (newPosition.hasEntity()) path.removeLast();
+    if (newPosition.hasEntity()) {
+      action = true;
+      path.removeLast();
+    }
     if (path.size() > 0) {
       position.removeEntity();
       path.peekLast().addEntity(this);
     }
 
+    boolean copy = action;
     Thread newThread = new Thread(() -> {
       while (!path.isEmpty()) {
-        int start = TICK;
-        while (TICK == start) sleep(1);
+        int start = tick;
+        while (tick == start) sleep(1);
         position.removeEntity();
         Tile tile = path.pop();
         position = tile;
         position.addEntity(this);
+      }
+      if (copy) {
+        if (newPosition.getEntity() instanceof Character) {
+          attack((Character) newPosition.getEntity());
+          newPosition.transform("Red");
+          int start = tick;
+          while (tick == start) sleep(1);
+          newPosition.transform("None");
+        }
       }
     });
     newThread.start();
@@ -115,11 +126,6 @@ abstract class Character extends Entity {
 
   public ArrayList<Tile> movementRange() {
     return board.tilesInRange(getPosition(), movement.getCurrent());
-  }
-
-  public void display() {
-    Coordinate coordinate = getPosition().getCoordinate();
-    image(img, Tile.WIDTH * coordinate.getX(), Tile.HEIGHT * coordinate.getY(), Tile.HEIGHT, Tile.WIDTH);
   }
 
   public Condition getCondition(String name) {
@@ -173,5 +179,4 @@ abstract class Character extends Entity {
     }
     return false;
   }
-
 }
