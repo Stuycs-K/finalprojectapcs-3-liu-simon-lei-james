@@ -44,15 +44,26 @@ void setup() {
   stats.put("Strength", 1);
   stats.put("Speed", 1);
 
+   Tile spawnLocation = board.getRandomTile();
+   while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+   players.add(new Lord(spawnLocation));
+   Tile spawnLocation1 = board.getRandomTile();
+   while (spawnLocation1.hasEntity()) spawnLocation1 = board.getRandomTile();
+   players.add(new Thief(spawnLocation1));
+   Tile spawnLocation2 = board.getRandomTile();
+   while (spawnLocation2.hasEntity()) spawnLocation2 = board.getRandomTile();
+   players.add(new Mage(spawnLocation2));
+   Tile spawnLocation3 = board.getRandomTile();
+   while (spawnLocation3.hasEntity()) spawnLocation3 = board.getRandomTile();
+   players.add(new Archer(spawnLocation3));
+   Tile spawnLocation4 = board.getRandomTile();
+   while (spawnLocation4.hasEntity()) spawnLocation4 = board.getRandomTile();
+   players.add(new Barbarian(spawnLocation4));
+
   for (int i = 0; i < 3; i++) {
-    Tile spawnLocation = board.getRandomTile();
-    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    players.add(new Lord(spawnLocation));
-  }
-  for (int i = 0; i < 3; i++) {
-    Tile spawnLocation = board.getRandomTile();
-    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    enemies.add(new Enemy(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation, "Slime", stats));
+    Tile spawnLocation5 = board.getRandomTile();
+    while (spawnLocation5.hasEntity()) spawnLocation5 = board.getRandomTile();
+    enemies.add(new Enemy(RANDOM.nextInt(10) + 5, RANDOM.nextInt(10) + 5, spawnLocation5, "Slime", stats));
   }
 
   for (Player player : players) {
