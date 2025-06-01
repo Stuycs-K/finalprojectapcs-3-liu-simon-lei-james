@@ -2,7 +2,6 @@ public class Bow extends Weapon{
   //intended types for now: Iron: 40 durability, 5 power; Silver: 20 durability, 8 power; Sleep: 20 durability, 3 power, can put people to sleep
   public Bow(int durability, int power, int weight, String material){
     super(durability, power, weight, 2, material, "Bow");
-    this.type = type;
   }
   
   public void attack(Character wielder, Character target){

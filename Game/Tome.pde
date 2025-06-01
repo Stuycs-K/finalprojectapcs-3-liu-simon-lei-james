@@ -7,7 +7,6 @@ public class Tome extends Weapon{
     are instances in Fire Emblem where ice magic puts enemies to sleep */
   public Tome(int durability, int power, int weight, String material){
     super(durability, power, weight, 2, material, "Tome");
-    this.type = type;
   }
 
   public void attack(Character wielder, Character target){
@@ -20,10 +19,10 @@ public class Tome extends Weapon{
       }
     }
     super.attack(wielder, target);
-    if (getType().equals("Thunder")){
+    if (getMaterial().equals("Thunder")){
       super.attack(wielder, target);
     }
-    if (getType().equals("Blizzard")){
+    if (getMaterial().equals("Blizzard")){
       target.applyCondition("Sleeping");
     }
   }

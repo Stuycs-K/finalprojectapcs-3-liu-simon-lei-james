@@ -1,5 +1,5 @@
-public class Thief extends Player{
-    public Thief(Tile startingPosition) {
+public class Thief extends Player {
+  public Thief(Tile startingPosition) {
     super(8, 7, startingPosition, "Thief", new HashMap<String, Integer>() {{
       put("Strength", 3);
       put("Speed", 12);
@@ -7,6 +7,9 @@ public class Thief extends Player{
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Sword")));
+    Weapon sword = new Sword(40, 5, 1, "Iron");
+    give(sword);
+    equip(sword);
   }
-  
+
 }

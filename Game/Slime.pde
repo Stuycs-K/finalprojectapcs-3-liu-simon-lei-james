@@ -4,6 +4,8 @@ public class Slime extends Enemy {
       put("Strength", 7);
       put("Speed", 9);
       put("Defense", 5);
+      put("Magic", 0);
+      put("Resistance", 0);
     }});
   }
   public void attack(Character target) {

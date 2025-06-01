@@ -8,6 +8,9 @@ public class Mage extends Player{
       put("Magic", 8);
       put("Resistance", 5);
     }}, new ArrayList<String>(Arrays.asList("Tome")));
+    Weapon tome = new Tome(40, 3, 1, "Fireball");
+    give(tome);
+    equip(tome);
   }
   
 }

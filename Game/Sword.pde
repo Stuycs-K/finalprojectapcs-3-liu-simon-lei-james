@@ -6,7 +6,7 @@ public class Sword extends Weapon {
   }
 
   public boolean calculateCondition(Character wielder){ //wielder called to see class. If the character is a rogue, then increased chance to inflict any status effect
-    if (wielder.getCharacterClass().equals("Rogue")){
+    if (wielder.getCharacterClass().equals("Thief")){
       return RANDOM.nextInt(100) <= 20;
     }
     return RANDOM.nextInt(100) <= 10;
