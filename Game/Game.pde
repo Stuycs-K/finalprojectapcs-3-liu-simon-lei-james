@@ -1,16 +1,17 @@
 import java.util.Random;
+import java.util.List;
 
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 
 public static final int FONT_SIZE = 8;
-public static final int ACTION_BAR_SIZE = FONT_SIZE * 6 - 2;
+public static final int ACTION_BAR_SIZE = FONT_SIZE * 6;
 
 public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
 
-private static final String[] PLAYER_CLASSES = {"Lord", "Archer", "Barbarian", "Mage", "Rogue"};
-private static final String[] ENEMY_CLASSES = {"Slime"};
+private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
+private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arrays.asList("Slime"));
 
 public volatile static int tick = 0;
 private static int turn = 0;
@@ -28,7 +29,7 @@ public static void sleep(int time) {
 }
 
 void setup() {
-  size(16 * 30, 16 * 20 + 46);
+  size(16 * 30, 16 * 20 + 48);
   background(92, 160, 72);
   
   board = new Board(ROWS, COLUMNS);
@@ -43,10 +44,28 @@ void setup() {
   stats.put("Strength", 1);
   stats.put("Speed", 1);
 
-  for (int i = 0; i < 3; i++) {
+  Collections.shuffle(PLAYER_CLASSES);
+  for (String playerClass : PLAYER_CLASSES) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    Player player = new Lord(spawnLocation);
+    Player player = null;
+    switch (playerClass) {
+      case "Lord":
+        player = new Lord(spawnLocation);
+        break;
+      case "Archer":
+        player = new Archer(spawnLocation);
+        break;
+      case "Barbarian":
+        player = new Barbarian(spawnLocation);
+        break;
+      case "Mage":
+        player = new Mage(spawnLocation);
+        break;
+      case "Thief":
+        player = new Thief(spawnLocation);
+        break;
+    }
     players.add(player);
     spawnLocation.addEntity(player);
   }
@@ -57,7 +76,6 @@ void setup() {
     enemies.add(enemy);
     spawnLocation.addEntity(enemy);
   }
-
   board.display();
   actionBar.write("Welcome to our game. Please click on a player to begin.");
 }

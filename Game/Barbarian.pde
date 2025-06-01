@@ -1,6 +1,5 @@
 public class Barbarian extends Player{
-  
-  public Barbarian(Tile startingPosition) {
+    public Barbarian(Tile startingPosition) {
     super(18, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
       put("Strength", 10);
       put("Speed", 3);

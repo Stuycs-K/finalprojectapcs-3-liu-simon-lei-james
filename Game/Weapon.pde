@@ -4,13 +4,15 @@ abstract class Weapon extends Item {
   private int weight;
   private int maxRange;
   private String weaponClass;
+  private String material;
 
-  public Weapon(int durability, int power, int weight, int maxRange, String name, String weaponClass){
-    super(name, "Weapon");
+  public Weapon(int durability, int power, int weight, int maxRange, String material, String weaponClass){
+    super(material + " " + weaponClass, "Weapon");
     this.durability = durability;
     this.power = power;
     this.weight = weight;
     this.maxRange = maxRange;
+    this.material = material;
     this.weaponClass = weaponClass;
   }
 
@@ -29,8 +31,8 @@ abstract class Weapon extends Item {
   public String getWeaponClass(){
     return weaponClass;
   }
-  public String toString(){
-    return name;
+  public String getMaterial() {
+    return material;
   }
 
   public boolean reduceDurability(int tear){
