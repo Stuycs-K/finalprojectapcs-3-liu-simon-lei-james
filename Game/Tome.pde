@@ -29,10 +29,10 @@ public class Tome extends Weapon{
       }
     }
     super.attack(wielder, target);
-    if (getType.equals("Thunder")){
+    if (getType().equals("Thunder")){
       super.attack(wielder, target);
     }
-    if (getType.equals("Blizzard")){
+    if (getType().equals("Blizzard")){
       target.applyCondition("Sleeping");
     }
   }
