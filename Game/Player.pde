@@ -24,7 +24,7 @@ abstract class Player extends Character {
   }
 
   public void equip(Weapon weapon) {
-    if (weaponProficiencies.contains(weapon.getWeaponType())) {
+    if (weaponProficiencies.contains(weapon.getWeaponClass())) {
       this.weapon = weapon;
     }
   }

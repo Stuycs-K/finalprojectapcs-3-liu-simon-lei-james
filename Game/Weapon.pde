@@ -3,15 +3,15 @@ abstract class Weapon extends Item {
   private int power;
   private int weight;
   private int maxRange;
-  private String weaponType;
+  private String weaponClass;
 
-  public Weapon(int durability, int power, int weight, int maxRange, String name, String weaponType){
+  public Weapon(int durability, int power, int weight, int maxRange, String name, String weaponClass){
     super(name, "Weapon");
     this.durability = durability;
     this.power = power;
     this.weight = weight;
     this.maxRange = maxRange;
-    this.weaponType = weaponType;
+    this.weaponClass = weaponClass;
   }
 
   public int getDurability(){
@@ -26,8 +26,8 @@ abstract class Weapon extends Item {
   public int getRange(){
     return maxRange;
   }
-  public String getWeaponType(){
-    return weaponType;
+  public String getWeaponClass(){
+    return weaponClass;
   }
   public String toString(){
     return name;
@@ -47,7 +47,7 @@ abstract class Weapon extends Item {
 
   public void attack(Character wielder, Character target){ //character is a parameter to call its strength stat
     int damage;
-    if (getWeaponType().equals("Tome")){
+    if (getWeaponClass().equals("Tome")){
       damage = wielder.getStat("Magic") + power - target.getStat("Resistance");
     }
     else{
@@ -61,8 +61,10 @@ abstract class Weapon extends Item {
     }
   }
 
-  public void critical(Character wielder, Character target){
-    int damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense");
+  public void critical(Character wielder, Character target){ 
+    int damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense"); /* this is the fe4/fe5 implementation. Criticals are more effective against units 
+                                                                                             with high defense and less effective against units with low defense when compared
+                                                                                             with the more conventional critical system used in other games (a simple 3x damage) */
     target.damage(damage);
     reduceDurability(1);
   }
