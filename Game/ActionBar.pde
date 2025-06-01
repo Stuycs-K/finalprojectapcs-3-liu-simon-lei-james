@@ -7,15 +7,30 @@ public class ActionBar {
   private Tile highlighted;
   private ArrayList<String> options = new ArrayList<String>();
   
+  private int[][] OPTION_BOUNDS = { // X, Y
+    {X + WIDTH - FONT_SIZE * 12, (Y - 2) + FONT_SIZE / 2},
+    {X + WIDTH - FONT_SIZE * 12, (Y - 2) + FONT_SIZE * 3},
+    {X + WIDTH - FONT_SIZE * 24, (Y - 2) + FONT_SIZE / 2},
+    {X + WIDTH - FONT_SIZE * 24, (Y - 2) + FONT_SIZE * 3},
+  };
+  
+  private int OPTION_WIDTH = FONT_SIZE * 23 / 2;
+  private int OPTION_HEIGHT = FONT_SIZE * 2;
+  private int PADDING = FONT_SIZE / 2;
+  
+  private String message;
+  
   public ActionBar() {
     clear();
     PFont font = createFont("font.ttf", FONT_SIZE);
     textFont(font);
     textLeading(16);
     textAlign(LEFT, TOP);
+    message = null;
   }
   
   private void clear() {
+    message = null;
     fill(90, 67, 33, 255);
     rect(X - 2, Y - 2, WIDTH + 2, HEIGHT + 2, 5);
     fill(255);
@@ -23,29 +38,23 @@ public class ActionBar {
   
   private void removeHighlighted() {
     highlighted = null;
+    options = new ArrayList<String>();
     clear();
   }
   
   public void write(String s) {
     removeHighlighted();
+    message = s;
     text(s, X + FONT_SIZE, Y + FONT_SIZE, X + WIDTH - FONT_SIZE * 2, Y + HEIGHT - FONT_SIZE * 2);
   }
   
   public void displayOptions() {
-    int boxWidth = FONT_SIZE * 23 / 2;
-    int[][] bounds = {
-      {X + WIDTH - FONT_SIZE * 12, (Y - 2) + FONT_SIZE / 2},
-      {X + WIDTH - FONT_SIZE * 12, (Y - 2) + FONT_SIZE * 3},
-      {X + WIDTH - FONT_SIZE * 24, (Y - 2) + FONT_SIZE / 2},
-      {X + WIDTH - FONT_SIZE * 24, (Y - 2) + FONT_SIZE * 3},
-    };
     for (int i = 0; i < options.size(); i++) {
-      rect(bounds[i][0], bounds[i][1], boxWidth, FONT_SIZE * 2, 5);
+      rect(OPTION_BOUNDS[i][0], OPTION_BOUNDS[i][1], OPTION_WIDTH, OPTION_HEIGHT, 5);
       fill(0);
-      text(options.get(i), bounds[i][0] + FONT_SIZE / 2 + 1, bounds[i][1] + FONT_SIZE / 2 + 1, boxWidth - FONT_SIZE - 2, FONT_SIZE);
+      text(options.get(i), OPTION_BOUNDS[i][0] + PADDING + 1, OPTION_BOUNDS[i][1] + PADDING + 1, OPTION_WIDTH - 2 * PADDING - 2, OPTION_HEIGHT - 2 * PADDING);
       fill(255);
     }
-    
   }
   
   public void setOptions(String[] newOptions) {
@@ -78,7 +87,17 @@ public class ActionBar {
   }
   
   public void update() {
+    if (message != null) write(message);
     if (highlighted != null) focus(highlighted);
     displayOptions();
+  }
+  
+  public void click() {
+    String action = null;
+    for (int i = 0; i < OPTION_BOUNDS.length; i++) {
+      if (OPTION_BOUNDS[i][0] < mouseX && mouseX < OPTION_BOUNDS[i][0] + OPTION_WIDTH && OPTION_BOUNDS[i][1] < mouseY && mouseY < OPTION_BOUNDS[i][1] + OPTION_HEIGHT) {
+        action = options.get(i);
+      }
+    }
   }
 }

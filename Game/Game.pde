@@ -67,15 +67,16 @@ void setup() {
         break;
     }
     players.add(player);
-    spawnLocation.addEntity(player);
   }
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    Enemy enemy = new Slime(spawnLocation);
-    enemies.add(enemy);
-    spawnLocation.addEntity(enemy);
+    enemies.add(new Slime(spawnLocation));
   }
+  Tile spawnLocation = board.getRandomTile();
+  while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+  Chest chest = new Chest(spawnLocation);
+  
   board.display();
   actionBar.write("Welcome to our game. Please click on a player to begin.");
 }
@@ -132,18 +133,20 @@ void mouseClicked() {
         if (tile.getEntity() instanceof Enemy) tile.transform("Red");
       }
       highlighted = clickLocation;
-    } else if (entity instanceof Enemy) {
-      actionBar.focus(clickLocation);
+    } else if (entity instanceof Enemy || entity instanceof Chest) {
       if (highlighted != null && highlighted.getEntity() instanceof Player) {
+        actionBar.removeHighlighted();
         if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
-          clickLocation.transform("Red");
           actionBar.focus(clickLocation);
         }
         highlighted = null;
       } else {
         highlighted = clickLocation;
-        highlighted.transform("Red");
+        clickLocation.transform("Red");
+        actionBar.focus(clickLocation);
       }
     }
+  } else {
+    actionBar.click();
   }
 }

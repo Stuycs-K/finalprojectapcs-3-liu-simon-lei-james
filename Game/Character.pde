@@ -118,6 +118,13 @@ abstract class Character extends Entity {
           while (tick == start) sleep(1);
           newPosition.transform("None");
         }
+        if (newPosition.getEntity() instanceof Chest) {
+          ((Chest) newPosition.getEntity()).collect((Player) this);
+          newPosition.transform("Red");
+          int start = tick;
+          while (tick == start) sleep(1);
+          newPosition.transform("None");
+        }
       }
     });
     newThread.start();

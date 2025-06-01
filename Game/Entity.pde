@@ -7,6 +7,7 @@ abstract public class Entity {
     position = startingPosition;
     img = loadImage(imageName.toLowerCase() + ".png");
     img.resize(16, 0);
+    startingPosition.addEntity(this);
   }
   
   public Tile getPosition() {
