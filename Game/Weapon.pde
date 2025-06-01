@@ -55,6 +55,9 @@ abstract class Weapon extends Item {
     else{
       damage = wielder.getStat("Strength") + power - target.getStat("Defense");
     }
+    if (damage <= 0){
+      damage = 0;
+    }
     target.damage(damage);
     reduceDurability(1);
     if (canDouble(wielder, target)){
@@ -64,9 +67,15 @@ abstract class Weapon extends Item {
   }
 
   public void critical(Character wielder, Character target){
-    int damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense"); /* this is the fe4/fe5 implementation. Criticals are more effective against units
+    int damage;
+    if (getWeaponClass().equals("Tome")){
+      damage = (2 * (wielder.getStat("Magic") + power)) - target.getStat("Resistance");
+    }
+    else{
+      damage = (2 * (wielder.getStat("Strength") + power)) - target.getStat("Defense"); /* this is the fe4/fe5 implementation. Criticals are more effective against units
                                                                                              with high defense and less effective against units with low defense when compared
                                                                                              with the more conventional critical system used in other games (a simple 3x damage) */
+    }
     target.damage(damage);
     reduceDurability(1);
   }
