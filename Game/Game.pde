@@ -37,6 +37,12 @@ void setup() {
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
 
+  // CHANGE - Add to character subclasses
+  HashMap<String, Integer> stats = new HashMap<String, Integer>();
+  stats.put("Defense", 1);
+  stats.put("Strength", 1);
+  stats.put("Speed", 1);
+
   for (int i = 0; i < 3; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();

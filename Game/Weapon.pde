@@ -46,11 +46,12 @@ abstract class Weapon extends Item {
   }
 
   public void attack(Character wielder, Character target){ //character is a parameter to call its strength stat
+    int damage;
     if (getWeaponType().equals("Tome")){
-      int damage = wielder.getStat("Magic") + power - target.getStat("Resistance");
+      damage = wielder.getStat("Magic") + power - target.getStat("Resistance");
     }
     else{
-      int damage = wielder.getStat("Strength") + power - target.getStat("Defense");
+      damage = wielder.getStat("Strength") + power - target.getStat("Defense");
     }
     target.damage(damage);
     reduceDurability(1);
