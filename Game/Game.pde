@@ -59,10 +59,10 @@ void setup() {
       case "Thief":
         player = new Thief(spawnLocation);
         break;
-    }
-    players.add(player);
+     }
+     players.add(player);
   }
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 7; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
     enemies.add(new Slime(spawnLocation));

@@ -2,13 +2,20 @@ public class Slime extends Enemy {
   public Slime(Tile startingPosition) {
     super(10, 5, startingPosition, "Slime", new HashMap<String, Integer>() {{
       put("Strength", 7);
-      put("Speed", 0);
-      put("Defense", 12);
+      put("Speed", 3);
+      put("Defense", 8);
       put("Magic", 0);
-      put("Resistance", 12);
+      put("Resistance", 6);
     }});
   }
   public void attack(Character target) {
-    target.damage(2);
+    int damage = getStat("Strength") - target.getStat("Defense");
+    if (damage <= 0){
+      damage = 0;
+    }
+    target.damage(damage);
+    if (RANDOM.nextInt(100) <= 5){
+      target.applyCondition("Poison");
+    }
   }
 }

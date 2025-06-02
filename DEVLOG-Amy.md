@@ -25,3 +25,6 @@ Character subclasses are now being created, Lord being the first. My intended im
 
 ### 2025-05-31 - finished implementation of character subclasses and sprites
 I have completed the subclasses for every character class, having given each unique stats, and made minor adjustments to some files to match proper syntax and the updated uml diagram. Additionally, i have added a sprite for each of the new classes.
+
+### 2025-06-01 - minor bug fixes, finished basic weapon implementation, small balance changes
+Every character now starts with a weapon. Weapons have been tested to ensure they all work as intended, and stats have been minorly tweaked, particularly for slimes to make them bulkier. Attacks are now rounded up to do zero damage if the calculation shows they will do less than or equal to zero damage. Lastly, the number of slimes on the field has increased, and they have been given an actual attack.
