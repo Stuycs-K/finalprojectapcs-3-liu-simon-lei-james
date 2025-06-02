@@ -15,6 +15,8 @@ private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arr
 
 public volatile static int tick = 0;
 private static int turn = 0;
+
+public static String action; 
 private static Tile highlighted;
 
 public static Board board;
@@ -26,6 +28,11 @@ public static void sleep(int time) {
   try {
     Thread.sleep(time);
   } catch(InterruptedException e) {}
+}
+
+private boolean isDoing(String action) {
+  if (Game.action == null) return false;
+  return Game.action.equals(action);
 }
 
 void setup() {
@@ -97,50 +104,35 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
-  if (mouseY < height - ACTION_BAR_SIZE) {
-    Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
-    if (mouseButton == RIGHT) { // Clear Highlight
-      if (highlighted != null) highlighted.transform("None");
-      highlighted = null;
-      actionBar.removeHighlighted();
-      return;
-    }
-    Entity entity = clickLocation.getEntity();
-    if (entity == null) {
-      if (highlighted != null && highlighted.getEntity() instanceof Player) {
-        if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
-          clickLocation.transform("Blue");
-          actionBar.focus(clickLocation);
-        } else {
-          actionBar.removeHighlighted();
-        }
-        highlighted = null;
-      } else {
-        clickLocation.transform("Blue");
-        actionBar.focus(clickLocation);
-      }
-    } else if (entity instanceof Player) {
-      actionBar.focus(clickLocation);
+  if (mouseButton == RIGHT) {
+    actionBar.status = "None";
+    if (highlighted != null) highlighted.transform("None");
+    highlighted = null;
+    return;
+  }
+  if (mouseY > height - ACTION_BAR_SIZE) {
+    actionBar.click();
+  } else {
+    Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
+    Entity entity = clickedTile.getEntity();
+    if (entity instanceof Player) {
+      action = "Moving";
+      highlighted = clickedTile;
+      actionBar.focus(clickedTile);
       ArrayList<Tile> range = ((Player) entity).movementRange();
       for (Tile tile : range) {
         tile.transform("Blue");
         if (tile.getEntity() instanceof Enemy) tile.transform("Red");
       }
-      highlighted = clickLocation;
-    } else if (entity instanceof Enemy || entity instanceof Chest) {
-      if (highlighted != null && highlighted.getEntity() instanceof Player) {
-        actionBar.removeHighlighted();
-        if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
-          actionBar.focus(clickLocation);
-        }
+    } else {
+      if (isDoing("Moving") && ((Player) highlighted.getEntity()).moveTo(clickedTile)) {
+        actionBar.status = "None";
         highlighted = null;
       } else {
-        highlighted = clickLocation;
-        clickLocation.transform("Red");
-        actionBar.focus(clickLocation);
+        highlighted = clickedTile;
+        clickedTile.transform("Blue");
+        actionBar.focus(clickedTile);
       }
     }
-  } else {
-    actionBar.click();
   }
 }
