@@ -170,6 +170,7 @@ abstract class Character extends Entity {
       getCondition(name).reset();
     } else {
       conditions.add(new Condition(name, 3));
+      actionBar.write(getName() + "is now " + name);
     }
     switch (name) {
       case "Bleeding":
