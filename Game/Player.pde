@@ -12,6 +12,10 @@ abstract class Player extends Character {
   public void give(Item item) {
     inventory.add(item);
   }
+  
+  public ArrayList<Item> getInventory() {
+    return inventory;
+  }
 
   public ArrayList<Item> getInventory(String type) {
     ArrayList<Item> output = new ArrayList<Item>();

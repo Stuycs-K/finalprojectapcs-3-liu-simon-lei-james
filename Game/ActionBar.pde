@@ -7,14 +7,8 @@ public class ActionBar {
   private Tile highlighted;
   private ArrayList<String> options = new ArrayList<String>();
 
-  private int[][] OPTION_BOUNDS = { // X, Y
-    {X + WIDTH - FONT_SIZE * 12, (Y - 2) + FONT_SIZE / 2},
-    {X + WIDTH - FONT_SIZE * 12, (Y - 2) + FONT_SIZE * 3},
-    {X + WIDTH - FONT_SIZE * 24, (Y - 2) + FONT_SIZE / 2},
-    {X + WIDTH - FONT_SIZE * 24, (Y - 2) + FONT_SIZE * 3},
-  };
-
-  private int OPTION_WIDTH = FONT_SIZE * 23 / 2;
+  private int OPTION_WIDTH = FONT_SIZE * 29 / 2 - 2;
+  private int OPTION_GAP = FONT_SIZE / 2;
   private int OPTION_HEIGHT = FONT_SIZE * 2;
   private int PADDING = FONT_SIZE / 2;
 
@@ -49,11 +43,23 @@ public class ActionBar {
   }
 
   public void displayOptions() {
+    clear();
+    int x = X + WIDTH - OPTION_WIDTH - OPTION_GAP;
+    int y = Y - 2 + OPTION_GAP;
+    
     for (int i = 0; i < options.size(); i++) {
-      rect(OPTION_BOUNDS[i][0], OPTION_BOUNDS[i][1], OPTION_WIDTH, OPTION_HEIGHT, 5);
-      fill(0);
-      text(options.get(i), OPTION_BOUNDS[i][0] + PADDING + 1, OPTION_BOUNDS[i][1] + PADDING + 1, OPTION_WIDTH - 2 * PADDING - 2, OPTION_HEIGHT - 2 * PADDING);
-      fill(255);
+      rect(x, y, OPTION_WIDTH, OPTION_HEIGHT, 5);
+      if (options.get(i) != null) {
+        fill(0);
+        text(options.get(i), x + PADDING + 1, y + PADDING + 1, OPTION_WIDTH - 2 * PADDING - 2, OPTION_HEIGHT - 2 * PADDING);
+        fill(255);
+      }
+      if (i % 2 == 0) {
+        y = (Y - 2) + FONT_SIZE * 3;
+      } else {
+        x -= OPTION_WIDTH + OPTION_GAP;
+        y = (Y - 2) + FONT_SIZE / 2;
+      }
     }
   }
 
@@ -72,7 +78,7 @@ public class ActionBar {
       text(character.getCharacterClass() + " " + character.getName(), X + FONT_SIZE, Y + FONT_SIZE);
       if (character instanceof Player) {
         text(((Player) character).getWeapon(), X + FONT_SIZE, Y + FONT_SIZE * 3);
-        setOptions(new String[]{"Inventory", "Character Stats", "Attack", "Give"});
+        setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
       } else {
         text(tile.getTerrain() + " Tile", X + FONT_SIZE, Y + FONT_SIZE * 3);
       }
@@ -89,15 +95,36 @@ public class ActionBar {
   public void update() {
     if (message != null) write(message);
     if (highlighted != null) focus(highlighted);
-    displayOptions();
+    // displayOptions();
   }
 
   public void click() {
     String action = null;
-    for (int i = 0; i < OPTION_BOUNDS.length; i++) {
-      if (OPTION_BOUNDS[i][0] < mouseX && mouseX < OPTION_BOUNDS[i][0] + OPTION_WIDTH && OPTION_BOUNDS[i][1] < mouseY && mouseY < OPTION_BOUNDS[i][1] + OPTION_HEIGHT) {
+    int x = X + WIDTH - OPTION_WIDTH - OPTION_GAP;
+    int y = Y - 2 + OPTION_GAP;
+    for (int i = 0; i < options.size(); i++) {
+      if (x < mouseX && mouseX < x + OPTION_WIDTH && y < mouseY && mouseY < x + OPTION_HEIGHT) {
         action = options.get(i);
       }
+      if (i % 2 == 0) {
+        y = (Y - 2) + FONT_SIZE * 3;
+      } else {
+        x -= OPTION_WIDTH + OPTION_GAP;
+        y = (Y - 2) + FONT_SIZE / 2;
+      }
+    }
+    switch (action) {
+      case "Inventory":
+        ArrayList<Item> inventory = ((Player) highlighted.getEntity()).getInventory();
+        String[] options = new String[8];
+        options[0] = "Return";
+        for (int i = 0; i < inventory.size(); i++) {
+          options[9 - i] = inventory.get(i).toString();
+        }
+        setOptions(options);
+        break;
+      case "Return":
+        focus(highlighted);
     }
   }
 }

@@ -84,12 +84,12 @@ void draw() {
 // CHANGE - Replace with an end turn button
 void keyPressed() {
   board.reset();
-  for (Player player : players) {
-    player.endTurn();
+  for (int i = 0; i < players.size(); i++) {
+    players.get(i).endTurn();
   }
-  for (Enemy enemy : enemies) {
-    enemy.takeTurn();
-    enemy.endTurn();
+  for (int i = 0; i < enemies.size(); i++) {
+    enemies.get(i).takeTurn();
+    enemies.get(i).endTurn();
   }
   turn++;
   actionBar.write("Turn " + turn);

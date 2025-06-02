@@ -6,7 +6,8 @@ abstract class Enemy extends Character {
   public void takeTurn() {
     int minDistance = -2;
     Player closestPlayer = null;
-    for (Player player : players) {
+    for (int i = 0; i < players.size(); i++) {
+      Player player = players.get(i);
       int distance = getPosition().distanceTo(player.getPosition());
       if (minDistance == -2 || minDistance > distance) {
         minDistance = distance;
