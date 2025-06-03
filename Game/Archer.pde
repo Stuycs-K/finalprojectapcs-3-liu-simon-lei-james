@@ -7,7 +7,7 @@ public class Archer extends Player {
       put("Magic", 0);
       put("Resistance", 3);
     }}, new ArrayList<String>(Arrays.asList("Bow")));
-    Weapon bow = new Bow(40, 5, 1, "Iron");
+    Weapon bow = new Bow("Iron Bow");
     give(bow);
     equip(bow);
   }

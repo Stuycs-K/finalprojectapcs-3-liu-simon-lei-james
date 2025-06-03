@@ -11,6 +11,13 @@ public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Faster
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
+/* additional classes that could be nice to have:
+   Cavalier/Paladin: well-rounded stats, high movement, uses lances/axes/swords, can move after an attack (will change the other classes to automatically end their turn after attacking if cavalier does get added), gets punished harder by terrain (higher movement reduction from forests, can't cross hills/mountains at all)
+   Pegasus Knight: emphasis on speed, resistance, and avoid (if accuracy is implemented), high movement, uses lances/swords, can move after an attack, ignores terrain, weak to arrows
+   Wyvern Knight: emphasis on health, attack, and defense, high movement, uses lances/axes, can move after an attack, ignores terrain, weak to all magic 
+   (this is for balancing, wyverns are consistently among the best classes in Fire Emblem games due to high mobility alongside high strength and bulk without compromising speed. To make them less dominant, emphasize their usual vulnerabilty to magic, something 
+   pegasus knights are usually good against)
+*/
 private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arrays.asList("Slime"));
 
 public volatile static int tick = 0;
