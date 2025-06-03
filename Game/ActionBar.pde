@@ -6,10 +6,10 @@ public class ActionBar {
 
   private String[] options;
 
-  private int OPTION_WIDTH = FONT_SIZE * 29 / 2 - 2;
-  private int OPTION_HEIGHT = FONT_SIZE * 2;
-  private int OPTION_GAP = FONT_SIZE / 2;
-  private int PADDING = FONT_SIZE / 2;
+  private int CELL_WIDTH = WIDTH / 4;
+  private int CELL_HEIGHT = HEIGHT / 2;
+  private int PADDING = FONT_SIZE / 4;
+  private int BORDER = 1;
 
   public String status = "None"; // Message, None, Focus, Inventory
   private String message;
@@ -28,7 +28,7 @@ public class ActionBar {
   }
   
   private void write(int col, int row, String text) {
-    text(text, X + FONT_SIZE * (1 + col * 14), Y + FONT_SIZE * (1 + row * 2));
+    text(text, X + CELL_WIDTH * col + PADDING * 4, Y + PADDING * 4 + row * (CELL_HEIGHT));
   }
 
   public void write(String text) {
@@ -47,21 +47,21 @@ public class ActionBar {
   }
   
   public void displayOptions() {
-    int x = X + WIDTH - OPTION_WIDTH - OPTION_GAP;
-    int y = Y - 2 + OPTION_GAP;
+    int x = X + WIDTH - CELL_WIDTH + PADDING;
+    int y = Y + PADDING - BORDER;
     
     for (int i = 0; i < options.length; i++) {
-      rect(x, y, OPTION_WIDTH, OPTION_HEIGHT, 5);
+      rect(x, y, CELL_WIDTH - PADDING * 2, CELL_HEIGHT - PADDING * 2, 5);
       if (options[i] != null) {
         fill(0);
-        text(options[i], x + PADDING + 1, y + PADDING + 1);
+        text(options[i], x + PADDING * 3, y + PADDING * 3);
         fill(255);
       }
       if (i % 2 == 0) {
-        y = (Y - 2) + FONT_SIZE * 3;
+        y = Y + CELL_HEIGHT + PADDING - BORDER;
       } else {
-        x -= OPTION_WIDTH + OPTION_GAP;
-        y = (Y - 2) + FONT_SIZE / 2;
+        x -= CELL_WIDTH;
+        y = Y + PADDING - BORDER;
       }
     }
   }
@@ -120,17 +120,17 @@ public class ActionBar {
 
   public void click() {
     String action = null;
-    int x = X + WIDTH - OPTION_WIDTH - OPTION_GAP;
-    int y = Y - 2 + OPTION_GAP;
+    int x = X + WIDTH - CELL_WIDTH + PADDING;
+    int y = Y + PADDING;
     for (int i = 0; i < options.length; i++) {
-      if (x < mouseX && mouseX < x + OPTION_WIDTH && y < mouseY && mouseY < y + OPTION_HEIGHT) {
+      if (x < mouseX && mouseX < x + CELL_WIDTH - PADDING * 2 && y < mouseY && mouseY < y + CELL_HEIGHT - PADDING * 2) {
         action = options[i];
       }
       if (i % 2 == 0) {
-        y = (Y - 2) + FONT_SIZE * 3;
+        y = Y + CELL_HEIGHT + PADDING * 2;
       } else {
-        x -= OPTION_WIDTH + OPTION_GAP;
-        y = (Y - 2) + FONT_SIZE / 2;
+        x -= CELL_WIDTH;
+        y = Y + PADDING;
       }
     }
     if (action == null) return;

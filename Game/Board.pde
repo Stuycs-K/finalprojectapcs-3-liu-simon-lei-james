@@ -53,33 +53,6 @@ public class Board {
     }
   }
 
-  public ArrayList<Tile> tilesInRange(Tile tile, int range) {
-    ArrayList<Tile> output = new ArrayList<Tile>();
-    int[][] distances = new int[board.length][board[0].length];
-    Queue<Pair<Integer, Tile>> bfs = new LinkedList<Pair<Integer, Tile>>();
-    bfs.add(new Pair<Integer, Tile>(0, tile));
-
-    output.add(tile);
-    while (!bfs.isEmpty()) {
-      Pair<Integer, Tile> current = bfs.remove();
-      Tile currentTile = current.getSecond();
-      Coordinate coordinate = currentTile.getCoordinate();
-
-      if (current.getFirst() > range) continue;
-      if (distances[coordinate.getY()][coordinate.getX()] > 0 && distances[coordinate.getY()][coordinate.getX()] < current.getFirst()) continue;
-      distances[coordinate.getY()][coordinate.getX()] = current.getFirst();
-
-      output.add(currentTile);
-      if (!coordinate.equals(tile.getCoordinate()) && currentTile.hasEntity()) continue;
-
-      for (Tile neighbor : currentTile.getNeighbors()) {
-        int distance = current.getFirst() + neighbor.getMovementPenalty();
-        bfs.add(new Pair<Integer, Tile>(distance, neighbor));
-      }
-    }
-    return output;
-  }
-
   public Tile getRandomTile() {
     return get(new Coordinate(RANDOM.nextInt(COLUMNS), RANDOM.nextInt(ROWS)));
   }

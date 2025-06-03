@@ -60,6 +60,44 @@ public class Tile {
   public void setTerrain(String newTerrain) {
     terrain = newTerrain;
   }
+  
+  public ArrayList<Tile> tilesInRadius(int radius) {
+    ArrayList<Tile> output = new ArrayList<Tile>();
+    for (int dy = -radius; dy <= radius; dy++) {
+      for (int dx = -radius + abs(dy); dx <= radius - abs(dy); dx++) {
+        Tile tile = board.get(coordinate.getX() + dx, coordinate.getY() + dy);
+        if (tile != null) output.add(tile);
+      }
+    }
+    return output;
+  }
+  
+  public ArrayList<Tile> tilesInRange(int range) {
+    ArrayList<Tile> output = new ArrayList<Tile>();
+    int[][] distances = new int[ROWS][COLUMNS];
+    Queue<Pair<Integer, Tile>> bfs = new LinkedList<Pair<Integer, Tile>>();
+    bfs.add(new Pair<Integer, Tile>(0, this));
+
+    output.add(this);
+    while (!bfs.isEmpty()) {
+      Pair<Integer, Tile> current = bfs.remove();
+      Tile currentTile = current.getSecond();
+      Coordinate coordinate = currentTile.getCoordinate();
+
+      if (current.getFirst() > range) continue;
+      if (distances[coordinate.getY()][coordinate.getX()] > 0 && distances[coordinate.getY()][coordinate.getX()] < current.getFirst()) continue;
+      distances[coordinate.getY()][coordinate.getX()] = current.getFirst();
+
+      output.add(currentTile);
+      if (!coordinate.equals(this.getCoordinate()) && currentTile.hasEntity()) continue;
+
+      for (Tile neighbor : currentTile.getNeighbors()) {
+        int distance = current.getFirst() + neighbor.getMovementPenalty();
+        bfs.add(new Pair<Integer, Tile>(distance, neighbor));
+      }
+    }
+    return output;
+  }
 
   public ArrayList<Tile> getNeighbors() {
     ArrayList<Tile> neighbors = new ArrayList<Tile>();

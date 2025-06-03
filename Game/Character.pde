@@ -132,7 +132,7 @@ abstract class Character extends Entity {
   }
 
   public ArrayList<Tile> movementRange() {
-    return board.tilesInRange(getPosition(), movement.getCurrent());
+    return getPosition().tilesInRange(movement.getCurrent());
   }
 
   public Condition getCondition(String name) {
