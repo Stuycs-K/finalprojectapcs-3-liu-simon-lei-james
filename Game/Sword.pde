@@ -4,6 +4,7 @@ public class Sword extends Weapon {
   public Sword(int durability, int power, int weight, String material){
     super(durability, power, weight, 1, material, "Sword");
   }
+  
 
   public boolean calculateCondition(Character wielder){ //wielder called to see class. If the character is a rogue, then increased chance to inflict any status effect
     if (wielder.getCharacterClass().equals("Thief")){

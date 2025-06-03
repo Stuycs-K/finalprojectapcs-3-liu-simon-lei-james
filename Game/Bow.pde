@@ -3,6 +3,14 @@ public class Bow extends Weapon{
   public Bow(int durability, int power, int weight, String material){
     super(durability, power, weight, 2, material, "Bow");
   }
+  public Bow(String weaponType){
+    super(new HashMap<String, ArrayList<Integer>>() {{
+      put("Iron Bow", new ArrayList(Arrays.asList(40, 5, 1, 2)));
+      put("Silver Bow", new ArrayList(Arrays.asList(20, 8, 3, 2)));
+      put("Sleep Bow", new ArrayList(Arrays.asList(20, 3, 5, 3)));
+    }}
+    , weaponType);
+  }
 
   public void attack(Character wielder, Character target){
     super.attack(wielder, target);

@@ -18,13 +18,14 @@ abstract class Weapon extends Item {
     this.weaponClass = weaponClass;
   }
   
-  public Weapon(HashMap<String, ArrayList<Integer>> data){
-    super(data.keySet().toArray()[0].toString(), "Weapon");
-    weaponClass = data.keySet().toArray()[0].toString();
-    durability = data.get(weaponClass).get(0);
-    power = data.get(weaponClass).get(1);
-    weight = data.get(weaponClass).get(2);
-    maxRange = data.get(weaponClass).get(3);
+  public Weapon(HashMap<String, ArrayList<Integer>> data, String weapon){ //expects weapon to be a valid key in the HashMap
+    super(weapon, "Weapon");
+    material = weapon.substring(0, weapon.indexOf(' '));
+    weaponClass = weapon.substring(weapon.indexOf(' ') + 1, weapon.length());
+    durability = data.get(weapon).get(0);
+    power = data.get(weapon).get(1);
+    weight = data.get(weapon).get(2);
+    maxRange = data.get(weapon).get(3);
   }
     
 
