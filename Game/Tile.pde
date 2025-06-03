@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 public class Tile {
-  public static final int HEIGHT = 16, WIDTH = 16;
+  public static final int HEIGHT = 32, WIDTH = 32;
 
   // Possible Values: None, Red, Blue
   private String hue;

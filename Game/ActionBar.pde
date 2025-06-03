@@ -54,7 +54,7 @@ public class ActionBar {
       rect(x, y, OPTION_WIDTH, OPTION_HEIGHT, 5);
       if (options[i] != null) {
         fill(0);
-        text(options[i], x + PADDING + 1, y + PADDING + 1, OPTION_WIDTH - 2 * PADDING - 2, OPTION_HEIGHT - 2 * PADDING);
+        text(options[i], x + PADDING + 1, y + PADDING + 1);
         fill(255);
       }
       if (i % 2 == 0) {
@@ -112,6 +112,9 @@ public class ActionBar {
         displayStats((Character) highlighted.getEntity());
         displayOptions();
         break;
+      case "Conditions":
+        displayOptions();
+        break;
     }
   }
 
@@ -131,11 +134,12 @@ public class ActionBar {
       }
     }
     if (action == null) return;
+    String[] options;
     switch (action) {
       case "Inventory":
         status = "Inventory";
         ArrayList<Item> inventory = ((Player) highlighted.getEntity()).getInventory();
-        String[] options = new String[8];
+        options = new String[8];
         options[0] = "Return";
         for (int i = 0; i < inventory.size(); i++) {
           options[7 - i] = inventory.get(i).toString();
@@ -143,11 +147,23 @@ public class ActionBar {
         setOptions(options);
         break;
       case "Character Stats":
-        setOptions(new String[] {"Return"});
+        setOptions(new String[] {"Return", "Conditions"});
         status = "Character Stats";
+        break;
+      case "Conditions":
+        setOptions(new String[] {"Return", "Character Stats"});
+        ArrayList<Condition> conditions = ((Player) highlighted.getEntity()).getConditions();
+        options = new String[8];
+        options[0] = "Return";
+        for (int i = 0; i < conditions.size(); i++) {
+          options[7 - i] = conditions.get(i).toString();
+        }
+        setOptions(options);
+        status = "Conditions";
         break;
       case "Return":
         status = "Focus";
+        break;
     }
   }
 }

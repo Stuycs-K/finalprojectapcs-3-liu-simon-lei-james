@@ -4,11 +4,11 @@ import java.util.List;
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
 
-public static final int FONT_SIZE = 8;
+public static final int FONT_SIZE = 16;
 public static final int ACTION_BAR_SIZE = FONT_SIZE * 6;
 
 public static final int COLUMNS = 30, ROWS = 20;
-public static final int GAME_SPEED = 2; // Speed the Board Updates; Lower = Faster
+public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Faster
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
 private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arrays.asList("Slime"));
@@ -36,7 +36,7 @@ private boolean isDoing(String action) {
 }
 
 void setup() {
-  size(16 * 30, 16 * 20 + 48);
+  size(32 * 30, 32 * 20 + 96);
   background(92, 160, 72);
 
   board = new Board(ROWS, COLUMNS);

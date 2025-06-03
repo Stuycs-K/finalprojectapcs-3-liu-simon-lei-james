@@ -144,12 +144,8 @@ abstract class Character extends Entity {
     return null;
   }
 
-  public String getConditions() {
-    String all = "Conditions: ";
-    for (Condition condition : conditions){
-      all += condition + ": " + condition.getDuration();
-    }
-    return all;
+  public ArrayList<Condition> getConditions() {
+    return conditions;
   }
 
   public void removeCondition(String name) {
