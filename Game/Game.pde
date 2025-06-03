@@ -23,7 +23,7 @@ private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arr
 public volatile static int tick = 0;
 private static int turn = 0;
 
-public static String action;
+public static String action = "None";
 private static Tile highlighted;
 
 public static Board board;
@@ -98,6 +98,8 @@ void draw() {
 // CHANGE - Replace with an end turn button
 void keyPressed() {
   board.reset();
+  actionBar.status = "None";
+  action = "None";
   for (int i = 0; i < players.size(); i++) {
     players.get(i).endTurn();
   }
@@ -122,23 +124,34 @@ void mouseClicked() {
   } else {
     Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
     Entity entity = clickedTile.getEntity();
-    if (entity instanceof Player) {
-      action = "Moving";
-      highlighted = clickedTile;
-      actionBar.focus(clickedTile);
-      ArrayList<Tile> range = ((Player) entity).movementRange();
-      for (Tile tile : range) {
-        tile.transform("Blue");
-        if (tile.getEntity() instanceof Enemy) tile.transform("Red");
-      }
-    } else {
-      if (isDoing("Moving") && ((Player) highlighted.getEntity()).moveTo(clickedTile)) {
-        actionBar.status = "None";
-        highlighted = null;
-      } else {
+    if (action.equals("None")) { // Selecting New Tile
+      if (entity instanceof Player) { // Select Player
+        action = "Moving";
+        highlighted = clickedTile;
+        actionBar.focus(clickedTile);
+        ArrayList<Tile> range = ((Player) entity).movementRange();
+        for (Tile tile : range) {
+          tile.transform("Blue");
+          if (tile.getEntity() instanceof Enemy) tile.transform("Red");
+        }
+      } else { // Select Enemy, Chest, or Tile
         highlighted = clickedTile;
         clickedTile.transform("Blue");
         actionBar.focus(clickedTile);
+      } 
+    } else if (isDoing("Moving")) {
+      if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range
+        actionBar.status = "None";
+        highlighted = null;
+        action = "None";
+      } else { // Highlight New Tile
+        highlighted = clickedTile;
+        clickedTile.transform("Blue");
+        actionBar.focus(clickedTile);
+      }
+    } else if (isDoing("Attacking")) {
+      if (entity instanceof Enemy) {
+        // TO BE IMPLEMENTED
       }
     }
   }
