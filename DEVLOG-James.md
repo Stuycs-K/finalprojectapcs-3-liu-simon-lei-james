@@ -40,3 +40,7 @@ This document must be updated daily every time you finish a work session.
 - Changed Enemy to abstract and prepared templates for character subclasses
 - Added random spawning system for testing
 - Added additional messages for turns and deaths
+
+### 2025-05-02 - Even More UI Work
+- Adapted game to be able to handle additional enemies
+- Added buttons to view character inventories and stats

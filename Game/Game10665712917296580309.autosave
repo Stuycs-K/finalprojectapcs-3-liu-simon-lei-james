@@ -15,8 +15,6 @@ private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arr
 
 public volatile static int tick = 0;
 private static int turn = 0;
-
-public static String action;
 private static Tile highlighted;
 
 public static Board board;
@@ -28,11 +26,6 @@ public static void sleep(int time) {
   try {
     Thread.sleep(time);
   } catch(InterruptedException e) {}
-}
-
-private boolean isDoing(String action) {
-  if (Game.action == null) return false;
-  return Game.action.equals(action);
 }
 
 void setup() {
@@ -69,7 +62,7 @@ void setup() {
      }
      players.add(player);
   }
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 10; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
     enemies.add(new Slime(spawnLocation));
@@ -91,12 +84,12 @@ void draw() {
 // CHANGE - Replace with an end turn button
 void keyPressed() {
   board.reset();
-  for (int i = 0; i < players.size(); i++) {
-    players.get(i).endTurn();
+  for (Player player : players) {
+    player.endTurn();
   }
-  for (int i = 0; i < enemies.size(); i++) {
-    enemies.get(i).takeTurn();
-    enemies.get(i).endTurn();
+  for (Enemy enemy : enemies) {
+    enemy.takeTurn();
+    enemy.endTurn();
   }
   turn++;
   actionBar.write("Turn " + turn);
@@ -104,35 +97,50 @@ void keyPressed() {
 
 void mouseClicked() {
   board.reset();
-  if (mouseButton == RIGHT) {
-    actionBar.status = "None";
-    if (highlighted != null) highlighted.transform("None");
-    highlighted = null;
-    return;
-  }
-  if (mouseY > height - ACTION_BAR_SIZE) {
-    actionBar.click();
-  } else {
-    Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
-    Entity entity = clickedTile.getEntity();
-    if (entity instanceof Player) {
-      action = "Moving";
-      highlighted = clickedTile;
-      actionBar.focus(clickedTile);
+  if (mouseY < height - ACTION_BAR_SIZE) {
+    Tile clickLocation = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
+    if (mouseButton == RIGHT) { // Clear Highlight
+      if (highlighted != null) highlighted.transform("None");
+      highlighted = null;
+      actionBar.removeHighlighted();
+      return;
+    }
+    Entity entity = clickLocation.getEntity();
+    if (entity == null) {
+      if (highlighted != null && highlighted.getEntity() instanceof Player) {
+        if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
+          clickLocation.transform("Blue");
+          actionBar.focus(clickLocation);
+        } else {
+          actionBar.removeHighlighted();
+        }
+        highlighted = null;
+      } else {
+        clickLocation.transform("Blue");
+        actionBar.focus(clickLocation);
+      }
+    } else if (entity instanceof Player) {
+      actionBar.focus(clickLocation);
       ArrayList<Tile> range = ((Player) entity).movementRange();
       for (Tile tile : range) {
         tile.transform("Blue");
         if (tile.getEntity() instanceof Enemy) tile.transform("Red");
       }
-    } else {
-      if (isDoing("Moving") && ((Player) highlighted.getEntity()).moveTo(clickedTile)) {
-        actionBar.status = "None";
+      highlighted = clickLocation;
+    } else if (entity instanceof Enemy || entity instanceof Chest) {
+      if (highlighted != null && highlighted.getEntity() instanceof Player) {
+        actionBar.removeHighlighted();
+        if (! ((Player) highlighted.getEntity()).moveTo(clickLocation)) {
+          actionBar.focus(clickLocation);
+        }
         highlighted = null;
       } else {
-        highlighted = clickedTile;
-        clickedTile.transform("Blue");
-        actionBar.focus(clickedTile);
+        highlighted = clickLocation;
+        clickLocation.transform("Red");
+        actionBar.focus(clickLocation);
       }
     }
+  } else {
+    actionBar.click();
   }
 }

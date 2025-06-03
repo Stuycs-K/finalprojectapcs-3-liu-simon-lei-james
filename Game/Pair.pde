@@ -16,7 +16,7 @@ public class Pair<F extends Comparable<F>, S> {
   public S getSecond() {
     return second;
   }
-  
+
   public Comparator<Pair<F, S>> getComparator() {
     return new Comparator<Pair<F, S>>() {
       public int compare(Pair<F, S> a, Pair<F, S> b) {

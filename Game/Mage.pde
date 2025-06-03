@@ -1,5 +1,5 @@
 public class Mage extends Player{
-  
+
   public Mage(Tile startingPosition) {
     super(5, 4, startingPosition, "Mage", new HashMap<String, Integer>() {{
       put("Strength", 0);
@@ -12,5 +12,5 @@ public class Mage extends Player{
     give(tome);
     equip(tome);
   }
-  
+
 }

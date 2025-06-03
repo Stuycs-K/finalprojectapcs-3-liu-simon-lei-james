@@ -7,7 +7,7 @@ public class Barbarian extends Player{
       put("Magic", 0);
       put("Resistance", 1);
     }}, new ArrayList<String>(Arrays.asList("Axe")));
-    
+
     //Default Equipment
     Weapon axe = new Axe(40, 8, 5, "Iron");
     give(axe);

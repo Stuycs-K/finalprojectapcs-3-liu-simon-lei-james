@@ -3,7 +3,7 @@ public class Bow extends Weapon{
   public Bow(int durability, int power, int weight, String material){
     super(durability, power, weight, 2, material, "Bow");
   }
-  
+
   public void attack(Character wielder, Character target){
     super.attack(wielder, target);
     if (wielder.getStat("Speed") >= target.getStat("Speed")){
