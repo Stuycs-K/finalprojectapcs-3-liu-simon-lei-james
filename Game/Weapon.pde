@@ -5,6 +5,8 @@ abstract class Weapon extends Item {
   private int maxRange;
   private String weaponClass;
   private String material;
+  
+  HashMap<String, ArrayList<Integer>> data = new HashMap<String, ArrayList<Integer>>();
 
   public Weapon(int durability, int power, int weight, int maxRange, String material, String weaponClass){
     super(material + " " + weaponClass, "Weapon");
@@ -15,6 +17,16 @@ abstract class Weapon extends Item {
     this.material = material;
     this.weaponClass = weaponClass;
   }
+  
+  public Weapon(HashMap<String, ArrayList<Integer>> data){
+    super(data.keySet().toArray()[0].toString(), "Weapon");
+    weaponClass = data.keySet().toArray()[0].toString();
+    durability = data.get(weaponClass).get(0);
+    power = data.get(weaponClass).get(1);
+    weight = data.get(weaponClass).get(2);
+    maxRange = data.get(weaponClass).get(3);
+  }
+    
 
   public int getDurability(){
     return durability;

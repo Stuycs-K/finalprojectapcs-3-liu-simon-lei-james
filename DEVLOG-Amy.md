@@ -28,3 +28,6 @@ I have completed the subclasses for every character class, having given each uni
 
 ### 2025-06-01 - minor bug fixes, finished basic weapon implementation, small balance changes
 Every character now starts with a weapon. Weapons have been tested to ensure they all work as intended, and stats have been minorly tweaked, particularly for slimes to make them bulkier. Attacks are now rounded up to do zero damage if the calculation shows they will do less than or equal to zero damage. Lastly, the number of slimes on the field has increased, and they have been given an actual attack.
+
+### 2025-06-02 - edited sprites and started working on weapon constructors that use hashmaps
+Not much was done due to problems with the font file and thus a lack of sufficient testing. I have created better sprites for the characters, though I have kept the original files still in the game folder if we need them. Additionally, I've begun implementing constructors for the weapons that take a hashmap as a parameter.
