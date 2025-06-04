@@ -20,3 +20,23 @@ abstract class Consumable extends Item {
 
   abstract boolean use(Character character); // Returns false when consumable runs out
 }
+
+public class Vulnerary extends Consumable {
+  public Vulnerary() {
+    super("Vulnerary", 3);
+  }
+  public boolean use(Character character) {
+    character.getHealth().restore(10);
+    return consume();
+  }
+}
+
+public class PureWater extends Consumable {
+  public PureWater() {
+    super("Pure Water", 1);
+  }
+  public boolean use(Character character) {
+    character.applyCondition("Pure Water");
+    return consume();
+  }
+}

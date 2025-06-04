@@ -126,12 +126,13 @@ public class ActionBar {
   }
   
   public void displayItem() {
+    write(0, 0, displayed.toString());
     if (displayed instanceof Consumable) {
       setOptions(new String[] {"Inventory", "Consume"});
-      write(0, 0, displayed.toString());
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
       setOptions(new String[] {"Inventory", "Equip"});
+      write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     }
   }
 

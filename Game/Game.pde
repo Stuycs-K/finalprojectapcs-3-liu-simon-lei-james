@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.List;
+import java.util.Arrays;
 
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();

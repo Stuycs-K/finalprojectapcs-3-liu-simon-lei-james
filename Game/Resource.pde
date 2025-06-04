@@ -28,7 +28,8 @@ public class Resource {
   public void restore(int amount) {
     current = (current + amount) % max;
   }
-  public boolean consume(int amount) {
+  
+  public boolean consume(int amount) { // Returns false if there is not enough resource
     if (amount > current) return false;
     current -= amount;
     return true;
