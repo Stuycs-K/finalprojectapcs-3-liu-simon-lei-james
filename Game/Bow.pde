@@ -11,9 +11,6 @@ public class Bow extends Weapon{
 
   public void attack(Character wielder, Character target){
     super.attack(wielder, target);
-    if (wielder.getStat("Speed") >= target.getStat("Speed")){
-      super.attack(wielder, target);
-    }
     if (getMaterial().equals("Sleep")){
       target.applyCondition("Sleeping");
     }
