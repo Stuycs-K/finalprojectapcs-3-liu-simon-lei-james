@@ -8,6 +8,14 @@ public class Tome extends Weapon{
   public Tome(int durability, int power, int weight, String material){
     super(durability, power, weight, 2, material, "Tome");
   }
+  public Tome(String weaponType){
+    super(new HashMap<String, ArrayList<Integer>>() {{
+      put("Fireball Tome", new ArrayList(Arrays.asList(40, 3, 1, 2)));
+      put("Thunder Tome", new ArrayList(Arrays.asList(30, 5, 5, 2)));
+      put("Blizzard Tome", new ArrayList(Arrays.asList(10, 12, 10, 2)));
+    }}
+    , weaponType);
+  }
 
   public void attack(Character wielder, Character target){
     if (getMaterial().equals("Fireball")){

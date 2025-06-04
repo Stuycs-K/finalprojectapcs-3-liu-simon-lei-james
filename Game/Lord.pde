@@ -13,7 +13,7 @@ public class Lord extends Player {
     }}, new ArrayList<String>(Arrays.asList("Sword")));
 
     // Default Equipment
-    Weapon sword = new Sword(30, 7, 5, "Brave");
+    Weapon sword = new Sword("Brave Sword");
     give(sword);
     equip(sword);
   }

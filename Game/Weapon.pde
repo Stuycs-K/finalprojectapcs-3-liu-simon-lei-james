@@ -5,7 +5,7 @@ abstract class Weapon extends Item {
   private int maxRange;
   private String weaponClass;
   private String material;
-  
+
   HashMap<String, ArrayList<Integer>> data = new HashMap<String, ArrayList<Integer>>();
 
   public Weapon(int durability, int power, int weight, int maxRange, String material, String weaponClass){
@@ -17,7 +17,7 @@ abstract class Weapon extends Item {
     this.material = material;
     this.weaponClass = weaponClass;
   }
-  
+
   public Weapon(HashMap<String, ArrayList<Integer>> data, String weapon){ //expects weapon to be a valid key in the HashMap
     super(weapon, "Weapon");
     material = weapon.substring(0, weapon.indexOf(' '));
@@ -27,7 +27,7 @@ abstract class Weapon extends Item {
     weight = data.get(weapon).get(2);
     maxRange = data.get(weapon).get(3);
   }
-    
+
 
   public int getDurability(){
     return durability;
@@ -72,9 +72,11 @@ abstract class Weapon extends Item {
       damage = 0;
     }
     target.damage(damage);
+    actionBar.write(wielder.getName() + " dealt " + damage + " damage to " + target.getName());
     reduceDurability(1);
     if (canDouble(wielder, target)){
       target.damage(damage);
+      actionBar.write(0, 1, wielder.getName() + " dealt " + damage + " damage to " + target.getName());
       reduceDurability(1);
     }
   }

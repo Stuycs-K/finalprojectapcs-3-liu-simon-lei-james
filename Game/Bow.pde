@@ -1,8 +1,5 @@
 public class Bow extends Weapon{
   //intended types for now: Iron: 40 durability, 5 power; Silver: 20 durability, 8 power; Sleep: 20 durability, 3 power, can put people to sleep
-  public Bow(int durability, int power, int weight, String material){
-    super(durability, power, weight, 2, material, "Bow");
-  }
   public Bow(String weaponType){
     super(new HashMap<String, ArrayList<Integer>>() {{
       put("Iron Bow", new ArrayList(Arrays.asList(40, 5, 1, 2)));

@@ -7,7 +7,7 @@ public class Thief extends Player {
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Sword")));
-    Weapon sword = new Sword(40, 5, 1, "Iron");
+    Weapon sword = new Sword("Iron Sword");
     give(sword);
     equip(sword);
   }

@@ -1,10 +1,15 @@
 public class Sword extends Weapon {
   // Iron: 40 durability, 5 power; Silver: 20 durability, 10 power; Brave: 30 durability, 7 power, special ability to attack twice
 
-  public Sword(int durability, int power, int weight, String material){
-    super(durability, power, weight, 1, material, "Sword");
+  public Sword(String weaponType){
+    super(new HashMap<String, ArrayList<Integer>>() {{
+      put("Iron Sword", new ArrayList(Arrays.asList(40, 5, 1, 1)));
+      put("Silver Sword", new ArrayList(Arrays.asList(20, 8, 3, 1)));
+      put("Brave Sword", new ArrayList(Arrays.asList(30, 7, 5, 1)));
+    }}
+    , weaponType);
   }
-  
+
 
   public boolean calculateCondition(Character wielder){ //wielder called to see class. If the character is a rogue, then increased chance to inflict any status effect
     if (wielder.getCharacterClass().equals("Thief")){
