@@ -131,8 +131,11 @@ public class ActionBar {
       setOptions(new String[] {"Inventory", "Consume"});
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
-      setOptions(new String[] {"Inventory", "Equip"});
-      write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
+      setOptions(new String[] {"Inventory", "Equip", "Give"});
+      write(0, 1, "Durability: " + ((Weapon) displayed).getDurability());
+      write(1, 0, "Range: " + ((Weapon) displayed).getStat("Range"));
+      write(1, 1, "Power: " + ((Weapon) displayed).getStat("Power"));
+      write(2, 1, "Weight: " + ((Weapon) displayed).getStat("Weight"));
     }
   }
 
@@ -197,6 +200,12 @@ public class ActionBar {
       case "Consume":
         ((Player) highlighted.getEntity()).consume((Consumable) displayed);
         status = "None";
+        break;
+      case "Equip":
+        status = "Focus";
+        if (!((Player) highlighted.getEntity()).equip((Weapon) displayed)) {
+          write(((Player) highlighted.getEntity()).getName() + " is not proficient with " + displayed + "s");
+        }
         break;
       default:
         status = "Item";

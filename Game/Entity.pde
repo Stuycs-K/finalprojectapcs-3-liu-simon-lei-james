@@ -6,7 +6,6 @@ abstract public class Entity {
   public Entity(Tile startingPosition, String imageName) {
     position = startingPosition;
     img = loadImage(imageName.toLowerCase() + ".png");
-    img.resize(16, 0);
     startingPosition.addEntity(this);
   }
 

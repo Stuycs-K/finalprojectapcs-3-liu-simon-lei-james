@@ -42,5 +42,5 @@ public class Soldier extends Humanoid {
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Lance")));
   }
-  Weapon lance = new Lance("Javelin Lance");
+  Weapon lance = new Lance("Javelin");
 }

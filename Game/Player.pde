@@ -41,10 +41,12 @@ abstract class Player extends Character {
     };
   }
 
-  public void equip(Weapon weapon) {
+  public boolean equip(Weapon weapon) {
     if (weaponProficiencies.contains(weapon.getWeaponType())) {
       this.weapon = weapon;
+      return true;
     }
+    return false;
   }
 
   public String getWeapon() {

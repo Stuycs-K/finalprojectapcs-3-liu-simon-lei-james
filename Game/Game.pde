@@ -119,6 +119,7 @@ void mouseClicked() {
   if (mouseButton == RIGHT) {
     board.reset();
     actionBar.status = "None";
+    action = "None";
     if (highlighted != null) highlighted.transform("None");
     highlighted = null;
     return;
@@ -137,12 +138,13 @@ void mouseClicked() {
         for (Tile tile : range) {
           tile.transform("Blue");
           if (tile.getEntity() instanceof Enemy) tile.transform("Red");
+          if (tile.getEntity() instanceof Player) tile.transform("None");
         }
       }
       highlighted = clickedTile;
       actionBar.focus(clickedTile);
       highlighted.transform("Blue");
-    } else if (isDoing("Moving")) {
+    } else if (action.equals("Moving")) {
       board.reset();
       if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range
         actionBar.status = "None";
@@ -152,8 +154,9 @@ void mouseClicked() {
         highlighted = clickedTile;
         clickedTile.transform("Blue");
         actionBar.focus(clickedTile);
+        action = "None";
       }
-    } else if (isDoing("Attacking")) {
+    } else if (action.equals("Attacking")) {
       if (entity instanceof Enemy && clickedTile.getHue().equals("Red")) {
         actionBar.status = "None";
         ((Player) highlighted.getEntity()).attack((Character) entity);
