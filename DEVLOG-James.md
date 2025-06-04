@@ -44,3 +44,9 @@ This document must be updated daily every time you finish a work session.
 ### 2025-05-02 - Even More UI Work
 - Adapted game to be able to handle additional enemies
 - Added buttons to view character inventories and stats
+
+### 2025-05-03 - Additional Implementations
+- Added functionality for ranged attacks
+- Added button to attack nearby enemies
+- Moved getTilesInRange and getTilesInRadius to Tile class
+- Scaled up the game by a factor of 2
