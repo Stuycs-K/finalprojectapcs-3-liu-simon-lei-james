@@ -1,9 +1,9 @@
 abstract class Consumable extends Item {
   protected int uses;
 
-  public Consumable(String name) {
+  public Consumable(String name, int uses) {
     super(name, "Consumable");
-    uses = 3;
+    this.uses = uses;
   }
 
   public void refill(int amount) {

@@ -75,8 +75,9 @@ abstract class Weapon extends Item {
       if (getWeaponClass().equals("Sword")){
         damage--;
       }
-    if (damage <= 0){
-      damage = 0;
+      if (damage <= 0){
+        damage = 0;
+      }
     }
     target.damage(damage);
     actionBar.write(wielder.getName() + " dealt " + damage + " damage to " + target.getName());

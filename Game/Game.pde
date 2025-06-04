@@ -107,6 +107,9 @@ void keyPressed() {
     enemies.get(i).takeTurn();
     enemies.get(i).endTurn();
   }
+  for (int i = 0; i < players.size(); i++) {
+    players.get(i).turn = true;
+  }
   turn++;
   actionBar.write("Turn " + turn);
 }
@@ -127,20 +130,17 @@ void mouseClicked() {
     Entity entity = clickedTile.getEntity();
     if (action.equals("None") || entity instanceof Player) { // Selecting New Tile
       board.reset();
-      if (entity instanceof Player) { // Select Player
+      if (entity instanceof Player && ((Player) entity).turn) { // Select Player
         action = "Moving";
-        highlighted = clickedTile;
-        actionBar.focus(clickedTile);
         ArrayList<Tile> range = ((Player) entity).movementRange();
         for (Tile tile : range) {
           tile.transform("Blue");
           if (tile.getEntity() instanceof Enemy) tile.transform("Red");
         }
-      } else { // Select Enemy, Chest, or Tile
-        highlighted = clickedTile;
-        clickedTile.transform("Blue");
-        actionBar.focus(clickedTile);
-      } 
+      }
+      highlighted = clickedTile;
+      actionBar.focus(clickedTile);
+      highlighted.transform("Blue");
     } else if (isDoing("Moving")) {
       board.reset();
       if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range

@@ -10,6 +10,7 @@ public class Thief extends Player {
     Weapon sword = new Sword("Iron Sword");
     give(sword);
     equip(sword);
+    give(new PureWater());
   }
 
 }

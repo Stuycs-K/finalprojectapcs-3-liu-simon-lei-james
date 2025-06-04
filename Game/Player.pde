@@ -1,6 +1,7 @@
 abstract class Player extends Character {
   private ArrayList<String> weaponProficiencies;
-
+  public boolean turn = true;
+  
   private Weapon weapon;
   private ArrayList<Item> inventory = new ArrayList<Item>();
 
@@ -26,6 +27,19 @@ abstract class Player extends Character {
     }
     return output;
   }
+  
+  public Item getItem(String name) {
+    for (Item item : inventory) {
+      if (item.toString().equals(name)) return item;
+    }
+    return null;
+  }
+  
+  public void consume(Consumable item) {
+    if(item.use(this)) {
+      inventory.remove(item);
+    };
+  }
 
   public void equip(Weapon weapon) {
     if (weaponProficiencies.contains(weapon.getWeaponClass())) {
@@ -39,6 +53,8 @@ abstract class Player extends Character {
   }
 
   public void attack(Character other) {
+    System.out.println("HERE");
+    turn = false;
     if (weapon == null){
       other.damage(5);
     }

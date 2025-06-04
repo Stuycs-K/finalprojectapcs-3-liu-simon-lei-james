@@ -10,5 +10,4 @@ public class Soldier extends HumanEnemy {
   }
   
   Weapon lance = new Lance("Javelin Lance");
-  equip(lance);
 }

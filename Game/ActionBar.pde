@@ -11,7 +11,8 @@ public class ActionBar {
   private int PADDING = FONT_SIZE / 4;
   private int BORDER = 1;
 
-  public String status = "None"; // Message, None, Focus, Inventory
+  public String status = "None"; // Message, None, Focus, Inventory, Item
+  public Item displayed = null; // Displayed Item
   private String message;
 
   public ActionBar() {
@@ -79,8 +80,10 @@ public class ActionBar {
       write(0, 0, character.getCharacterClass() + " " + character.getName());
       if (character instanceof Player) {
         write(0, 1, ((Player) character).getWeapon());
-        setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
-        displayOptions();
+        if (((Player) character).turn) {
+          setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
+          displayOptions();
+        }
       } else {
         write(0, 1, tile.getTerrain() + " Tile");
       }
@@ -115,6 +118,20 @@ public class ActionBar {
       case "Conditions":
         displayOptions();
         break;
+      case "Item":
+        displayItem();
+        displayOptions();
+        break;
+    }
+  }
+  
+  public void displayItem() {
+    if (displayed instanceof Consumable) {
+      setOptions(new String[] {"Inventory", "Consume"});
+      write(0, 0, displayed.toString());
+      write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
+    } else {
+      setOptions(new String[] {"Inventory", "Equip"});
     }
   }
 
@@ -156,7 +173,7 @@ public class ActionBar {
         options = new String[8];
         options[0] = "Return";
         for (int i = 0; i < conditions.size(); i++) {
-          options[7 - i] = conditions.get(i).toString();
+          options[7 - i] = conditions.get(i).toString() +  " " + conditions.get(i).getDuration();
         }
         setOptions(options);
         status = "Conditions";
@@ -170,6 +187,20 @@ public class ActionBar {
         for (Tile tile : range) {
           if (tile.getEntity() instanceof Enemy) tile.transform("Red");
         }
+        break;
+      case "End Turn":
+        Game.action = "None";
+        ((Player) highlighted.getEntity()).turn = false;
+        status = "None";
+        break;
+      case "Consume":
+        ((Player) highlighted.getEntity()).consume((Consumable) displayed);
+        status = "None";
+        break;
+      default:
+        status = "Item";
+        displayed = ((Player) highlighted.getEntity()).getItem(action);
+        displayItem();
         break;
     }
   }
