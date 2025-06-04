@@ -36,6 +36,10 @@ public class Tile {
     hue = newColor;
     display();
   }
+  
+  public String getHue() {
+    return hue;
+  }
 
   public boolean hasEntity() {
     return entity != null;

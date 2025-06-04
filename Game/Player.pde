@@ -46,4 +46,9 @@ abstract class Player extends Character {
       weapon.attack(this, other);
     }
   }
+  
+  public ArrayList<Tile> attackRange() {
+    System.out.println(weapon.getRange());
+    return getPosition().tilesInRadius(weapon.getRange());
+  }
 }

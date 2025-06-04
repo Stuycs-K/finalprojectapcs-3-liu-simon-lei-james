@@ -112,19 +112,21 @@ void keyPressed() {
 }
 
 void mouseClicked() {
-  board.reset();
   if (mouseButton == RIGHT) {
+    board.reset();
     actionBar.status = "None";
     if (highlighted != null) highlighted.transform("None");
     highlighted = null;
     return;
   }
   if (mouseY > height - ACTION_BAR_SIZE) {
+    board.reset();
     actionBar.click();
   } else {
     Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
     Entity entity = clickedTile.getEntity();
-    if (action.equals("None")) { // Selecting New Tile
+    if (action.equals("None") || entity instanceof Player) { // Selecting New Tile
+      board.reset();
       if (entity instanceof Player) { // Select Player
         action = "Moving";
         highlighted = clickedTile;
@@ -140,6 +142,7 @@ void mouseClicked() {
         actionBar.focus(clickedTile);
       } 
     } else if (isDoing("Moving")) {
+      board.reset();
       if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range
         actionBar.status = "None";
         highlighted = null;
@@ -150,9 +153,17 @@ void mouseClicked() {
         actionBar.focus(clickedTile);
       }
     } else if (isDoing("Attacking")) {
-      if (entity instanceof Enemy) {
-        // TO BE IMPLEMENTED
+      if (entity instanceof Enemy && clickedTile.getHue().equals("Red")) {
+        actionBar.status = "None";
+        ((Player) highlighted.getEntity()).attack((Character) entity);
+        highlighted = null;
+        action = "None";
+      } else { // Highlight New Tile
+        highlighted = clickedTile;
+        clickedTile.transform("Blue");
+        actionBar.focus(clickedTile);
       }
+      board.reset();
     }
   }
 }

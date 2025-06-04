@@ -164,6 +164,13 @@ public class ActionBar {
       case "Return":
         status = "Focus";
         break;
+      case "Attack":
+        Game.action = "Attacking";
+        ArrayList<Tile> range = ((Player) highlighted.getEntity()).attackRange();
+        for (Tile tile : range) {
+          if (tile.getEntity() instanceof Enemy) tile.transform("Red");
+        }
+        break;
     }
   }
 }
