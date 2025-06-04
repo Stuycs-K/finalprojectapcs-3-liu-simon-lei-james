@@ -1,6 +1,6 @@
 public class Soldier extends HumanEnemy {
   public Soldier(Tile startingPosition) {
-    super(14, 5, startingPosition, "Slime", new HashMap<String, Integer>() {{
+    super(14, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
       put("Strength", 3);
       put("Speed", 2);
       put("Defense", 8);
@@ -9,7 +9,6 @@ public class Soldier extends HumanEnemy {
     }}, new ArrayList<String>(Arrays.asList("Lance")));
   }
   
-  public void attack(Character target) { //uses lances
-    
-  }
+  Weapon lance = new Lance("Javelin Lance");
+  equip(lance);
 }

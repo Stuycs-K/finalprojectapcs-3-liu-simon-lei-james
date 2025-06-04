@@ -68,6 +68,13 @@ abstract class Weapon extends Item {
     else{
       damage = wielder.getStat("Strength") + power - target.getStat("Defense");
     }
+    if (target.getCharacterClass().equals("Soldier")){
+      if (getWeaponClass().equals("Axe")){
+        damage++;
+      }
+      if (getWeaponClass().equals("Sword")){
+        damage--;
+      }
     if (damage <= 0){
       damage = 0;
     }
