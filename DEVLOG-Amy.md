@@ -31,3 +31,6 @@ Every character now starts with a weapon. Weapons have been tested to ensure the
 
 ### 2025-06-02 - edited sprites and started working on weapon constructors that use hashmaps
 Not much was done due to problems with the font file and thus a lack of sufficient testing. I have created better sprites for the characters, though I have kept the original files still in the game folder if we need them. Additionally, I've begun implementing constructors for the weapons that take a hashmap as a parameter.
+
+### 2025-06-03 - started implementation of human enemies
+I have begun implementing human enemies that can use weapons, starting with Soldier. Along with soldiers, I have also added lances to the game, and I am also going to implement the weapon triangle into the game. This is a mechanic in Fire Emblem where swords hit harder and are more accurate against axes, axes hit harder and are more accurate against lances, and lances have the same effect on swords. I plan to implement accuracy soon as well.
