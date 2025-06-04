@@ -75,6 +75,7 @@ abstract class Weapon extends Item {
       if (getWeaponClass().equals("Sword")){
         damage--;
       }
+    }
     if (damage <= 0){
       damage = 0;
     }

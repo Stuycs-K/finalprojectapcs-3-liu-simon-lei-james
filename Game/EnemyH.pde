@@ -1,9 +1,10 @@
-abstract class HumanEnemy extends Enemy{
+abstract class EnemyH extends Enemy{
   
   private ArrayList<String> weaponProficiencies;
+  
   private Weapon weapon;
   
-  public HumanEnemy(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
+  public EnemyH(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
     super(maxHealth, maxMovement, startingPosition, characterClass, stats);
     this.weaponProficiencies = weaponProficiencies;
   }
