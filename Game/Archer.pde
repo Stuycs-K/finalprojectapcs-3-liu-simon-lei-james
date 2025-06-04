@@ -1,6 +1,6 @@
 public class Archer extends Player {
   public Archer(Tile startingPosition) {
-    super(10, 6, startingPosition, "Archer", new HashMap<String, Integer>() {{
+    super(20, 6, startingPosition, "Archer", new HashMap<String, Integer>() {{
       put("Strength", 6);
       put("Speed", 10);
       put("Defense", 3);

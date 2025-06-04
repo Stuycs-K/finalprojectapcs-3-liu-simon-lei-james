@@ -1,6 +1,6 @@
 public class Soldier extends EnemyH {
   public Soldier(Tile startingPosition) {
-    super(14, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
+    super(22, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
       put("Strength", 3);
       put("Speed", 2);
       put("Defense", 8);

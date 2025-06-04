@@ -1,7 +1,7 @@
 public class Thief extends Player {
   public Thief(Tile startingPosition) {
-    super(8, 7, startingPosition, "Thief", new HashMap<String, Integer>() {{
-      put("Strength", 3);
+    super(18, 7, startingPosition, "Thief", new HashMap<String, Integer>() {{
+      put("Strength", 5);
       put("Speed", 12);
       put("Defense", 3);
       put("Magic", 0);

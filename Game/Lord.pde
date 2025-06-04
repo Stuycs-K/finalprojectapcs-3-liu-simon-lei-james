@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Lord extends Player {
   public Lord(Tile startingPosition) {
-    super(15, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
+    super(24, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
       put("Strength", 7);
       put("Speed", 9);
       put("Defense", 5);
