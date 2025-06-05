@@ -11,7 +11,8 @@ public class ActionBar {
   private int PADDING = FONT_SIZE / 4;
   private int BORDER = 1;
 
-  public String status = "None"; // Message, None, Focus, Inventory
+  public String status = "None"; // Message, None, Focus, Inventory, Item
+  public Item displayed = null; // Displayed Item
   private String message;
 
   public ActionBar() {
@@ -26,7 +27,7 @@ public class ActionBar {
     rect(X - 2, Y - 2, WIDTH + 2, HEIGHT + 2, 5);
     fill(255);
   }
-  
+
   private void write(int col, int row, String text) {
     text(text, X + CELL_WIDTH * col + PADDING * 4, Y + PADDING * 4 + row * (CELL_HEIGHT));
   }
@@ -36,7 +37,7 @@ public class ActionBar {
     message = text;
     write(0, 0, text);
   }
-  
+
   public void displayStats(Character character) {
     write(0, 0, character.getCharacterClass() + " " + character.getName());
     write(0, 1, "Speed: " + character.getStat("Speed"));
@@ -45,11 +46,11 @@ public class ActionBar {
     write(2, 0, "Magic: " + character.getStat("Magic"));
     write(2, 1, "Resistance: " + character.getStat("Resistance"));
   }
-  
+
   public void displayOptions() {
     int x = X + WIDTH - CELL_WIDTH + PADDING;
     int y = Y + PADDING - BORDER;
-    
+
     for (int i = 0; i < options.length; i++) {
       rect(x, y, CELL_WIDTH - PADDING * 2, CELL_HEIGHT - PADDING * 2, 5);
       if (options[i] != null) {
@@ -67,20 +68,22 @@ public class ActionBar {
   }
 
   public void setOptions(String[] options) {
-    this.options = options; 
+    this.options = options;
   }
 
   public void focus(Tile tile) {
     status = "Focus";
     drawBackground();
-    
+
     if (tile.hasEntity() && tile.getEntity() instanceof Character) {
       Character character = (Character) tile.getEntity();
       write(0, 0, character.getCharacterClass() + " " + character.getName());
       if (character instanceof Player) {
         write(0, 1, ((Player) character).getWeapon());
-        setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
-        displayOptions();
+        if (((Player) character).turn) {
+          setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
+          displayOptions();
+        }
       } else {
         write(0, 1, tile.getTerrain() + " Tile");
       }
@@ -115,6 +118,24 @@ public class ActionBar {
       case "Conditions":
         displayOptions();
         break;
+      case "Item":
+        displayItem();
+        displayOptions();
+        break;
+    }
+  }
+
+  public void displayItem() {
+    write(0, 0, displayed.toString());
+    if (displayed instanceof Consumable) {
+      setOptions(new String[] {"Inventory", "Consume"});
+      write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
+    } else {
+      setOptions(new String[] {"Inventory", "Equip", "Give"});
+      write(0, 1, "Durability: " + ((Weapon) displayed).getDurability());
+      write(1, 0, "Range: " + ((Weapon) displayed).getStat("Range"));
+      write(1, 1, "Power: " + ((Weapon) displayed).getStat("Power"));
+      write(2, 1, "Weight: " + ((Weapon) displayed).getStat("Weight"));
     }
   }
 
@@ -156,7 +177,7 @@ public class ActionBar {
         options = new String[8];
         options[0] = "Return";
         for (int i = 0; i < conditions.size(); i++) {
-          options[7 - i] = conditions.get(i).toString();
+          options[7 - i] = conditions.get(i).toString() +  " " + conditions.get(i).getDuration();
         }
         setOptions(options);
         status = "Conditions";
@@ -170,6 +191,26 @@ public class ActionBar {
         for (Tile tile : range) {
           if (tile.getEntity() instanceof Enemy) tile.transform("Red");
         }
+        break;
+      case "End Turn":
+        Game.action = "None";
+        ((Player) highlighted.getEntity()).turn = false;
+        status = "None";
+        break;
+      case "Consume":
+        ((Player) highlighted.getEntity()).consume((Consumable) displayed);
+        status = "None";
+        break;
+      case "Equip":
+        status = "Focus";
+        if (!((Player) highlighted.getEntity()).equip((Weapon) displayed)) {
+          write(((Player) highlighted.getEntity()).getName() + " is not proficient with " + displayed + "s");
+        }
+        break;
+      default:
+        status = "Item";
+        displayed = ((Player) highlighted.getEntity()).getItem(action);
+        displayItem();
         break;
     }
   }

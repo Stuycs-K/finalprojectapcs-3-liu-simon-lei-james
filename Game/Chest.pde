@@ -3,7 +3,7 @@ public class Chest extends Entity {
 
   public Chest(Tile startingPosition) {
     super(startingPosition, "Chest");
-    content = new Sword("Iron Sword");
+    content = new Sword("Iron");
   }
 
   public void collect(Player player) {

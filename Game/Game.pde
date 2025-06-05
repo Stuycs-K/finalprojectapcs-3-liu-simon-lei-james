@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.List;
+import java.util.Arrays;
 
 public static final int[][] DIRECTIONS = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 public static final Random RANDOM = new Random();
@@ -16,8 +17,8 @@ private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Ar
 /* additional classes that could be nice to have:
    Cavalier/Paladin: well-rounded stats, high movement, uses lances/axes/swords, can move after an attack (will change the other classes to automatically end their turn after attacking if cavalier does get added), gets punished harder by terrain (higher movement reduction from forests, can't cross hills/mountains at all)
    Pegasus Knight: emphasis on speed, resistance, and avoid (if accuracy is implemented), high movement, uses lances/swords, can move after an attack, ignores terrain, weak to arrows
-   Wyvern Knight: emphasis on health, attack, and defense, high movement, uses lances/axes, can move after an attack, ignores terrain, weak to all magic 
-   (this is for balancing, wyverns are consistently among the best classes in Fire Emblem games due to high mobility alongside high strength and bulk without compromising speed. To make them less dominant, emphasize their usual vulnerabilty to magic, something 
+   Wyvern Knight: emphasis on health, attack, and defense, high movement, uses lances/axes, can move after an attack, ignores terrain, weak to all magic
+   (this is for balancing, wyverns are consistently among the best classes in Fire Emblem games due to high mobility alongside high strength and bulk without compromising speed. To make them less dominant, emphasize their usual vulnerabilty to magic, something
    pegasus knights are usually good against)
 */
 private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arrays.asList("Slime"));
@@ -114,6 +115,9 @@ void keyPressed() {
     enemies.get(i).takeTurn();
     enemies.get(i).endTurn();
   }
+  for (int i = 0; i < players.size(); i++) {
+    players.get(i).turn = true;
+  }
   turn++;
   actionBar.write("Turn " + turn);
 }
@@ -122,6 +126,7 @@ void mouseClicked() {
   if (mouseButton == RIGHT) {
     board.reset();
     actionBar.status = "None";
+    action = "None";
     if (highlighted != null) highlighted.transform("None");
     highlighted = null;
     return;
@@ -134,21 +139,19 @@ void mouseClicked() {
     Entity entity = clickedTile.getEntity();
     if (action.equals("None") || entity instanceof Player) { // Selecting New Tile
       board.reset();
-      if (entity instanceof Player) { // Select Player
+      if (entity instanceof Player && ((Player) entity).turn) { // Select Player
         action = "Moving";
-        highlighted = clickedTile;
-        actionBar.focus(clickedTile);
         ArrayList<Tile> range = ((Player) entity).movementRange();
         for (Tile tile : range) {
           tile.transform("Blue");
           if (tile.getEntity() instanceof Enemy) tile.transform("Red");
+          if (tile.getEntity() instanceof Player) tile.transform("None");
         }
-      } else { // Select Enemy, Chest, or Tile
-        highlighted = clickedTile;
-        clickedTile.transform("Blue");
-        actionBar.focus(clickedTile);
-      } 
-    } else if (isDoing("Moving")) {
+      }
+      highlighted = clickedTile;
+      actionBar.focus(clickedTile);
+      highlighted.transform("Blue");
+    } else if (action.equals("Moving")) {
       board.reset();
       if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range
         actionBar.status = "None";
@@ -158,8 +161,9 @@ void mouseClicked() {
         highlighted = clickedTile;
         clickedTile.transform("Blue");
         actionBar.focus(clickedTile);
+        action = "None";
       }
-    } else if (isDoing("Attacking")) {
+    } else if (action.equals("Attacking")) {
       if (entity instanceof Enemy && clickedTile.getHue().equals("Red")) {
         actionBar.status = "None";
         ((Player) highlighted.getEntity()).attack((Character) entity);

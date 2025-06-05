@@ -74,6 +74,9 @@ abstract class Character extends Entity {
     if (hasCondition("Poison")) {
       damage(health.getMax() / 8);
     }
+    if (hasCondition("Pure Water")) {
+      currentStats.replace("Resistance", currentStats.get("Resistance") - 2);
+    }
     for (int i = 0; i < conditions.size(); i++) {
       conditions.get(i).reduceDuration();
       if (conditions.get(i).getDuration() == 0) {
@@ -165,12 +168,18 @@ abstract class Character extends Entity {
     if (hasCondition(name)) {
       getCondition(name).reset();
     } else {
-      conditions.add(new Condition(name, 3));
+      if (name.equals("Pure Water")) {
+        conditions.add(new Condition(name, 4));
+      } else {
+        conditions.add(new Condition(name, 3));
+      }
       actionBar.write(getName() + " is now " + name);
     }
     switch (name) {
       case "Bleeding":
       currentStats.replace("Defense", defaultStats.get("Defense") / 2);
+      case "Pure Water":
+      currentStats.replace("Resistance", defaultStats.get("Resistance") + 8);
       break;
     }
   }
