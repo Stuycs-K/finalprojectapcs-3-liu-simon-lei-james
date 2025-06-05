@@ -6,7 +6,7 @@ abstract class Player extends Character {
   private ArrayList<Item> inventory = new ArrayList<Item>();
 
   public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
-    super(maxHealth, maxMovement, startingPosition, characterClass, stats);
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats, true);
     this.weaponProficiencies = weaponProficiencies;
   }
 
@@ -49,9 +49,8 @@ abstract class Player extends Character {
     return false;
   }
 
-  public String getWeapon() {
-    if (weapon == null) return "No Weapon";
-    return weapon.toString();
+  public Weapon getWeapon() {
+    return weapon;
   }
 
   public void attack(Character other) {
@@ -66,6 +65,10 @@ abstract class Player extends Character {
 
   public ArrayList<Tile> attackRange() {
     return getPosition().tilesInRadius(weapon.getStat("Range"));
+  }
+  
+  public boolean isPlayer(){
+    return true;
   }
 }
 

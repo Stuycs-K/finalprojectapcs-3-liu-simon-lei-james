@@ -1,6 +1,7 @@
 abstract class Character extends Entity {
   private String name;
   private String characterClass;
+  private boolean human;
 
   private Resource health;
   private Resource movement;
@@ -9,7 +10,7 @@ abstract class Character extends Entity {
 
   private ArrayList<Condition> conditions;
 
-  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats) {
+  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, boolean isHuman) {
     super(startingPosition, characterClass);
 
     this.name = "John";
@@ -40,6 +41,10 @@ abstract class Character extends Entity {
   }
   public int getStat(String stat) {
     return currentStats.get(stat);
+  }
+  
+  public boolean isHuman(){
+    return human;
   }
 
   public void damage(int ouch){

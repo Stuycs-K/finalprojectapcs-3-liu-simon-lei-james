@@ -6,7 +6,7 @@ public class Slime extends Enemy {
       put("Defense", 5);
       put("Magic", 0);
       put("Resistance", 6);
-    }});
+    }}, false);
   }
   public void attack(Character target) {
     int damage = getStat("Strength") - target.getStat("Defense");

@@ -79,7 +79,7 @@ public class ActionBar {
       Character character = (Character) tile.getEntity();
       write(0, 0, character.getCharacterClass() + " " + character.getName());
       if (character instanceof Player) {
-        write(0, 1, ((Player) character).getWeapon());
+        write(0, 1, ((Player) character).getWeapon().toString());
         if (((Player) character).turn) {
           setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
           displayOptions();

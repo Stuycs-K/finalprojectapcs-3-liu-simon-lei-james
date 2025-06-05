@@ -3,7 +3,7 @@ abstract class Humanoid extends Enemy {
   private Weapon weapon;
 
   public Humanoid(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
-    super(maxHealth, maxMovement, startingPosition, characterClass, stats);
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats, true);
     this.weaponProficiencies = weaponProficiencies;
   }
 
@@ -13,9 +13,8 @@ abstract class Humanoid extends Enemy {
     }
   }
 
-  public String getWeapon() {
-    if (weapon == null) return "No Weapon";
-    return weapon.toString();
+  public Weapon getWeapon() {
+    return weapon;
   }
 
   public void attack(Character other) {
