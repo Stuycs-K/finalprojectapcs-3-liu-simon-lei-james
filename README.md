@@ -6,4 +6,4 @@ This project is a turn-based strategy role-playing game taking inspiration from 
 # Intended usage:
 
 A description as to how the project will be used (describe the user interface). (CHANGE THIS!!!!!)
-There will be 5 maps to showcase features like fighting, doubling, and terrain affecting combat, along with one final full map to mimic a standard rout map in regular Fire Emblem. Click on a player to
+There will be 5 maps to showcase features like fighting, doubling, and terrain affecting combat, along with one final full map to mimic a standard rout map in regular Fire Emblem. Click on a player to move them and attack or check their stats, conditions, weapons. When implemented, switching between the maps will be done by pressing the number keys.

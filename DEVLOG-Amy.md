@@ -34,3 +34,6 @@ Not much was done due to problems with the font file and thus a lack of sufficie
 
 ### 2025-06-03 - started implementation of human enemies
 I have begun implementing human enemies that can use weapons, starting with Soldier. Along with soldiers, I have also added lances to the game, and I am also going to implement the weapon triangle into the game. This is a mechanic in Fire Emblem where swords hit harder and are more accurate against axes, axes hit harder and are more accurate against lances, and lances have the same effect on swords. I plan to implement accuracy soon as well.
+
+### 2025-06-04 - balancing
+I tweaked some code and balanced the unit stats. I also wrote up the README. I was unable to work at home due to junior prom.
