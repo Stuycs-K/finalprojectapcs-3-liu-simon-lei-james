@@ -47,10 +47,12 @@ abstract class Weapon extends Item {
       damage = wielder.getStat("Strength") + getStat("Power") - target.getStat("Defense");
     }
     if (wielder.isHuman() && target.isHuman()) { // Soldier special power
-      if (getWeaponType().equals("Axe")) damage++;
-      if (getWeaponType().equals("Sword")) damage--;
-      if (damage <= 0) damage = 0;
+      if (target.getWeapon().getWeaponType().equals("Lance")){
+        if (getWeaponType().equals("Axe")) damage++;
+        if (getWeaponType().equals("Sword")) damage--;
+      }
     }
+    if (damage <= 0) damage = 0;
     target.damage(damage);
     actionBar.write(wielder.getName() + " dealt " + damage + " damage to " + target.getName());
     reduceDurability(1);

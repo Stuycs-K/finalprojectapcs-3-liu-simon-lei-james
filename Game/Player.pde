@@ -41,18 +41,6 @@ abstract class Player extends Character {
     };
   }
 
-  public boolean equip(Weapon weapon) {
-    if (weaponProficiencies.contains(weapon.getWeaponType())) {
-      this.weapon = weapon;
-      return true;
-    }
-    return false;
-  }
-
-  public Weapon getWeapon() {
-    return weapon;
-  }
-
   public void attack(Character other) {
     turn = false;
     if (weapon == null){

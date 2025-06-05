@@ -7,16 +7,6 @@ abstract class Humanoid extends Enemy {
     this.weaponProficiencies = weaponProficiencies;
   }
 
-  public void equip(Weapon weapon) {
-    if (weaponProficiencies.contains(weapon.getWeaponType())) {
-      this.weapon = weapon;
-    }
-  }
-
-  public Weapon getWeapon() {
-    return weapon;
-  }
-
   public void attack(Character other) {
     if (weapon == null){
       other.damage(5);
