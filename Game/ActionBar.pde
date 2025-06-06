@@ -39,7 +39,7 @@ public class ActionBar {
   }
 
   public void displayStats(Character character) {
-    write(0, 0, character.getCharacterClass() + " " + character.getName());
+    write(0, 0, "Skill: " + character.getStat("Skill"));
     write(0, 1, "Speed: " + character.getStat("Speed"));
     write(1, 0, "Strength: " + character.getStat("Strength"));
     write(1, 1, "Defense: " + character.getStat("Defense"));
@@ -139,14 +139,15 @@ public class ActionBar {
   }
 
   public void displayItem() {
-    write(0, 0, displayed.toString());
     if (displayed instanceof Consumable) {
-      setOptions(new String[] {"Inventory", "Consume"});
+      write(0, 0, displayed.toString());
+      setOptions(new String[] {"Inventory", "Consume", "Give"});
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
       setOptions(new String[] {"Inventory", "Equip", "Give"});
-      write(0, 1, "Durability: " + ((Weapon) displayed).getDurability());
-      write(1, 0, "Range: " + ((Weapon) displayed).getStat("Range"));
+      write(0, 0, "Durability: " + ((Weapon) displayed).getDurability());
+      write(0, 1, "Range: " + ((Weapon) displayed).getStat("Range"));
+      write(1, 0, "Hit: " + ((Weapon) displayed).getStat("Hit"));
       write(1, 1, "Power: " + ((Weapon) displayed).getStat("Power"));
       write(2, 1, "Weight: " + ((Weapon) displayed).getStat("Weight"));
     }
