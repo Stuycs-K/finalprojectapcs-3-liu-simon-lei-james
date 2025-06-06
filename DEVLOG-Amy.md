@@ -37,3 +37,6 @@ I have begun implementing human enemies that can use weapons, starting with Sold
 
 ### 2025-06-04 - balancing
 I tweaked some code and balanced the unit stats. I also wrote up the README. I was unable to work at home due to junior prom.
+
+### 2025-06-05 - moved Weapon to character, implemented weapon triangle and hit chances
+To help with implementing the weapon triangle, I've moved over the weapon methods to the Character class. The weapon triangle is a mechanic in Fire Emblem where swords, axes, and lances are all more effective against the next weapon but less effective against the previous. This is due to both an increase in weapon might and hit rate during combat. Speaking of hit rate, I have implemented that as well. The formula is copied over from Fire Emblem, calculated mainly through the attacker's skill, their weapon's hit, and their enemy's avoid. I may add a luck stat to add to avoid, if I do then I may implement a critical hit rate formula.
