@@ -11,9 +11,9 @@ public static final int ACTION_BAR_SIZE = FONT_SIZE * 6;
 public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Faster
 
-public static final int BOARD = 0;
+public static final int BOARD = 1;
 
-private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
+private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief", "Cavalier"));
 /* additional classes that could be nice to have:
    Cavalier/Paladin: well-rounded stats, high movement, uses lances/axes/swords, can move after an attack (will change the other classes to automatically end their turn after attacking if cavalier does get added), gets punished harder by terrain (higher movement reduction from forests, can't cross hills/mountains at all)
    Pegasus Knight: emphasis on speed, resistance, and avoid (if accuracy is implemented), high movement, uses lances/swords, can move after an attack, ignores terrain, weak to arrows
@@ -75,6 +75,9 @@ void setup() {
         break;
       case "Thief":
         player = new Thief(spawnLocation);
+        break;
+      case "Cavalier":
+        player = new Cavalier(spawnLocation);
         break;
      }
      players.add(player);

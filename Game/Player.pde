@@ -68,7 +68,7 @@ abstract class Player extends Character {
 
 public class Archer extends Player {
   public Archer(Tile startingPosition) {
-    super((RANDOM.nextInt(3) - 1) + 10, 6, startingPosition, "Archer", new HashMap<String, Integer>() {{
+    super((RANDOM.nextInt(3) - 1) + 17, 6, startingPosition, "Archer", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(5) - 1) + 6);
       put("Skill", 7);
       put("Speed", (RANDOM.nextInt(5) - 1) + 10);
@@ -81,7 +81,7 @@ public class Archer extends Player {
 
 public class Barbarian extends Player{
   public Barbarian(Tile startingPosition) {
-    super( (RANDOM.nextInt(5) - 2) + 18, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
+    super( (RANDOM.nextInt(5) - 2) + 29, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(5) - 2) + 10);
       put("Skill", 1);
       put("Speed", 3);
@@ -95,7 +95,7 @@ public class Barbarian extends Player{
 
 public class Lord extends Player {
   public Lord(Tile startingPosition) {
-    super( (RANDOM.nextInt(3) - 1) + 15, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
+    super( (RANDOM.nextInt(3) - 1) + 18, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(3) - 1) + 7);
       put("Skill", 5);
       put("Speed", (RANDOM.nextInt(3) - 1) + 9);
@@ -108,7 +108,7 @@ public class Lord extends Player {
 
 public class Mage extends Player{
   public Mage(Tile startingPosition) {
-    super(5, 4, startingPosition, "Mage", new HashMap<String, Integer>() {{
+    super(17, 4, startingPosition, "Mage", new HashMap<String, Integer>() {{
       put("Strength", 0);
       put("Skill", 6);
       put("Speed", (RANDOM.nextInt(3) - 1) + 6);
@@ -121,14 +121,27 @@ public class Mage extends Player{
 
 public class Thief extends Player {
   public Thief(Tile startingPosition) {
-    super( (RANDOM.nextInt(3) - 1) + 8, 7, startingPosition, "Thief", new HashMap<String, Integer>() {{
+    super( (RANDOM.nextInt(3) - 1) + 18, 6, startingPosition, "Thief", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(3) - 1) + 3);
-      put("Skill", 10);
+      put("Skill", 4);
       put("Speed", (RANDOM.nextInt(5) - 1) + 12);
       put("Defense", 3);
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Iron"));
     give(new PureWater());
+  }
+}
+
+public class Cavalier extends Player {
+  public Cavalier(Tile startingPosition){
+    super (22, 8, startingPosition, "Cavalier", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(3) - 1) + 7);
+      put("Skill", 5);
+      put("Speed", (RANDOM.nextInt(5) - 1) + 7);
+      put("Defense", 5);
+      put("Magic", 0);
+      put("Resistance", 2);
+    }}, new ArrayList<String>(Arrays.asList("Sword", "Axe", "Lance")), new Lance("Javelin"));
   }
 }
