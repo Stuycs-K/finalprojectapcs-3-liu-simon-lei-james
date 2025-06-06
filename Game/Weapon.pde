@@ -84,32 +84,31 @@ abstract class Weapon extends Item {
     }
     if (damage <= 0) damage = 0;
     int actualHit = hit - avoid;
-    if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit){ //hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
+    if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit) { //hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
       target.damage(damage);
-      actionBar.write(wielder.getName() + " dealt " + damage + " damage to " + target.getName());
+      actionBar.write(wielder.toString() + " dealt " + damage + " damage to " + target.toString());
       reduceDurability(1);
     }
     else{
-      actionBar.write(wielder.getName() + " missed!");
+      actionBar.write(wielder.toString() + " missed!");
     }
-    if (attackSpeed >= (target.getStat("Speed") + 4)){
+    if (attackSpeed >= (target.getStat("Speed") + 4)) {
       if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit){
         target.damage(damage);
-        actionBar.write(0, 1, wielder.getName() + " dealt " + damage + " damage to " + target.getName());
+        actionBar.write(0, 1, wielder.toString() + " dealt " + damage + " damage to " + target.toString());
         reduceDurability(1);
       }
-      else{
-        actionBar.write(wielder.getName() + " missed!");
+      else {
+        actionBar.write(wielder.toString() + " missed!");
       }
     }
   }
 
-  public void critical(Character wielder, Character target){
+  public void critical(Character wielder, Character target) {
     int damage;
     if (getWeaponType().equals("Tome")) {
       damage = (2 * (wielder.getStat("Magic") + getStat("Power"))) - target.getStat("Resistance");
-    }
-    else {
+    } else {
       /* this is the fe4/fe5 implementation. Criticals are more effective against units
          with high defense and less effective against units with low defense when compared
          with the more conventional critical system used in other games (a simple 3x damage) */

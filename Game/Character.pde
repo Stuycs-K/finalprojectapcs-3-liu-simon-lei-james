@@ -35,8 +35,8 @@ abstract class Character extends Entity {
     }
   }
 
-  public String getName() {
-    return name;
+  public String toString() {
+    return characterClass + " " + name;
   }
   public String getCharacterClass() {
     return characterClass;
@@ -58,7 +58,7 @@ abstract class Character extends Entity {
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       sleep(10);
-      actionBar.write(getCharacterClass() + " " + getName() + " died!");
+      actionBar.write(toString() + " died!");
       if (this instanceof Player) {
         players.remove((Player) this);
         position.removeEntity();
@@ -198,7 +198,7 @@ abstract class Character extends Entity {
       } else {
         conditions.add(new Condition(name, 3));
       }
-      actionBar.write(getCharacterClass() + " " + getName() + " is now " + name);
+      actionBar.write(toString() + " is now " + name);
     }
     switch (name) {
       case "Bleeding":

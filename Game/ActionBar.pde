@@ -84,7 +84,7 @@ public class ActionBar {
 
     if (tile.hasEntity() && tile.getEntity() instanceof Character) {
       Character character = (Character) tile.getEntity();
-      write(0, 0, character.getCharacterClass() + " " + character.getName());
+      write(0, 0, character.toString());
       if (character instanceof Player) {
         Weapon weapon = ((Player) character).getWeapon();
         if (weapon != null) {
@@ -221,7 +221,7 @@ public class ActionBar {
       case "Equip":
         status = "Focus";
         if (!((Player) highlighted.getEntity()).equip((Weapon) displayed)) {
-          write(((Player) highlighted.getEntity()).getName() + " is not proficient with " + displayed + "s");
+          write(((Player) highlighted.getEntity()).toString() + " is not proficient with " + displayed + "s");
         }
         break;
       case "Give":

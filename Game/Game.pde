@@ -11,7 +11,7 @@ public static final int ACTION_BAR_SIZE = FONT_SIZE * 6;
 public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Faster
 
-public static final int BOARD = 0;
+public static int BOARD = 0;
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
 /* additional classes that could be nice to have:
@@ -103,23 +103,34 @@ void draw() {
   if (frameCount % GAME_SPEED == 0) tick++;
 }
 
-// CHANGE - Replace with an end turn button
 void keyPressed() {
-  board.reset();
-  actionBar.status = "None";
-  action = "None";
-  for (int i = 0; i < players.size(); i++) {
-    players.get(i).endTurn();
+  switch (key) {
+    case ' ':
+      board.reset();
+      actionBar.status = "None";
+      action = "None";
+      for (int i = 0; i < players.size(); i++) {
+        players.get(i).endTurn();
+      }
+      for (int i = 0; i < enemies.size(); i++) {
+        enemies.get(i).takeTurn();
+        enemies.get(i).endTurn();
+      }
+      for (int i = 0; i < players.size(); i++) {
+        players.get(i).turn = true;
+      }
+      turn++;
+      actionBar.write("Turn " + turn);
+      break;
+    case '1':
+      BOARD = 1;
+      setup();
+      break;
+    case '0':
+      BOARD = 0;
+      setup();
+      break;
   }
-  for (int i = 0; i < enemies.size(); i++) {
-    enemies.get(i).takeTurn();
-    enemies.get(i).endTurn();
-  }
-  for (int i = 0; i < players.size(); i++) {
-    players.get(i).turn = true;
-  }
-  turn++;
-  actionBar.write("Turn " + turn);
 }
 
 private void highlightTile(Tile tile) {

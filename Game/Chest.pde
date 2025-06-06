@@ -16,7 +16,7 @@ public class Chest extends Entity {
   public void collect(Player player) {
     player.turn = false;
     player.give(content);
-    actionBar.write(player.getCharacterClass() + " " + player.getName() + " recieved one " + content);
+    actionBar.write(player.toString() + " recieved one " + content);
     position.removeEntity();
   }
 }

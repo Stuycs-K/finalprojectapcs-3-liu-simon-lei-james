@@ -2,16 +2,16 @@ public class Condition {
   private String name;
   private Resource duration;
 
-  public Condition(String name, int duration){
+  public Condition(String name, int duration) {
     this.name = name;
     this.duration = new Resource(duration, "Duration");
   }
 
-  public String toString(){
+  public String toString() {
     return name;
   }
 
-  public int getDuration(){
+  public int getDuration() {
     return duration.getCurrent();
   }
 
