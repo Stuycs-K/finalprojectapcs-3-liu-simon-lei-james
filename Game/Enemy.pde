@@ -1,6 +1,6 @@
 abstract class Enemy extends Character {
-  public Enemy(int maxHealth, int maxMovement, Tile startingPosition, String enemyClass, HashMap<String, Integer> stats, boolean human) {
-    super(maxHealth, maxMovement, startingPosition, enemyClass, stats, human);
+  public Enemy(int maxHealth, int maxMovement, Tile startingPosition, String enemyClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon, boolean human) {
+    super(maxHealth, maxMovement, startingPosition, enemyClass, stats, weaponProficiencies, weapon, human);
   }
 
   public void takeTurn() {

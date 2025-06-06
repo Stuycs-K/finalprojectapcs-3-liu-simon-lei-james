@@ -1,20 +1,9 @@
 abstract class Humanoid extends Enemy {
-  private ArrayList<String> weaponProficiencies;
   private Weapon weapon;
-
-  public Humanoid(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
-    super(maxHealth, maxMovement, startingPosition, characterClass, stats, true);
-    this.weaponProficiencies = weaponProficiencies;
-  }
-
-  public void equip(Weapon weapon) {
-    if (weaponProficiencies.contains(weapon.getWeaponType())) {
-      this.weapon = weapon;
-    }
-  }
-
-  public Weapon getWeapon() {
-    return weapon;
+  
+  public Humanoid(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies, weapon, true);
+    this.weapon = weapon;
   }
 
   public void attack(Character other) {
@@ -33,13 +22,13 @@ abstract class Humanoid extends Enemy {
 
 public class Soldier extends Humanoid {
   public Soldier(Tile startingPosition) {
-    super(14, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
-      put("Strength", 3);
+    super((RANDOM.nextInt(3) - 1) + 14, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(5) - 2) + 3);
+      put("Skill", 4);
       put("Speed", 2);
-      put("Defense", 8);
+      put("Defense", (RANDOM.nextInt(3) - 1) + 8);
       put("Magic", 0);
       put("Resistance", 2);
-    }}, new ArrayList<String>(Arrays.asList("Lance")));
+    }}, new ArrayList<String>(Arrays.asList("Lance")), new Lance("Javelin"));
   }
-  Weapon lance = new Lance("Javelin");
 }

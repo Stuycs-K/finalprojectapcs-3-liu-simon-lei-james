@@ -9,7 +9,8 @@ abstract class Weapon extends Item {
     durability = new Resource(data.get(material).get(0), "Durability");
     weaponStats.put("Power", data.get(material).get(1));
     weaponStats.put("Weight", data.get(material).get(2));
-    weaponStats.put("Range", data.get(material).get(3));
+    weaponStats.put("Hit", data.get(material).get(3));
+    weaponStats.put("Range", data.get(material).get(4));
     this.material = material;
     this.weaponType = weaponType;
   }
@@ -32,14 +33,12 @@ abstract class Weapon extends Item {
     return durability.getCurrent() <= 0;
   }
 
-  public boolean canDouble(Character wielder, Character target) {
-    int heavy = getStat("Weight") - wielder.getStat("Strength");
-    if (heavy < 0) heavy = 0;
-    return (wielder.getStat("Speed") - heavy) >= (target.getStat("Speed") + 4);
-  }
-
   public void attack(Character wielder, Character target) {
     int damage;
+    int heavy = getStat("Weight") - wielder.getStat("Strength");
+    int attackSpeed = wielder.getStat("Speed") - heavy;
+    int hit = getStat("Hit") + (wielder.getStat("Skill") * 2);
+    int avoid = (target.getStat("Speed") - (target.getWeapon().getStat("Weight") - target.getStat("Strength"))) * 2;
     if (getWeaponType().equals("Tome")) {
       damage = wielder.getStat("Magic") + getStat("Power") - target.getStat("Resistance");
     }
@@ -47,17 +46,56 @@ abstract class Weapon extends Item {
       damage = wielder.getStat("Strength") + getStat("Power") - target.getStat("Defense");
     }
     if (wielder.isHuman() && target.isHuman()) { // Soldier special power
-      if (getWeaponType().equals("Axe")) damage++;
-      if (getWeaponType().equals("Sword")) damage--;
-      if (damage <= 0) damage = 0;
+      if (target.getWeapon().getWeaponType().equals("Lance")){
+        if (getWeaponType().equals("Axe")){
+          damage++;
+          hit+= 15;
+        }
+        if (getWeaponType().equals("Sword")){
+          damage--;
+          hit-= 15;
+        }
+      }
+      if (target.getWeapon().getWeaponType().equals("Axe")){
+        if (getWeaponType().equals("Sword")){
+          damage++;
+          hit+= 15;
+        }
+        if (getWeaponType().equals("Lance")){
+          damage--;
+          hit-= 15;
+        }
+      }
+      if (target.getWeapon().getWeaponType().equals("Sword")){
+        if (getWeaponType().equals("Lance")){
+          damage++;
+          hit+= 15;
+        }
+        if (getWeaponType().equals("Axe")){
+          damage--;
+          hit-= 15;
+        }
+      }
     }
-    target.damage(damage);
-    actionBar.write(wielder.getName() + " dealt " + damage + " damage to " + target.getName());
-    reduceDurability(1);
-    if (canDouble(wielder, target)){
+    if (damage <= 0) damage = 0;
+    int actualHit = hit - avoid;
+    if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit){ //hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
       target.damage(damage);
-      actionBar.write(0, 1, wielder.getName() + " dealt " + damage + " damage to " + target.getName());
+      actionBar.write(wielder.getName() + " dealt " + damage + " damage to " + target.getName());
       reduceDurability(1);
+    }
+    else{
+      actionBar.write(wielder.getName() + " missed!");
+    }
+    if (attackSpeed >= (target.getStat("Speed") + 4)){
+      if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit){
+        target.damage(damage);
+        actionBar.write(0, 1, wielder.getName() + " dealt " + damage + " damage to " + target.getName());
+        reduceDurability(1);
+      }
+      else{
+        actionBar.write(wielder.getName() + " missed!");
+      }
     }
   }
 
@@ -80,9 +118,9 @@ abstract class Weapon extends Item {
 public class Axe extends Weapon {
   public Axe(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
-      put("Iron", new ArrayList(Arrays.asList(40, 8, 5, 1)));
-      put("Silver", new ArrayList(Arrays.asList(20, 16, 10, 1)));
-      put("Killer", new ArrayList(Arrays.asList(20, 9, 6, 1)));
+      put("Iron", new ArrayList(Arrays.asList(40, 8, 10, 75, 1)));
+      put("Silver", new ArrayList(Arrays.asList(20, 15, 12, 70, 1)));
+      put("Killer", new ArrayList(Arrays.asList(30, 11, 11, 65, 1)));
     }}, material, "Axe");
   }
 
@@ -108,9 +146,9 @@ public class Axe extends Weapon {
 public class Bow extends Weapon {
   public Bow(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
-      put("Iron", new ArrayList(Arrays.asList(40, 5, 1, 2)));
-      put("Silver", new ArrayList(Arrays.asList(20, 8, 3, 2)));
-      put("Sleep", new ArrayList(Arrays.asList(20, 3, 5, 3)));
+      put("Iron", new ArrayList(Arrays.asList(40, 6, 5, 85, 2)));
+      put("Silver", new ArrayList(Arrays.asList(20, 13, 6, 75, 2)));
+      put("Sleep", new ArrayList(Arrays.asList(20, 5, 10, 50, 3)));
     }}, material, "Bow");
   }
 
@@ -124,9 +162,9 @@ public class Bow extends Weapon {
 public class Lance extends Weapon {
   public Lance(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
-      put("Iron", new ArrayList(Arrays.asList(40, 7, 1, 1)));
-      put("Silver", new ArrayList(Arrays.asList(20, 14, 3, 1)));
-      put("Javelin", new ArrayList(Arrays.asList(20, 5, 5, 2)));
+      put("Iron", new ArrayList(Arrays.asList(40, 7, 8, 80, 1)));
+      put("Silver", new ArrayList(Arrays.asList(20, 14, 80, 1)));
+      put("Javelin", new ArrayList(Arrays.asList(20, 6, 11, 65, 2)));
     }}, material, "Lance");
   }
   public void attack(Character wielder, Character target){
@@ -137,9 +175,9 @@ public class Lance extends Weapon {
 public class Sword extends Weapon {
   public Sword(String material){
     super(new HashMap<String, ArrayList<Integer>>() {{
-      put("Iron", new ArrayList(Arrays.asList(40, 5, 1, 1)));
-      put("Silver", new ArrayList(Arrays.asList(20, 8, 3, 1)));
-      put("Brave", new ArrayList(Arrays.asList(30, 7, 5, 1)));
+      put("Iron", new ArrayList(Arrays.asList(40, 6, 5, 85, 1)));
+      put("Silver", new ArrayList(Arrays.asList(20, 13, 8, 80, 1)));
+      put("Brave", new ArrayList(Arrays.asList(30, 7, 12, 80, 1)));
     }}, material, "Sword");
   }
 
@@ -171,9 +209,9 @@ public class Tome extends Weapon {
 
   public Tome(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
-      put("Fireball", new ArrayList(Arrays.asList(40, 3, 1, 2)));
-      put("Thunder", new ArrayList(Arrays.asList(30, 5, 5, 2)));
-      put("Blizzard", new ArrayList(Arrays.asList(10, 12, 10, 2)));
+      put("Fireball", new ArrayList(Arrays.asList(40, 3, 1, 90, 2)));
+      put("Thunder", new ArrayList(Arrays.asList(30, 5, 12, 70, 2)));
+      put("Blizzard", new ArrayList(Arrays.asList(10, 12, 15, 65, 2)));
     }}, material, "Tome");
   }
 

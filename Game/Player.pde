@@ -1,13 +1,14 @@
 abstract class Player extends Character {
-  private ArrayList<String> weaponProficiencies;
   public boolean turn = true;
 
   private Weapon weapon;
   private ArrayList<Item> inventory = new ArrayList<Item>();
 
-  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
-    super(maxHealth, maxMovement, startingPosition, characterClass, stats, true);
-    this.weaponProficiencies = weaponProficiencies;
+  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies, weapon, true);
+    this.weapon = weapon;
+    give(weapon);
+    equip(weapon);
   }
 
   public void give(Item item) {
@@ -46,18 +47,6 @@ abstract class Player extends Character {
     };
   }
 
-  public boolean equip(Weapon weapon) {
-    if (weaponProficiencies.contains(weapon.getWeaponType())) {
-      this.weapon = weapon;
-      return true;
-    }
-    return false;
-  }
-
-  public Weapon getWeapon() {
-    return weapon;
-  }
-
   public void attack(Character other) {
     turn = false;
     if (weapon == null){
@@ -71,7 +60,7 @@ abstract class Player extends Character {
   public ArrayList<Tile> attackRange() {
     return getPosition().tilesInRadius(weapon.getStat("Range"));
   }
-  
+
   public boolean isPlayer(){
     return true;
   }
@@ -79,47 +68,41 @@ abstract class Player extends Character {
 
 public class Archer extends Player {
   public Archer(Tile startingPosition) {
-    super(10, 6, startingPosition, "Archer", new HashMap<String, Integer>() {{
-      put("Strength", 6);
-      put("Speed", 10);
+    super((RANDOM.nextInt(3) - 1) + 10, 6, startingPosition, "Archer", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(5) - 1) + 6);
+      put("Skill", 7);
+      put("Speed", (RANDOM.nextInt(5) - 1) + 10);
       put("Defense", 3);
       put("Magic", 0);
       put("Resistance", 3);
-    }}, new ArrayList<String>(Arrays.asList("Bow")));
-    Weapon bow = new Bow("Iron");
-    give(bow);
-    equip(bow);
+    }}, new ArrayList<String>(Arrays.asList("Bow")), new Bow("Iron"));
   }
 }
 
 public class Barbarian extends Player{
   public Barbarian(Tile startingPosition) {
-    super(18, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
-      put("Strength", 10);
+    super( (RANDOM.nextInt(5) - 2) + 18, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(5) - 2) + 10);
+      put("Skill", 1);
       put("Speed", 3);
-      put("Defense", 6);
+      put("Defense", (RANDOM.nextInt(3) - 1) + 6);
       put("Magic", 0);
       put("Resistance", 1);
-    }}, new ArrayList<String>(Arrays.asList("Axe")));
-    Weapon axe = new Axe("Iron");
-    give(axe);
-    equip(axe);
+    }}, new ArrayList<String>(Arrays.asList("Axe")), new Axe("Iron"));
   }
 
 }
 
 public class Lord extends Player {
   public Lord(Tile startingPosition) {
-    super(15, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
-      put("Strength", 7);
-      put("Speed", 9);
-      put("Defense", 5);
+    super( (RANDOM.nextInt(3) - 1) + 15, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(3) - 1) + 7);
+      put("Skill", 5);
+      put("Speed", (RANDOM.nextInt(3) - 1) + 9);
+      put("Defense", (RANDOM.nextInt(3) - 1) + 5);
       put("Magic", 0);
       put("Resistance", 3);
-    }}, new ArrayList<String>(Arrays.asList("Sword")));
-    Weapon sword = new Sword("Brave");
-    give(sword);
-    equip(sword);
+    }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Brave"));
   }
 }
 
@@ -127,29 +110,25 @@ public class Mage extends Player{
   public Mage(Tile startingPosition) {
     super(5, 4, startingPosition, "Mage", new HashMap<String, Integer>() {{
       put("Strength", 0);
-      put("Speed", 6);
+      put("Skill", 6);
+      put("Speed", (RANDOM.nextInt(3) - 1) + 6);
       put("Defense", 2);
-      put("Magic", 8);
-      put("Resistance", 5);
-    }}, new ArrayList<String>(Arrays.asList("Tome")));
-    Weapon tome = new Tome("Blizzard");
-    give(tome);
-    equip(tome);
+      put("Magic", (RANDOM.nextInt(5) - 1) + 8);
+      put("Resistance", (RANDOM.nextInt(5) - 1) + 5);
+    }}, new ArrayList<String>(Arrays.asList("Tome")), new Tome("Fireball"));
   }
 }
 
 public class Thief extends Player {
   public Thief(Tile startingPosition) {
-    super(8, 7, startingPosition, "Thief", new HashMap<String, Integer>() {{
-      put("Strength", 3);
-      put("Speed", 12);
+    super( (RANDOM.nextInt(3) - 1) + 8, 7, startingPosition, "Thief", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(3) - 1) + 3);
+      put("Skill", 10);
+      put("Speed", (RANDOM.nextInt(5) - 1) + 12);
       put("Defense", 3);
       put("Magic", 0);
       put("Resistance", 2);
-    }}, new ArrayList<String>(Arrays.asList("Sword")));
-    Weapon sword = new Sword("Iron");
-    give(sword);
-    equip(sword);
+    }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Iron"));
     give(new PureWater());
   }
 }
