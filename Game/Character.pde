@@ -76,7 +76,7 @@ abstract class Character extends Entity {
     if (!hasCondition("Sleeping")) {
       movement.restore();
     }
-    if (hasCondition("Poison")) {
+    if (hasCondition("Poisoned")) {
       damage(health.getMax() / 8);
     }
     if (hasCondition("Pure Water")) {
@@ -178,7 +178,7 @@ abstract class Character extends Entity {
       } else {
         conditions.add(new Condition(name, 3));
       }
-      actionBar.write(getName() + " is now " + name);
+      actionBar.write(getCharacterClass() + " " + getName() + " is now " + name);
     }
     switch (name) {
       case "Bleeding":

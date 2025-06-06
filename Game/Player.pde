@@ -34,6 +34,11 @@ abstract class Player extends Character {
     }
     return null;
   }
+  
+  public void take(Item item) {
+    inventory.remove(item);
+    if (weapon == item) weapon = null;
+  }
 
   public void consume(Consumable item) {
     if(item.use(this)) {
