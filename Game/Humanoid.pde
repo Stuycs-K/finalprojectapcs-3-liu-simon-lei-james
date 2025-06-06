@@ -1,10 +1,8 @@
 abstract class Humanoid extends Enemy {
-  private ArrayList<String> weaponProficiencies;
   private Weapon weapon;
-
-  public Humanoid(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
-    super(maxHealth, maxMovement, startingPosition, characterClass, stats, true);
-    this.weaponProficiencies = weaponProficiencies;
+  
+  public Humanoid(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies, weapon, true);
   }
 
   public void attack(Character other) {
@@ -29,7 +27,6 @@ public class Soldier extends Humanoid {
       put("Defense", 8);
       put("Magic", 0);
       put("Resistance", 2);
-    }}, new ArrayList<String>(Arrays.asList("Lance")));
+    }}, new ArrayList<String>(Arrays.asList("Lance")), new Lance("Javelin"));
   }
-  Weapon lance = new Lance("Javelin");
 }

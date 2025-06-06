@@ -12,11 +12,12 @@ abstract class Character extends Entity {
   private ArrayList<String> weaponProficiencies;
   private Weapon weapon;
 
-  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, boolean isHuman) {
+  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon, boolean isHuman) {
     super(startingPosition, characterClass);
 
     this.name = "John";
     this.characterClass = characterClass;
+    human = isHuman;
 
     this.currentStats = stats;
     this.defaultStats = stats;
@@ -27,6 +28,10 @@ abstract class Character extends Entity {
     position = startingPosition;
 
     conditions = new ArrayList<Condition>();
+    if (isHuman()){
+      this.weaponProficiencies = weaponProficiencies;
+      this.weapon = weapon;
+    }
   }
 
   public String getName() {
