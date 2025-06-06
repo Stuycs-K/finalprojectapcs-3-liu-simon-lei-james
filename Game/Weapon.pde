@@ -143,7 +143,7 @@ public class Axe extends Weapon {
   }
 }
 
-public class Bow extends Weapon{
+public class Bow extends Weapon {
   public Bow(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
       put("Iron", new ArrayList(Arrays.asList(40, 6, 5, 85, 2)));
@@ -160,7 +160,7 @@ public class Bow extends Weapon{
 }
 
 public class Lance extends Weapon {
-  public Lance(String material){
+  public Lance(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
       put("Iron", new ArrayList(Arrays.asList(40, 7, 8, 80, 1)));
       put("Silver", new ArrayList(Arrays.asList(20, 14, 80, 1)));
@@ -199,7 +199,7 @@ public class Sword extends Weapon {
   }
 }
 
-public class Tome extends Weapon{
+public class Tome extends Weapon {
   /* types for tomes will be different kinds of spells. I will likely be implementing more conditions to go with these spells
     Fireball: 40 durability, 3 power, low weight, chance to burn and/or increased chance to crit
     Thunder: 30 durability, 5 power, medium weight, paralyze and/or brave effect similar to Brave Sword. I am hesitant to give it the brave effect, because magic inherently does
@@ -207,7 +207,7 @@ public class Tome extends Weapon{
     Blizzard: 10 durability, 12 power, very high weight, chance to put enemies to sleep (frozen would be more accurate but the implementation would likely be the same, and there
     are instances in Fire Emblem where ice magic puts enemies to sleep */
 
-  public Tome(String material){
+  public Tome(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
       put("Fireball", new ArrayList(Arrays.asList(40, 3, 1, 90, 2)));
       put("Thunder", new ArrayList(Arrays.asList(30, 5, 12, 70, 2)));
@@ -215,7 +215,7 @@ public class Tome extends Weapon{
     }}, material, "Tome");
   }
 
-  public void attack(Character wielder, Character target){
+  public void attack(Character wielder, Character target) {
     if (getMaterial().equals("Fireball")) {
       if (RANDOM.nextInt() <= 12) {
         super.critical(wielder, target);

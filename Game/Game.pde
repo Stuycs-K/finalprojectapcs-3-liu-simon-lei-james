@@ -11,7 +11,7 @@ public static final int ACTION_BAR_SIZE = FONT_SIZE * 6;
 public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Faster
 
-public static final int BOARD = 1;
+public static final int BOARD = 0;
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
 /* additional classes that could be nice to have:
@@ -122,6 +122,18 @@ void keyPressed() {
   actionBar.write("Turn " + turn);
 }
 
+private void highlightTile(Tile tile) {
+  highlighted = tile;
+  highlighted.transform("Blue");
+  actionBar.focus(tile);
+}
+
+private void removeHighlighted() {
+  highlighted = null;
+  action = "None";
+  actionBar.status = "None";
+}
+
 void mouseClicked() {
   if (mouseButton == RIGHT) {
     board.reset();
@@ -137,7 +149,18 @@ void mouseClicked() {
   } else {
     Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
     Entity entity = clickedTile.getEntity();
-    if (action.equals("None") || entity instanceof Player) { // Selecting New Tile
+    if (action.equals("Give")) {
+      board.reset();
+      if (entity instanceof Player) {
+        ((Player) entity).give(actionBar.displayed);
+        ((Player) highlighted.getEntity()).take(actionBar.displayed);
+        removeHighlighted();
+      } else {
+        removeHighlighted();
+        highlightTile(clickedTile);
+      }
+      action = "None";
+    } else if (action.equals("None") || entity instanceof Player) { // Selecting New Tile
       board.reset();
       if (entity instanceof Player && ((Player) entity).turn) { // Select Player
         action = "Moving";
@@ -148,31 +171,21 @@ void mouseClicked() {
           if (tile.getEntity() instanceof Player) tile.transform("None");
         }
       }
-      highlighted = clickedTile;
-      actionBar.focus(clickedTile);
-      highlighted.transform("Blue");
+      highlightTile(clickedTile);
     } else if (action.equals("Moving")) {
       board.reset();
       if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range
-        actionBar.status = "None";
-        highlighted = null;
-        action = "None";
-      } else { // Highlight New Tile
-        highlighted = clickedTile;
-        clickedTile.transform("Blue");
-        actionBar.focus(clickedTile);
+        removeHighlighted();
+      } else {
+        highlightTile(clickedTile);
         action = "None";
       }
     } else if (action.equals("Attacking")) {
       if (entity instanceof Enemy && clickedTile.getHue().equals("Red")) {
-        actionBar.status = "None";
         ((Player) highlighted.getEntity()).attack((Character) entity);
-        highlighted = null;
-        action = "None";
-      } else { // Highlight New Tile
-        highlighted = clickedTile;
-        clickedTile.transform("Blue");
-        actionBar.focus(clickedTile);
+        removeHighlighted();
+      } else {
+        highlightTile(clickedTile);
       }
       board.reset();
     }

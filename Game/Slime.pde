@@ -15,8 +15,8 @@ public class Slime extends Enemy {
       damage = 0;
     }
     target.damage(damage);
-    if (RANDOM.nextInt(100) <= 5){
-      target.applyCondition("Poison");
+    if (RANDOM.nextInt(100) <= 30){
+      target.applyCondition("Poisoned");
     }
   }
 }
