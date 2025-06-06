@@ -2,6 +2,7 @@ public class Slime extends Enemy {
   public Slime(Tile startingPosition) {
     super(10, 5, startingPosition, "Slime", new HashMap<String, Integer>() {{
       put("Strength", 5);
+      put("Skill", 2);
       put("Speed", 3);
       put("Defense", 5);
       put("Magic", 0);

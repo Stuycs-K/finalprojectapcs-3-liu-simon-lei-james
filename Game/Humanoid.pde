@@ -22,10 +22,11 @@ abstract class Humanoid extends Enemy {
 
 public class Soldier extends Humanoid {
   public Soldier(Tile startingPosition) {
-    super(14, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
-      put("Strength", 3);
+    super((RANDOM.nextInt(3) - 1) + 14, 5, startingPosition, "Soldier", new HashMap<String, Integer>() {{
+      put("Strength", (RANDOM.nextInt(5) - 2) + 3);
+      put("Skill", 4);
       put("Speed", 2);
-      put("Defense", 8);
+      put("Defense", (RANDOM.nextInt(3) - 1) + 8);
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Lance")), new Lance("Javelin"));
