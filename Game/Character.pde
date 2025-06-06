@@ -10,7 +10,7 @@ abstract class Character extends Entity {
 
   private ArrayList<Condition> conditions;
   private ArrayList<String> weaponProficiencies;
-  private Weapon weapon;
+  protected Weapon weapon;
 
   public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon, boolean isHuman) {
     super(startingPosition, characterClass);

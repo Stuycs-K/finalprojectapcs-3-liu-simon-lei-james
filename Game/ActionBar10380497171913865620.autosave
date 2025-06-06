@@ -66,13 +66,6 @@ public class ActionBar {
       }
     }
   }
-  
-  public void displayConditions() {
-    ArrayList<Condition> conditions = ((Player) highlighted.getEntity()).getConditions();
-    for (int i = 0; i < conditions.size(); i++) {
-        write(i / 2, i % 2, conditions.get(i).toString() +  " " + conditions.get(i).getDuration());
-    }
-  }
 
   public void setOptions(String[] options) {
     this.options = options;
@@ -86,12 +79,7 @@ public class ActionBar {
       Character character = (Character) tile.getEntity();
       write(0, 0, character.getCharacterClass() + " " + character.getName());
       if (character instanceof Player) {
-        Weapon weapon = ((Player) character).getWeapon();
-        if (weapon != null) {
-          write(0, 1, ((Player) character).getWeapon().toString());
-        } else {
-          write(0, 1, "Weaponless");
-        }
+        write(0, 1, ((Player) character).getWeapon().toString());
         if (((Player) character).turn) {
           setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
           displayOptions();
@@ -128,7 +116,6 @@ public class ActionBar {
         displayOptions();
         break;
       case "Conditions":
-        displayConditions();
         displayOptions();
         break;
       case "Item":
@@ -186,6 +173,13 @@ public class ActionBar {
         break;
       case "Conditions":
         setOptions(new String[] {"Return", "Character Stats"});
+        ArrayList<Condition> conditions = ((Player) highlighted.getEntity()).getConditions();
+        options = new String[8];
+        options[0] = "Return";
+        for (int i = 0; i < conditions.size(); i++) {
+          options[7 - i] = conditions.get(i).toString() +  " " + conditions.get(i).getDuration();
+        }
+        setOptions(options);
         status = "Conditions";
         break;
       case "Return":
@@ -212,14 +206,6 @@ public class ActionBar {
         if (!((Player) highlighted.getEntity()).equip((Weapon) displayed)) {
           write(((Player) highlighted.getEntity()).getName() + " is not proficient with " + displayed + "s");
         }
-        break;
-      case "Give":
-        Game.action = "Give";
-        ArrayList<Tile> adjacent = ((Player) highlighted.getEntity()).getPosition().tilesInRadius(1);
-        for (Tile tile : adjacent) {
-          if (tile.getEntity() instanceof Player) tile.transform("Blue");
-        }
-        highlighted.transform("None");
         break;
       default:
         status = "Item";

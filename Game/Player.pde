@@ -1,7 +1,6 @@
 abstract class Player extends Character {
   public boolean turn = true;
 
-  private Weapon weapon;
   private ArrayList<Item> inventory = new ArrayList<Item>();
 
   public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
@@ -38,7 +37,7 @@ abstract class Player extends Character {
   
   public void take(Item item) {
     inventory.remove(item);
-    if (weapon == item) weapon = null;
+    if (weapon.toString().equals(item.toString())) weapon = null;
   }
 
   public void consume(Consumable item) {
