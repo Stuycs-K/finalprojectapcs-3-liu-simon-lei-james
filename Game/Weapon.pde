@@ -51,6 +51,14 @@ abstract class Weapon extends Item {
         if (getWeaponType().equals("Axe")) damage++;
         if (getWeaponType().equals("Sword")) damage--;
       }
+      if (target.getWeapon().getWeaponType().equals("Axe")){
+        if (getWeaponType().equals("Sword")) damage++;
+        if (getWeaponType().equals("Lance")) damage--;
+      }
+      if (target.getWeapon().getWeaponType().equals("Sword")){
+        if (getWeaponType().equals("Lance")) damage++;
+        if (getWeaponType().equals("Axe")) damage--;
+      }
     }
     if (damage <= 0) damage = 0;
     target.damage(damage);
