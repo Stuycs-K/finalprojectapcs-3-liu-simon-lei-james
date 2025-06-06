@@ -94,8 +94,10 @@ public class ActionBar {
         }
         if (((Player) character).turn) {
           setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
-          displayOptions();
+        } else {
+          setOptions(new String[]{"Inventory", "Character Stats"});
         }
+        displayOptions();
       } else {
         write(0, 1, tile.getTerrain() + " Tile");
       }
@@ -141,10 +143,18 @@ public class ActionBar {
   public void displayItem() {
     if (displayed instanceof Consumable) {
       write(0, 0, displayed.toString());
-      setOptions(new String[] {"Inventory", "Consume", "Give"});
+      if (((Player) highlighted.getEntity()).turn) {
+        setOptions(new String[] {"Inventory", "Consume", "Give"});
+      } else {
+        setOptions(new String[] {"Inventory"});
+      }
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
-      setOptions(new String[] {"Inventory", "Equip", "Give"});
+      if (((Player) highlighted.getEntity()).turn) {
+        setOptions(new String[] {"Inventory", "Consume", "Give"});
+      } else {
+        setOptions(new String[] {"Inventory"});
+      }
       write(0, 0, "Durability: " + ((Weapon) displayed).getDurability());
       write(0, 1, "Range: " + ((Weapon) displayed).getStat("Range"));
       write(1, 0, "Hit: " + ((Weapon) displayed).getStat("Hit"));
