@@ -38,7 +38,11 @@ abstract class Weapon extends Item {
     int heavy = getStat("Weight") - wielder.getStat("Strength");
     int attackSpeed = wielder.getStat("Speed") - heavy;
     int hit = getStat("Hit") + (wielder.getStat("Skill") * 2);
-    int avoid = (target.getStat("Speed") - (target.getWeapon().getStat("Weight") - target.getStat("Strength"))) * 2;
+    int avoid = target.getStat("Speed");
+    if (target.getWeapon() != null){
+      avoid -= (target.getWeapon().getStat("Weight") - target.getStat("Strength"));
+    }
+    avoid *= 2;
     if (getWeaponType().equals("Tome")) {
       damage = wielder.getStat("Magic") + getStat("Power") - target.getStat("Resistance");
     }
@@ -46,6 +50,7 @@ abstract class Weapon extends Item {
       damage = wielder.getStat("Strength") + getStat("Power") - target.getStat("Defense");
     }
     if (wielder.isHuman() && target.isHuman()) { // Soldier special power
+      System.out.println("HERE");
       if (target.getWeapon().getWeaponType().equals("Lance")){
         if (getWeaponType().equals("Axe")){
           damage++;
