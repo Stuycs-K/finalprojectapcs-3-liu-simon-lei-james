@@ -50,3 +50,9 @@ This document must be updated daily every time you finish a work session.
 - Added button to attack nearby enemies
 - Moved getTilesInRange and getTilesInRadius to Tile class
 - Scaled up the game by a factor of 2
+
+### 2025-05-04 - Polishing
+- Allowed players to give weapons for each other
+- Modified the way conditions are displayed
+- Condensed multiple classes into a single file for cohesive development
+- Allowed players to equip new items and use consumables
