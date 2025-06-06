@@ -6,6 +6,9 @@ abstract class Player extends Character {
 
   public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
     super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies, weapon, true);
+    this.weapon = weapon;
+    give(weapon);
+    equip(weapon);
   }
 
   public void give(Item item) {
@@ -67,9 +70,6 @@ public class Archer extends Player {
       put("Magic", 0);
       put("Resistance", 3);
     }}, new ArrayList<String>(Arrays.asList("Bow")), new Bow("Iron"));
-    Weapon bow = new Bow("Iron");
-    give(bow);
-    equip(bow);
   }
 }
 
@@ -82,9 +82,6 @@ public class Barbarian extends Player{
       put("Magic", 0);
       put("Resistance", 1);
     }}, new ArrayList<String>(Arrays.asList("Axe")), new Axe("Iron"));
-    Weapon axe = new Axe("Iron");
-    give(axe);
-    equip(axe);
   }
 
 }
@@ -98,9 +95,6 @@ public class Lord extends Player {
       put("Magic", 0);
       put("Resistance", 3);
     }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Brave"));
-    Weapon sword = new Sword("Brave");
-    give(sword);
-    equip(sword);
   }
 }
 
@@ -113,9 +107,6 @@ public class Mage extends Player{
       put("Magic", 8);
       put("Resistance", 5);
     }}, new ArrayList<String>(Arrays.asList("Tome")), new Tome("Fireball"));
-    Weapon tome = new Tome("Blizzard");
-    give(tome);
-    equip(tome);
   }
 }
 
@@ -128,9 +119,6 @@ public class Thief extends Player {
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Iron"));
-    Weapon sword = new Sword("Iron");
-    give(sword);
-    equip(sword);
     give(new PureWater());
   }
 }

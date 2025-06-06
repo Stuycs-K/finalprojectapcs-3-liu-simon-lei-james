@@ -31,6 +31,7 @@ abstract class Character extends Entity {
     if (isHuman()){
       this.weaponProficiencies = weaponProficiencies;
       this.weapon = weapon;
+      equip(weapon);
     }
   }
 

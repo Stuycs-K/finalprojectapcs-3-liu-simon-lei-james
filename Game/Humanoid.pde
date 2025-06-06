@@ -3,6 +3,7 @@ abstract class Humanoid extends Enemy {
   
   public Humanoid(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
     super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies, weapon, true);
+    this.weapon = weapon;
   }
 
   public void attack(Character other) {
