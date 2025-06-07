@@ -1,5 +1,8 @@
 abstract class Character extends Entity {
   private String name;
+  private final ArrayList<String> POSSIBLE_NAMES = new ArrayList<String>(Arrays.asList("Arthur", "Bartre", "Cole", "Diarmuid", "Eirika", "Fergus", "Garcia", "Holyn", "Ilia", "Joshua",
+                                                                                       "Kent", "Lewyn", "Mareeta", "Nanna", "Oswin", "Priscilla", "Borp", "Raven", "Seth", "Tibarn", "Urvan", 
+                                                                                       "Valbar", "Wolf", "Xavier", "Yune", "Zihark"));
   private String characterClass;
   private boolean human;
 
@@ -14,8 +17,9 @@ abstract class Character extends Entity {
 
   public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon, boolean isHuman) {
     super(startingPosition, characterClass);
-
-    this.name = "John";
+    
+    int chosen = RANDOM.nextInt(26);
+    this.name = POSSIBLE_NAMES.get(chosen);
     this.characterClass = characterClass;
     human = isHuman;
 
