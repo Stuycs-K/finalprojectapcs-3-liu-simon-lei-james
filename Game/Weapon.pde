@@ -38,11 +38,31 @@ abstract class Weapon extends Item {
     int heavy = getStat("Weight") - wielder.getStat("Strength");
     int attackSpeed = wielder.getStat("Speed") - heavy;
     int hit = getStat("Hit") + (wielder.getStat("Skill") * 2);
+    if (wielder.getPosition().getTerrain() == "Hills"){
+      if (getWeaponType().equals("Bow")){
+        hit+= 50;
+      }
+      else if (getWeaponType().equals("Lance")){
+        hit+= 20;
+      }
+      else{
+        hit -= 10;
+      }
+    }
     int avoid = target.getStat("Speed");
     if (target.getWeapon() != null){
       avoid -= (target.getWeapon().getStat("Weight") - target.getStat("Strength"));
     }
     avoid *= 2;
+    if (target.getPosition().getTerrain() == "Forest"){
+      avoid+= 20;
+    }
+    if (target.getPosition().getTerrain() == "Hills"){
+      avoid+= 30;
+    }
+    if (avoid >= 99){
+      avoid = 99;
+    }
     if (getWeaponType().equals("Tome")) {
       damage = wielder.getStat("Magic") + getStat("Power") - target.getStat("Resistance");
     }
@@ -86,7 +106,7 @@ abstract class Weapon extends Item {
     if (actualHit >= 100){
       actualHit = 100;
     }
-    if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit) { //hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
+    if (((RANDOM.nextInt(100) + RANDOM.nextInt(100)) / 2) <= actualHit) { //hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
       target.damage(damage);
       actionBar.write(wielder.toString() + " dealt " + damage + " damage to " + target.toString() + " with a " + actualHit + " percent chance to hit.");
       reduceDurability(1);
@@ -185,6 +205,7 @@ public class Sword extends Weapon {
       put("Iron", new ArrayList(Arrays.asList(40, 6, 5, 85, 1)));
       put("Silver", new ArrayList(Arrays.asList(20, 13, 8, 80, 1)));
       put("Brave", new ArrayList(Arrays.asList(30, 7, 12, 80, 1)));
+      put("Sleep", new ArrayList(Arrays.asList(50, 8, 12, 70, 1)));
     }}, material, "Sword");
   }
 
@@ -201,7 +222,12 @@ public class Sword extends Weapon {
       super.attack(wielder, target);
     }
     if (calculateCondition(wielder)){
-      target.applyCondition("Bleeding");
+      if (getMaterial().equals("Sleep")){
+        target.applyCondition("Sleeping");
+      }
+      else{
+        target.applyCondition("Bleeding");
+      }
     }
   }
 }
