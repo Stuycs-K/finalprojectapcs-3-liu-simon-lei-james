@@ -83,22 +83,25 @@ abstract class Weapon extends Item {
     }
     if (damage <= 0) damage = 0;
     int actualHit = hit - avoid;
+    if (actualHit >= 100){
+      actualHit = 100;
+    }
     if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit) { //hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
       target.damage(damage);
-      actionBar.write(wielder.toString() + " dealt " + damage + " damage to " + target.toString());
+      actionBar.write(wielder.toString() + " dealt " + damage + " damage to " + target.toString() + " with a " + actualHit + " percent chance to hit.");
       reduceDurability(1);
     }
     else{
-      actionBar.write(wielder.toString() + " missed!");
+      actionBar.write(wielder.toString() + " missed! They had a " + actualHit + " percent chance to hit.");
     }
     if (attackSpeed >= (target.getStat("Speed") + 4)) {
       if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit){
         target.damage(damage);
-        actionBar.write(0, 1, wielder.toString() + " dealt " + damage + " damage to " + target.toString());
+        actionBar.write(0, 1, wielder.toString() + " dealt " + damage + " damage to " + target.toString() + " with a " + actualHit + " percent chance to hit.");
         reduceDurability(1);
       }
       else {
-        actionBar.write(wielder.toString() + " missed!");
+        actionBar.write(wielder.toString() + " missed! They had a " + actualHit + " percent chance to hit.");
       }
     }
   }
@@ -115,6 +118,7 @@ abstract class Weapon extends Item {
     }
     target.damage(damage);
     reduceDurability(1);
+    actionBar.write(0, 2, wielder.toString() + "crit!");
   }
 }
 
