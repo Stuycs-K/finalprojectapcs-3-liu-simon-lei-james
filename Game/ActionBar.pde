@@ -39,7 +39,7 @@ public class ActionBar {
   }
 
   public void displayStats(Character character) {
-    write(0, 0, character.getCharacterClass() + " " + character.getName());
+    write(0, 0, "Skill: " + character.getStat("Skill"));
     write(0, 1, "Speed: " + character.getStat("Speed"));
     write(1, 0, "Strength: " + character.getStat("Strength"));
     write(1, 1, "Defense: " + character.getStat("Defense"));
@@ -84,7 +84,7 @@ public class ActionBar {
 
     if (tile.hasEntity() && tile.getEntity() instanceof Character) {
       Character character = (Character) tile.getEntity();
-      write(0, 0, character.getCharacterClass() + " " + character.getName());
+      write(0, 0, character.toString());
       if (character instanceof Player) {
         Weapon weapon = ((Player) character).getWeapon();
         if (weapon != null) {
@@ -94,8 +94,10 @@ public class ActionBar {
         }
         if (((Player) character).turn) {
           setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
-          displayOptions();
+        } else {
+          setOptions(new String[]{"Inventory", "Character Stats"});
         }
+        displayOptions();
       } else {
         write(0, 1, tile.getTerrain() + " Tile");
       }
@@ -139,14 +141,23 @@ public class ActionBar {
   }
 
   public void displayItem() {
-    write(0, 0, displayed.toString());
     if (displayed instanceof Consumable) {
-      setOptions(new String[] {"Inventory", "Consume"});
+      write(0, 0, displayed.toString());
+      if (((Player) highlighted.getEntity()).turn) {
+        setOptions(new String[] {"Inventory", "Consume", "Give"});
+      } else {
+        setOptions(new String[] {"Inventory"});
+      }
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
-      setOptions(new String[] {"Inventory", "Equip", "Give"});
-      write(0, 1, "Durability: " + ((Weapon) displayed).getDurability());
-      write(1, 0, "Range: " + ((Weapon) displayed).getStat("Range"));
+      if (((Player) highlighted.getEntity()).turn) {
+        setOptions(new String[] {"Inventory", "Consume", "Give"});
+      } else {
+        setOptions(new String[] {"Inventory"});
+      }
+      write(0, 0, "Durability: " + ((Weapon) displayed).getDurability());
+      write(0, 1, "Range: " + ((Weapon) displayed).getStat("Range"));
+      write(1, 0, "Hit: " + ((Weapon) displayed).getStat("Hit"));
       write(1, 1, "Power: " + ((Weapon) displayed).getStat("Power"));
       write(2, 1, "Weight: " + ((Weapon) displayed).getStat("Weight"));
     }
@@ -210,14 +221,16 @@ public class ActionBar {
       case "Equip":
         status = "Focus";
         if (!((Player) highlighted.getEntity()).equip((Weapon) displayed)) {
-          write(((Player) highlighted.getEntity()).getName() + " is not proficient with " + displayed + "s");
+          write(((Player) highlighted.getEntity()).toString() + " is not proficient with " + displayed + "s");
         }
         break;
       case "Give":
         Game.action = "Give";
-        for (Player player : players) {
-          player.getPosition().transform("Blue");
+        ArrayList<Tile> adjacent = ((Player) highlighted.getEntity()).getPosition().tilesInRadius(1);
+        for (Tile tile : adjacent) {
+          if (tile.getEntity() instanceof Player) tile.transform("Blue");
         }
+        highlighted.transform("None");
         break;
       default:
         status = "Item";

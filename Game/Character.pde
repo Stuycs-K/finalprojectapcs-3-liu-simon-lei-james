@@ -10,7 +10,7 @@ abstract class Character extends Entity {
 
   private ArrayList<Condition> conditions;
   private ArrayList<String> weaponProficiencies;
-  private Weapon weapon;
+  protected Weapon weapon;
 
   public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon, boolean isHuman) {
     super(startingPosition, characterClass);
@@ -35,8 +35,8 @@ abstract class Character extends Entity {
     }
   }
 
-  public String getName() {
-    return name;
+  public String toString() {
+    return characterClass + " " + name;
   }
   public String getCharacterClass() {
     return characterClass;
@@ -58,23 +58,19 @@ abstract class Character extends Entity {
   public void damage(int ouch){
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       sleep(10);
-      actionBar.write(getCharacterClass() + " " + getName() + " died!");
-      if (this instanceof Player) {
-        players.remove((Player) this);
-        position.removeEntity();
-        if (players.size() == 0) {
-          actionBar.write("You Lost!");
-          board.reset();
-        }
+      actionBar.write(toString() + " died!");
+      if (this instanceof Lord) {
+        endGame("Lost (Lord Died)");
       } else {
-        enemies.remove((Enemy) this);
-        position.removeEntity();
-        if (enemies.size() == 0) {
-          actionBar.write("You Won!");
-          board.reset();
+        if (this instanceof Player) {
+          players.remove((Player) this);
+          position.removeEntity();
+        } else {
+          enemies.remove((Enemy) this);
+          position.removeEntity();
         }
+        position.transform("None");
       }
-      position.transform("None");
     }
   }
   
@@ -198,7 +194,7 @@ abstract class Character extends Entity {
       } else {
         conditions.add(new Condition(name, 3));
       }
-      actionBar.write(getCharacterClass() + " " + getName() + " is now " + name);
+      actionBar.write(toString() + " is now " + name);
     }
     switch (name) {
       case "Bleeding":
