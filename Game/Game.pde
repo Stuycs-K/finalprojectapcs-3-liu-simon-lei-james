@@ -23,7 +23,7 @@ private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Ar
    (this is for balancing, wyverns are consistently among the best classes in Fire Emblem games due to high mobility alongside high strength and bulk without compromising speed. To make them less dominant, emphasize their usual vulnerabilty to magic, something
    pegasus knights are usually good against)
 */
-private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arrays.asList("Slime", "Soldier"));
+private static final ArrayList<String> ENEMY_CLASSES = new ArrayList<String>(Arrays.asList("Slime", "Soldier", "Bully", "Mercenary"));
 
 public volatile static int tick = 0;
 private static int turn = 0;
@@ -96,10 +96,15 @@ void setup() {
     } else if (BOARD == 1) {
       enemies.add(new Soldier(spawnLocation));
     } else {
-      if (RANDOM.nextInt(2) == 1) {
+      int chosenClass = RANDOM.nextInt(4);
+      if (chosenClass == 0) {
         enemies.add(new Slime(spawnLocation));
-      } else {
+      } else if (chosenClass == 1){
         enemies.add(new Soldier(spawnLocation));
+      } else if (chosenClass == 2){
+        enemies.add(new Bully(spawnLocation));
+      } else{
+        enemies.add(new Mercenary(spawnLocation));
       }
     }
   }
