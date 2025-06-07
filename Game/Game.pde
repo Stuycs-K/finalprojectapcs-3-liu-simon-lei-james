@@ -12,6 +12,8 @@ public static final int COLUMNS = 30, ROWS = 20;
 public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Faster
 
 public static int BOARD = 0;
+public static int HIT_CHANCE = 0;
+public static int CONDITION_CHANCE = 0;
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief"));
 /* additional classes that could be nice to have:
@@ -40,15 +42,17 @@ public static void sleep(int time) {
   } catch(InterruptedException e) {}
 }
 
-private boolean isDoing(String action) {
-  if (Game.action == null) return false;
-  return Game.action.equals(action);
+public void endGame(String winner) {
+  background(0);
+  textAlign(CENTER, CENTER);
+  text("You " + winner + "!", width / 2, height / 2);
+  noLoop();
 }
 
 void setup() {
   size(32 * 30, 32 * 20 + 96);
   background(92, 160, 72);
-
+  
   board = new Board(ROWS, COLUMNS);
   actionBar = new ActionBar();
 
@@ -79,31 +83,53 @@ void setup() {
      }
      players.add(player);
   }
-  for (int i = 0; i < 7; i++) {
+  int numEnemies = 7;
+  if (BOARD == 7) numEnemies = 1;
+  for (int i = 0; i < numEnemies; i++) {
     Tile spawnLocation = board.getRandomTile();
     while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    if (BOARD == 0){
+    if (BOARD == 0) {
       enemies.add(new Slime(spawnLocation));
-    }
-    if (BOARD == 1){
+    } else if (BOARD == 1) {
       enemies.add(new Soldier(spawnLocation));
+    } else {
+      if (RANDOM.nextInt(2) == 1) {
+        enemies.add(new Slime(spawnLocation));
+      } else {
+        enemies.add(new Soldier(spawnLocation));
+      }
     }
   }
-  Tile spawnLocation = board.getRandomTile();
-  while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-  Chest chest = new Chest(spawnLocation);
+
+  int numChests = 2;
+  if (BOARD == 3) numChests = 10;
+  for (int i = 0; i < numChests; i++) {
+    Tile spawnLocation = board.getRandomTile();
+    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+    Chest chest = new Chest(spawnLocation);
+  }
 
   board.display();
   actionBar.write("Welcome to our game. Please click on a player to begin.");
 }
 
 void draw() {
-  board.display();
-  actionBar.update();
-  if (frameCount % GAME_SPEED == 0) tick++;
+  if (enemies.size() == 0) {
+    endGame("Won");
+  } else if (players.size() == 0) {
+    endGame("Lost");
+  } else {
+    board.display();
+    actionBar.update();
+    if (frameCount % GAME_SPEED == 0) tick++;
+  }
 }
 
 void keyPressed() {
+  if ('0' < key && key < '9') {
+    BOARD = key - '0';
+    setup();
+  }
   switch (key) {
     case ' ':
       board.reset();
@@ -120,15 +146,35 @@ void keyPressed() {
         players.get(i).turn = true;
       }
       turn++;
-      actionBar.write("Turn " + turn);
       break;
-    case '1':
-      BOARD = 1;
-      setup();
+    case 'h':
+      actionBar.write("Character health has been increased!");
+      for (int i = 0; i < players.size(); i++) {
+        players.get(i).getHealth().max += 100;
+        players.get(i).getHealth().current += 100;
+      }
+      for (int i = 0; i < enemies.size(); i++) {
+        enemies.get(i).getHealth().max += 100;
+        enemies.get(i).getHealth().current += 100;
+      }
       break;
-    case '0':
-      BOARD = 0;
-      setup();
+    case 'c':
+      if (CONDITION_CHANCE == 0) {
+        CONDITION_CHANCE = 100;
+        actionBar.write("Chance of applying conditions has been increased!");
+      } else {
+        CONDITION_CHANCE = 0;
+        actionBar.write("Chance of applying conditions has been decreased!");
+      }
+      break;
+    case 'a':
+      if (HIT_CHANCE == 0) {
+        HIT_CHANCE = 100;
+        actionBar.write("Chance of hitting has been increased!");
+      } else {
+        HIT_CHANCE = 0;
+        actionBar.write("Chance of hitting has been decreased!");
+      }
       break;
   }
 }
@@ -165,6 +211,7 @@ void mouseClicked() {
       if (entity instanceof Player) {
         ((Player) entity).give(actionBar.displayed);
         ((Player) highlighted.getEntity()).take(actionBar.displayed);
+        ((Player) highlighted.getEntity()).turn = false;
         removeHighlighted();
       } else {
         removeHighlighted();

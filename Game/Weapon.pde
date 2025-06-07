@@ -49,8 +49,7 @@ abstract class Weapon extends Item {
     else {
       damage = wielder.getStat("Strength") + getStat("Power") - target.getStat("Defense");
     }
-    if (wielder.isHuman() && target.isHuman()) { // Soldier special power
-      System.out.println("HERE");
+    if (wielder.isHuman() && target.isHuman()) {
       if (target.getWeapon().getWeaponType().equals("Lance")){
         if (getWeaponType().equals("Axe")){
           damage++;
@@ -167,7 +166,7 @@ public class Lance extends Weapon {
   public Lance(String material) {
     super(new HashMap<String, ArrayList<Integer>>() {{
       put("Iron", new ArrayList(Arrays.asList(40, 7, 8, 80, 1)));
-      put("Silver", new ArrayList(Arrays.asList(20, 14, 80, 1)));
+      put("Silver", new ArrayList(Arrays.asList(20, 14, 80, 1, 1)));
       put("Javelin", new ArrayList(Arrays.asList(20, 6, 11, 65, 2)));
     }}, material, "Lance");
   }

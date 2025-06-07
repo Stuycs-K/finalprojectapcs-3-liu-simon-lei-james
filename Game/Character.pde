@@ -59,22 +59,18 @@ abstract class Character extends Entity {
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       sleep(10);
       actionBar.write(toString() + " died!");
-      if (this instanceof Player) {
-        players.remove((Player) this);
-        position.removeEntity();
-        if (players.size() == 0) {
-          actionBar.write("You Lost!");
-          board.reset();
-        }
+      if (this instanceof Lord) {
+        endGame("Lost (Lord Died)");
       } else {
-        enemies.remove((Enemy) this);
-        position.removeEntity();
-        if (enemies.size() == 0) {
-          actionBar.write("You Won!");
-          board.reset();
+        if (this instanceof Player) {
+          players.remove((Player) this);
+          position.removeEntity();
+        } else {
+          enemies.remove((Enemy) this);
+          position.removeEntity();
         }
+        position.transform("None");
       }
-      position.transform("None");
     }
   }
   
