@@ -140,9 +140,10 @@ void setup() {
       if (BOARD == 5) {
         player.give(new Vulnerary());
         player.give(new PureWater());
+        player.damage(10);
       }
     }
-    int numEnemies = 7;
+    int numEnemies = 14;
     if (BOARD == 7) numEnemies = 1;
     for (int i = 0; i < numEnemies; i++) {
       Tile spawnLocation = board.getRandomTile();

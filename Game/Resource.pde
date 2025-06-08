@@ -26,7 +26,7 @@ public class Resource {
     current = max;
   }
   public void restore(int amount) {
-    current = (current + amount) % max;
+    current = min((current + amount), max);
   }
 
   public boolean consume(int amount) { // Returns false if there is not enough resource
