@@ -5,5 +5,33 @@ This project is a turn-based strategy role-playing game taking inspiration from 
 
 # Intended usage:
 
-A description as to how the project will be used (describe the user interface). (CHANGE THIS!!!!!)
-There will be 5 maps to showcase features like fighting, doubling, and terrain affecting combat, along with one final full map to mimic a standard rout map in regular Fire Emblem. Click on a player to move them and attack or check their stats, conditions, weapons. When implemented, switching between the maps will be done by pressing the number keys.
+Click on a character / tile in order to view the acitons you can take. The are buttons labelled 'Character Stats' (displays character stats), 'Attack' (highlights every enemy in the range of your weapon), 'End Turn' (stops the character from taking any more actions), and 'Inventory' (displays their inventory). Please wait for all the animations to end before moving. The GAME_SPEED constant can be adjusted to make the animations slower. (Lower is faster and 1 is the minimum.)
+
+Key Binds:
+- SPACE - End turn
+- h - Increase health of all characters
+- c - Increase chance of applying conditions
+- a - Decreases chance of making attacks
+- k - Increases chance of critting
+- w - Increases the wear rate of weapons
+- RIGHT_CLICK - Unhighlight
+
+Maps are toggled by their respective numbers:
+1. Only slime enemies
+2. Only humanoid enemies
+3. Spawn with a lot of chests
+4. Characters spawn with special weapons
+5. Characters spawn with consumables
+6. Showcase weapon triangle
+7. Only spawn one enemy
+
+# Description of features:
+
+| Tile   | Movement Penalty | Hit Modifier | Dodge Modifier |
+| :----- | :--------------- | :----------- | :------------- |
+| Hills  | 3                | Bow: 50%     | +30%           |
+|        |                  | Lance: 20%   |                |
+|        |                  | Other: - 10% |                |
+| Forest | 2                | None         | +20%           |
+| Plains | 1                | None         | None           |
+

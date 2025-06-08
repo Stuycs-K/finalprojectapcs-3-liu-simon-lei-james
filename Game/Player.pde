@@ -11,7 +11,9 @@ abstract class Player extends Character {
   // Consumables
   
   public void consume(Consumable item) {
-    item.use(this);
+    if (!item.use(this)) {
+      inventory.remove(item);
+    }
   }
 
   // Inventory

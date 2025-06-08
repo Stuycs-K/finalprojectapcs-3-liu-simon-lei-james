@@ -8,7 +8,7 @@ abstract class Consumable extends Item {
 
   protected boolean consume() {
     uses -= 1;
-    return uses == 0;
+    return uses != 0;
   }
 
   public int getUses() {
