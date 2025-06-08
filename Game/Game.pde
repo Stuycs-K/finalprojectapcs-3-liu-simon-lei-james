@@ -251,6 +251,15 @@ void keyPressed() {
         actionBar.write("Chance of hitting has been decreased!");
       }
       break;
+    case 'k':
+      if (CRIT_CHANCE == 0) {
+        CRIT_CHANCE = 100;
+        actionBar.write("Chance of critting has increased!");
+      } else {
+        CRIT_CHANCE = 0;
+        actionBar.write("Chance of critting has decreased!");
+      }
+      break;
   }
 }
 
