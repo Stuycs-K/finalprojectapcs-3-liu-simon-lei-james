@@ -40,3 +40,9 @@ I tweaked some code and balanced the unit stats. I also wrote up the README. I w
 
 ### 2025-06-05 - moved Weapon to character, implemented weapon triangle and hit chances
 To help with implementing the weapon triangle, I've moved over the weapon methods to the Character class. The weapon triangle is a mechanic in Fire Emblem where swords, axes, and lances are all more effective against the next weapon but less effective against the previous. This is due to both an increase in weapon might and hit rate during combat. Speaking of hit rate, I have implemented that as well. The formula is copied over from Fire Emblem, calculated mainly through the attacker's skill, their weapon's hit, and their enemy's avoid. I may add a luck stat to add to avoid, if I do then I may implement a critical hit rate formula.
+
+### 2025-06-06 - cavalier, minor code alterations
+I started the implementation on the Cavalier class, and made slight changes to some of the code, including an alteration to the hit formula that accounts for units that don't use weapons. A few bug fixes were also made.
+
+### 2025-06-07 finishing touches, new boards, finished cavalier and two enemy humanoid classes, added tiles to the hit formula
+I made boards to showcase unique weapons, characters starting with consumables, and the weapon triangle. The cavalier class was finished and I decided to make two new enemy subclasses, those being the bully and the mercenary. These are meant to fulfill the weapon triangle, and makes displaying it in the weapon triangle board easier. Lastly, I've added the tiles into the hit formula. The formula now checks the target's tile and adds to their avoid depending on it, and may even add to the wielder's hit.
