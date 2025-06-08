@@ -3,6 +3,8 @@ public class ActionBar {
   private int Y = height - ACTION_BAR_SIZE + 4;
   private int WIDTH = width - 6;
   private int HEIGHT = ACTION_BAR_SIZE - 6;
+  
+  private LinkedList<String> messageQueue = new LinkedList<String>();
 
   private String[] options;
 
@@ -29,12 +31,16 @@ public class ActionBar {
   }
 
   private void write(int col, int row, String text) {
-    text(text, X + CELL_WIDTH * col + PADDING * 4, Y + PADDING * 4 + row * (CELL_HEIGHT));
+    text(text, X + CELL_WIDTH * col + PADDING * 4, Y + PADDING * 4 + row * (CELL_HEIGHT - PADDING));
   }
 
   public void write(String text) {
-    status = "Message";
-    message = text;
+    if (status != "Message") {
+      message = text;
+      status = "Message";
+    } else {
+      messageQueue.add(text);
+    }
     write(0, 0, text);
   }
 
@@ -120,7 +126,8 @@ public class ActionBar {
     drawBackground();
     switch (status) {
       case "Message":
-        write(message);
+        write(0, 0, message);
+        if (messageQueue.size() >= 1) write(0, 1, "(Click for Next Message)");
         break;
       case "Focus":
         focus(highlighted);
@@ -157,6 +164,16 @@ public class ActionBar {
   }
 
   public void click() {
+    if (status.equals("Message")) {
+      if (messageQueue.size() == 0) {
+        status = "None";
+      } else {
+        message = messageQueue.pop();
+      }
+    } else {
+      messageQueue = new LinkedList<String>();
+    }
+    if (status.equals("None")) return;
     String action = null;
     int x = X + WIDTH - CELL_WIDTH + PADDING;
     int y = Y + PADDING;

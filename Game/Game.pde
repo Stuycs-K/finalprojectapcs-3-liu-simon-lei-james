@@ -273,8 +273,6 @@ void mouseClicked() {
     return;
   }
   if (mouseY > height - ACTION_BAR_SIZE) {
-    board.reset();
-    highlighted.highlight();
     actionBar.click();
   } else {
     Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
