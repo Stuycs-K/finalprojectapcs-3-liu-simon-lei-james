@@ -64,18 +64,18 @@ void setup() {
     Weapon trialSword = new Sword("Iron");
     for (int i = 0; i < 3; i++){
       players.add(new Cavalier(board.get(6, i * 9)));
-      players.get(i).give(trialAxe);
-      players.get(i).give(trialSword);
       players.add(new Cavalier(board.get(22, i * 9)));
-      players.get(i+1).give(trialAxe);
-      players.get(i+1).give(trialSword);
     }
     enemies.add(new Bully(board.get(14, 0)));
+    players.get(0).give(trialSword);
     players.get(0).equip(trialSword);
     enemies.add(new Mercenary(board.get(14, 9)));
+    players.get(3).give(trialAxe);
     players.get(3).equip(trialAxe);
     enemies.add(new Soldier(board.get(14, 18)));
+    players.get(4).give(trialAxe);
     players.get(4).equip(trialAxe);
+    players.get(5).give(trialSword);
     players.get(5).equip(trialSword);
   }
   else{

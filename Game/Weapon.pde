@@ -115,7 +115,7 @@ abstract class Weapon extends Item {
       actionBar.write(wielder.toString() + " missed! They had a " + actualHit + " percent chance to hit.");
     }
     if (attackSpeed >= (target.getStat("Speed") + 4)) {
-      if ((RANDOM.nextInt(100) + RANDOM.nextInt(100) / 2) <= actualHit){
+      if (((RANDOM.nextInt(100) + RANDOM.nextInt(100)) / 2) <= actualHit){
         target.damage(damage);
         actionBar.write(0, 1, wielder.toString() + " dealt " + damage + " damage to " + target.toString() + " with a " + actualHit + " percent chance to hit.");
         reduceDurability(1);

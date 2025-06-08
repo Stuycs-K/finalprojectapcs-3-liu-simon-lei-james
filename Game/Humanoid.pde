@@ -55,6 +55,6 @@ public class Mercenary extends Humanoid {
       put("Defense", 4);
       put("Magic", 0);
       put("Resistance", 2);
-    }}, new ArrayList<String>(Arrays.asList("Lance")), new Lance("Javelin"));
+    }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Iron"));
   }
 }
