@@ -16,6 +16,7 @@ public static int BOARD = 0;
 public static int HIT_CHANCE = 0;
 public static int CONDITION_CHANCE = 0;
 public static int CRIT_CHANCE = 0;
+public static int WEAR_RATE = 0;
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief", "Cavalier"));
 /* additional classes that could be nice to have:
@@ -254,10 +255,19 @@ void keyPressed() {
     case 'k':
       if (CRIT_CHANCE == 0) {
         CRIT_CHANCE = 100;
-        actionBar.write("Chance of critting has increased!");
+        actionBar.write("Chance of critting has been increased!");
       } else {
         CRIT_CHANCE = 0;
-        actionBar.write("Chance of critting has decreased!");
+        actionBar.write("Chance of critting has been decreased!");
+      }
+      break;
+    case 'w':
+      if (WEAR_RATE == 0) {
+        WEAR_RATE = 10;
+        actionBar.write("Weapon wear rate has been increased!");
+      } else {
+        WEAR_RATE = 0;
+        actionBar.write("Weapon wear rate has been decreased!");
       }
       break;
   }

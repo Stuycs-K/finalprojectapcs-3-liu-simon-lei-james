@@ -32,9 +32,8 @@ abstract class Weapon extends Item {
 
   // Durability
 
-  public boolean reduceDurability(int tear) { // Returns false when weapon breaks
-    if (!durability.consume(tear)) return false;
-    return durability.getCurrent() <= 0;
+  public void reduceDurability(int tear, Character wielder) { // Returns false when weapon breaks
+    if (!durability.consume(tear)) wielder.breakWeapon();
   }
 
   // Attack
@@ -123,7 +122,7 @@ abstract class Weapon extends Item {
           target.damage(damage);
         }
         actionBar.write(wielder.toString() + " dealt " + damage + " damage to " + target.toString() + " with a " + hit + " percent chance to hit.");
-        reduceDurability(1);
+        reduceDurability(1 + WEAR_RATE, wielder);
       } else {
         actionBar.write(wielder.toString() + " missed! They had a " + hit + " percent chance to hit.");
       }
@@ -141,7 +140,7 @@ abstract class Weapon extends Item {
       damage = (2 * (wielder.getStat("Strength") + getStat("Power"))) - target.getStat("Defense");
     }
     target.damage(damage);
-    reduceDurability(1);
+    reduceDurability(1 + WEAR_RATE, wielder);
     actionBar.write(wielder.toString() + " crit for " + damage + " damage!");
   }
 }

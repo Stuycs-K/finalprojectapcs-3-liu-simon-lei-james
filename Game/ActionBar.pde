@@ -170,6 +170,7 @@ public class ActionBar {
       } else {
         message = messageQueue.pop();
       }
+      return;
     } else {
       messageQueue = new LinkedList<String>();
     }

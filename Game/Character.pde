@@ -67,6 +67,14 @@ abstract class Character extends Entity {
   public boolean hasWeapon() {
     return weapon != null;
   }
+  
+  public void breakWeapon() {
+    if (this instanceof Player) {
+      ((Player) this).take(weapon);
+    } else {
+      weapon = null;
+    }
+  }
 
   // Damage
 
@@ -95,7 +103,6 @@ abstract class Character extends Entity {
       }
     });
     newThread.start();
-
   }
 
   public void attack(Character target) {
