@@ -1,6 +1,3 @@
-import java.util.Queue;
-import java.util.LinkedList;
-
 public class Board {
   private final String[] TERRAINS = {"Plains", "Forest", "Hills"};
 
@@ -19,28 +16,26 @@ public class Board {
   }
 
   public Board(int rows, int cols) {
+    initializeConstants();
     board = new Tile[rows][cols];
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < cols; x++) {
-        if (BOARD == 5){
+        if (BOARD == 5) {
           board[y][x] = new Tile(TERRAINS[0], x, y);
-        }
-        else{
-          int randTerrain = RANDOM.nextInt(100);
-          if (randTerrain <= 50){
-            randTerrain = 0;
+        } else {          
+          int randomNum = RANDOM.nextInt(100);
+          String tileType;
+          if (randomNum <= 50) {
+            tileType = "Plains";
+          } else if (randomNum <= 90) {
+            tileType = "Forest";
+          } else {
+            tileType = "Hills";
           }
-          else if (randTerrain <= 90){
-            randTerrain = 1;
-          }
-          else{
-            randTerrain = 2;
-          }
-          board[y][x] = new Tile(TERRAINS[randTerrain], x, y);
+          board[y][x] = new Tile(tileType, x, y);
         }
       }
     }
-    initializeConstants();
   }
 
   public Tile get(int x, int y) {
@@ -59,6 +54,7 @@ public class Board {
       }
     }
   }
+  
   public void reset() {
     for (Tile[] row : board) {
       for (Tile tile : row) {

@@ -1,18 +1,22 @@
-abstract class Player extends Character {
-  public boolean turn = true;
+// Cleaned
 
+abstract class Player extends Character {
   private ArrayList<Item> inventory = new ArrayList<Item>();
 
-  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon) {
-    super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies, weapon, true);
-    this.weapon = weapon;
-    give(weapon);
-    equip(weapon);
+  public Player(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon startingWeapon) {
+    super(maxHealth, maxMovement, startingPosition, characterClass, stats, weaponProficiencies);
+    give(startingWeapon);
+    equip(startingWeapon);
+    turn = true;
+  }
+  
+  // Consumables
+  
+  public void consume(Consumable item) {
+    item.use(this);
   }
 
-  public void give(Item item) {
-    inventory.add(item);
-  }
+  // Inventory
 
   public ArrayList<Item> getInventory() {
     return inventory;
@@ -27,12 +31,9 @@ abstract class Player extends Character {
     }
     return output;
   }
-
-  public Item getItem(String name) {
-    for (Item item : inventory) {
-      if (item.toString().equals(name)) return item;
-    }
-    return null;
+  
+  public void give(Item item) {
+    inventory.add(item);
   }
   
   public void take(Item item) {
@@ -40,28 +41,11 @@ abstract class Player extends Character {
     if (weapon.toString().equals(item.toString())) weapon = null;
   }
 
-  public void consume(Consumable item) {
-    if(item.use(this)) {
-      inventory.remove(item);
-    };
-  }
-
-  public void attack(Character other) {
-    turn = false;
-    if (weapon == null){
-      other.damage(5);
+  public Item getItem(String name) {
+    for (Item item : inventory) {
+      if (item.toString().equals(name)) return item;
     }
-    else {
-      weapon.attack(this, other);
-    }
-  }
-
-  public ArrayList<Tile> attackRange() {
-    return getPosition().tilesInRadius(weapon.getStat("Range"));
-  }
-
-  public boolean isPlayer(){
-    return true;
+    return null;
   }
 }
 
@@ -80,7 +64,7 @@ public class Archer extends Player {
 
 public class Barbarian extends Player{
   public Barbarian(Tile startingPosition) {
-    super( (RANDOM.nextInt(5) - 2) + 29, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
+    super((RANDOM.nextInt(5) - 2) + 29, 5, startingPosition, "Barbarian", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(5) - 2) + 10);
       put("Skill", 1);
       put("Speed", 3);
@@ -89,12 +73,11 @@ public class Barbarian extends Player{
       put("Resistance", 1);
     }}, new ArrayList<String>(Arrays.asList("Axe")), new Axe("Iron"));
   }
-
 }
 
 public class Lord extends Player {
   public Lord(Tile startingPosition) {
-    super( (RANDOM.nextInt(3) - 1) + 18, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
+    super((RANDOM.nextInt(3) - 1) + 18, 5, startingPosition, "Lord", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(3) - 1) + 7);
       put("Skill", 5);
       put("Speed", (RANDOM.nextInt(3) - 1) + 9);
@@ -120,7 +103,7 @@ public class Mage extends Player{
 
 public class Thief extends Player {
   public Thief(Tile startingPosition) {
-    super( (RANDOM.nextInt(3) - 1) + 18, 6, startingPosition, "Thief", new HashMap<String, Integer>() {{
+    super((RANDOM.nextInt(3) - 1) + 18, 6, startingPosition, "Thief", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(3) - 1) + 3);
       put("Skill", 4);
       put("Speed", (RANDOM.nextInt(5) - 1) + 12);
@@ -128,13 +111,12 @@ public class Thief extends Player {
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Sword")), new Sword("Iron"));
-    give(new PureWater());
   }
 }
 
 public class Cavalier extends Player {
   public Cavalier(Tile startingPosition){
-    super (22, 8, startingPosition, "Cavalier", new HashMap<String, Integer>() {{
+    super(22, 8, startingPosition, "Cavalier", new HashMap<String, Integer>() {{
       put("Strength", (RANDOM.nextInt(3) - 1) + 7);
       put("Skill", 5);
       put("Speed", (RANDOM.nextInt(5) - 1) + 7);

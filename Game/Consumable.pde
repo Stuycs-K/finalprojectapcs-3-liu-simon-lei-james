@@ -6,9 +6,6 @@ abstract class Consumable extends Item {
     this.uses = uses;
   }
 
-  public void refill(int amount) {
-    uses += amount;
-  }
   protected boolean consume() {
     uses -= 1;
     return uses == 0;

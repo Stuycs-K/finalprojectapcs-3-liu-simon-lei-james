@@ -1,13 +1,16 @@
+// CLEANED
+
 abstract class Character extends Entity {
   private String name;
   private final ArrayList<String> POSSIBLE_NAMES = new ArrayList<String>(Arrays.asList("Arthur", "Bartre", "Cole", "Diarmuid", "Eirika", "Fergus", "Garcia", "Holyn", "Ilia", "Joshua",
-                                                                                       "Kent", "Lewyn", "Mareeta", "Nanna", "Oswin", "Priscilla", "Borp", "Raven", "Seth", "Tibarn", "Urvan", 
+                                                                                       "Kent", "Lewyn", "Mareeta", "Nanna", "Oswin", "Priscilla", "Borp", "Raven", "Seth", "Tibarn", "Urvan",
                                                                                        "Valbar", "Wolf", "Xavier", "Yune", "Zihark"));
   private String characterClass;
-  private boolean human;
 
   private Resource health;
   private Resource movement;
+
+  public boolean turn = false;
 
   private HashMap<String, Integer> currentStats, defaultStats;
 
@@ -15,13 +18,11 @@ abstract class Character extends Entity {
   private ArrayList<String> weaponProficiencies;
   protected Weapon weapon;
 
-  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies, Weapon weapon, boolean isHuman) {
+  public Character(int maxHealth, int maxMovement, Tile startingPosition, String characterClass, HashMap<String, Integer> stats, ArrayList<String> weaponProficiencies) {
     super(startingPosition, characterClass);
-    
-    int chosen = RANDOM.nextInt(26);
-    this.name = POSSIBLE_NAMES.get(chosen);
+
+    this.name = POSSIBLE_NAMES.get(RANDOM.nextInt(POSSIBLE_NAMES.size()));
     this.characterClass = characterClass;
-    human = isHuman;
 
     this.currentStats = stats;
     this.defaultStats = stats;
@@ -32,11 +33,7 @@ abstract class Character extends Entity {
     position = startingPosition;
 
     conditions = new ArrayList<Condition>();
-    if (isHuman()){
-      this.weaponProficiencies = weaponProficiencies;
-      this.weapon = weapon;
-      equip(weapon);
-    }
+    this.weaponProficiencies = weaponProficiencies;
   }
 
   public String toString() {
@@ -54,12 +51,28 @@ abstract class Character extends Entity {
   public int getStat(String stat) {
     return currentStats.get(stat);
   }
-  
-  public boolean isHuman(){
-    return human;
+
+  // Weapons
+
+  public boolean equip(Weapon weapon) {
+    if (weaponProficiencies.contains(weapon.getWeaponType())) {
+      this.weapon = weapon;
+      return true;
+    }
+    return false;
   }
 
-  public void damage(int ouch){
+  public Weapon getWeapon() {
+    return weapon;
+  }
+  
+  public boolean hasWeapon() {
+    return weapon != null;
+  }
+
+  // Damage
+
+  public void damage(int ouch) {
     if (!health.consume(ouch) || health.getCurrent() == 0) {
       sleep(10);
       actionBar.write(toString() + " died!");
@@ -77,39 +90,26 @@ abstract class Character extends Entity {
       }
     }
   }
-  
-  public boolean equip(Weapon weapon) {
-    if (weaponProficiencies.contains(weapon.getWeaponType())) {
-      this.weapon = weapon;
-      return true;
-    }
-    return false;
-  }
 
-  public Weapon getWeapon() {
-    return weapon;
+  public void attack(Character target) {
+    if (!turn) return;
+    if (weapon == null) {
+      target.damage(5);
+    } else {
+      weapon.attack(this, target);
+    }
+    turn = false;
   }
   
-  abstract void attack(Character target);
-
-  public void endTurn() {
-    if (!hasCondition("Sleeping")) {
-      movement.restore();
-    }
-    if (hasCondition("Poisoned")) {
-      damage(health.getMax() / 8);
-    }
-    if (hasCondition("Pure Water")) {
-      currentStats.replace("Resistance", currentStats.get("Resistance") - 2);
-    }
-    for (int i = 0; i < conditions.size(); i++) {
-      conditions.get(i).reduceDuration();
-      if (conditions.get(i).getDuration() == 0) {
-        removeCondition(conditions.get(i).toString());
-        i--;
-      }
+  public ArrayList<Tile> attackRange() {
+    if (hasWeapon()) {
+      return position.tilesInRadius(weapon.getStat("Range"));
+    } else {
+      return position.tilesInRadius(1);
     }
   }
+
+  // Movement
 
   public boolean moveTo(Tile newPosition) {
     int distance = position.distanceTo(newPosition);
@@ -154,7 +154,8 @@ abstract class Character extends Entity {
           newPosition.transform("None");
         }
       }
-    });
+    }
+    );
     newThread.start();
     return true;
   }
@@ -162,10 +163,31 @@ abstract class Character extends Entity {
   public ArrayList<Tile> movementRange() {
     return getPosition().tilesInRange(movement.getCurrent());
   }
+  
+  // End Turn / Conditions
+
+  public void endTurn() {
+    if (!hasCondition("Sleeping")) {
+      movement.restore();
+    }
+    if (hasCondition("Poisoned")) {
+      damage(health.getMax() / 8);
+    }
+    if (hasCondition("Pure Water")) {
+      currentStats.replace("Resistance", currentStats.get("Resistance") - 2);
+    }
+    for (int i = 0; i < conditions.size(); i++) {
+      conditions.get(i).reduceDuration();
+      if (conditions.get(i).getDuration() == 0) {
+        removeCondition(conditions.get(i).toString());
+        i--;
+      }
+    }
+  }
 
   public Condition getCondition(String name) {
-    for (Condition condition : conditions){
-      if (condition.toString().equals(name)){
+    for (Condition condition : conditions) {
+      if (condition.toString().equals(name)) {
         return condition;
       }
     }
@@ -178,7 +200,7 @@ abstract class Character extends Entity {
 
   public void removeCondition(String name) {
     switch (name) {
-      case "Bleeding":
+    case "Bleeding":
       currentStats.replace("Defense", defaultStats.get("Defense"));
     }
     for (int i = 0; i < conditions.size(); i++) {
@@ -202,19 +224,14 @@ abstract class Character extends Entity {
     }
     switch (name) {
       case "Bleeding":
-      currentStats.replace("Defense", defaultStats.get("Defense") / 2);
+        currentStats.replace("Defense", defaultStats.get("Defense") / 2);
       case "Pure Water":
-      currentStats.replace("Resistance", defaultStats.get("Resistance") + 8);
-      break;
+        currentStats.replace("Resistance", defaultStats.get("Resistance") + 8);
+        break;
     }
   }
 
   public boolean hasCondition(String name) {
-    for (Condition condition: conditions){
-      if (condition.toString().equals(name)){
-        return true;
-      }
-    }
-    return false;
+    return getCondition(name) != null;
   }
 }

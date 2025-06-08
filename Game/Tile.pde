@@ -1,5 +1,4 @@
 import java.util.PriorityQueue;
-import java.util.Collections;
 import java.util.LinkedList;
 
 public class Tile {
@@ -8,7 +7,7 @@ public class Tile {
   // Possible Values: None, Red, Blue
   private String hue;
   private String terrain;
-  private volatile Entity entity;
+  private Entity entity;
   private Coordinate coordinate;
 
   public Tile(String terrain, int x, int y) {
@@ -19,18 +18,20 @@ public class Tile {
 
   public void display() {
     switch (hue) {
-    case "Blue":
-      tint(0, 125, 250);
-      break;
-    case "Red":
-      tint(250, 125, 0);
-      break;
+      case "Blue":
+        tint(0, 125, 250);
+        break;
+      case "Red":
+        tint(250, 125, 0);
+        break;
     }
 
     image(board.images.get(terrain), WIDTH * coordinate.getX(), HEIGHT * coordinate.getY(), HEIGHT, WIDTH);
     noTint();
     if (hasEntity()) entity.display();
   }
+  
+  // Coloring
 
   public void transform(String newColor) {
     hue = newColor;
@@ -40,6 +41,8 @@ public class Tile {
   public String getHue() {
     return hue;
   }
+  
+  // Entities
 
   public boolean hasEntity() {
     return entity != null;
@@ -53,6 +56,8 @@ public class Tile {
   public void addEntity(Entity newEntity) {
     entity = newEntity;
   }
+  
+  // Accessors
 
   public Coordinate getCoordinate() {
     return coordinate;
@@ -61,8 +66,20 @@ public class Tile {
   public String getTerrain() {
     return terrain;
   }
-  public void setTerrain(String newTerrain) {
-    terrain = newTerrain;
+  
+  public int getMovementPenalty() {
+    return board.movementPenalties.get(terrain);
+  }
+  
+  // Mapping
+  
+  public ArrayList<Tile> getNeighbors() {
+    ArrayList<Tile> neighbors = new ArrayList<Tile>();
+    for (int[] direction : DIRECTIONS) {
+      Coordinate newCoordinate = getCoordinate().shift(direction);
+      if (!newCoordinate.outOfRange()) neighbors.add(board.get(newCoordinate));
+    }
+    return neighbors;
   }
   
   public ArrayList<Tile> tilesInRadius(int radius) {
@@ -79,7 +96,7 @@ public class Tile {
   public ArrayList<Tile> tilesInRange(int range) {
     ArrayList<Tile> output = new ArrayList<Tile>();
     int[][] distances = new int[ROWS][COLUMNS];
-    Queue<Pair<Integer, Tile>> bfs = new LinkedList<Pair<Integer, Tile>>();
+    LinkedList<Pair<Integer, Tile>> bfs = new LinkedList<Pair<Integer, Tile>>();
     bfs.add(new Pair<Integer, Tile>(0, this));
 
     output.add(this);
@@ -101,15 +118,6 @@ public class Tile {
       }
     }
     return output;
-  }
-
-  public ArrayList<Tile> getNeighbors() {
-    ArrayList<Tile> neighbors = new ArrayList<Tile>();
-    for (int[] direction : DIRECTIONS) {
-      Coordinate newCoordinate = getCoordinate().shift(direction);
-      if (!newCoordinate.outOfRange()) neighbors.add(board.get(newCoordinate));
-    }
-    return neighbors;
   }
 
   public LinkedList<Tile> pathTo(Tile other) {
@@ -168,10 +176,6 @@ public class Tile {
       output += board.movementPenalties.get(path.pop().getTerrain());
     }
     return output;
-  }
-
-  public int getMovementPenalty() {
-    return board.movementPenalties.get(terrain);
   }
 
   public boolean equals(Tile other) {

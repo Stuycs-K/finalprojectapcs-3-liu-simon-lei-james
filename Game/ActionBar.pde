@@ -85,22 +85,21 @@ public class ActionBar {
     if (tile.hasEntity() && tile.getEntity() instanceof Character) {
       Character character = (Character) tile.getEntity();
       write(0, 0, character.toString());
+      if (character.hasWeapon()) {
+        write(0, 1, character.getWeapon().toString());
+      } else {
+        write(0, 1, "Weaponless");
+      }
       if (character instanceof Player) {
-        Weapon weapon = ((Player) character).getWeapon();
-        if (weapon != null) {
-          write(0, 1, ((Player) character).getWeapon().toString());
-        } else {
-          write(0, 1, "Weaponless");
-        }
         if (((Player) character).turn) {
           setOptions(new String[]{"End Turn", "Inventory", "Attack", "Character Stats"});
         } else {
           setOptions(new String[]{"Inventory", "Character Stats"});
         }
-        displayOptions();
       } else {
-        write(0, 1, tile.getTerrain() + " Tile");
+        setOptions(new String[]{"Character Stats", "View Weapon"});
       }
+      displayOptions();
       write(1, 0, "Health: " + character.getHealth());
       write(1, 1, "Movement: " + character.getMovement());
     } else {
@@ -151,7 +150,7 @@ public class ActionBar {
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
       if (((Player) highlighted.getEntity()).turn) {
-        setOptions(new String[] {"Inventory", "Consume", "Give"});
+        setOptions(new String[] {"Inventory", "Equip", "Give"});
       } else {
         setOptions(new String[] {"Inventory"});
       }
@@ -191,6 +190,11 @@ public class ActionBar {
         }
         setOptions(options);
         break;
+      case "View Weapons":
+        setOptions(new String[] {"Return"});
+        displayed = ((Character) highlighted.getEntity()).getWeapon();
+        status = "Item";
+        break;
       case "Character Stats":
         setOptions(new String[] {"Return", "Conditions"});
         status = "Character Stats";
@@ -225,7 +229,7 @@ public class ActionBar {
         }
         break;
       case "Give":
-        Game.action = "Give";
+        Game.action = "Giving";
         ArrayList<Tile> adjacent = ((Player) highlighted.getEntity()).getPosition().tilesInRadius(1);
         for (Tile tile : adjacent) {
           if (tile.getEntity() instanceof Player) tile.transform("Blue");
