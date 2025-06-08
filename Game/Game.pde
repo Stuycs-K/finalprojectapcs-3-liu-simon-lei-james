@@ -58,89 +58,110 @@ void setup() {
 
   players = new ArrayList<Player>();
   enemies = new ArrayList<Enemy>();
-
-  Collections.shuffle(PLAYER_CLASSES);
-  for (String playerClass : PLAYER_CLASSES) {
-    Tile spawnLocation = board.getRandomTile();
-    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    Player player = null;
-    switch (playerClass) {
-      case "Lord":
-        player = new Lord(spawnLocation);
-        break;
-      case "Archer":
-        player = new Archer(spawnLocation);
-        if (BOARD == 2){ //Board 2 is the special weapons. Lord is not given special weapons because the brave sword is already a special weapon
-          Weapon special = new Bow("Sleep");
-          player.give(special);
-          player.equip(special);
-        }
-        break;
-      case "Barbarian":
-        player = new Barbarian(spawnLocation);
-        if (BOARD == 2){
-          Weapon special = new Axe("Killer");
-          player.give(special);
-          player.equip(special);
-        }
-        break;
-      case "Mage":
-        player = new Mage(spawnLocation);
-        if (BOARD == 2){
-          if (RANDOM.nextInt(2) == 0){
-            Weapon special = new Tome("Thunder");
+  
+  if (BOARD == 5){
+    Weapon trialAxe = new Axe("Iron");
+    Weapon trialSword = new Sword("Iron");
+    for (int i = 0; i < 3; i++){
+      players.add(new Cavalier(board.get(6, i * 9)));
+      players.get(i).give(trialAxe);
+      players.get(i).give(trialSword);
+      players.add(new Cavalier(board.get(22, i * 9)));
+      players.get(i+1).give(trialAxe);
+      players.get(i+1).give(trialSword);
+    }
+    enemies.add(new Bully(board.get(14, 0)));
+    players.get(0).equip(trialSword);
+    enemies.add(new Mercenary(board.get(14, 9)));
+    players.get(3).equip(trialAxe);
+    enemies.add(new Soldier(board.get(14, 18)));
+    players.get(4).equip(trialAxe);
+    players.get(5).equip(trialSword);
+  }
+  else{
+    Collections.shuffle(PLAYER_CLASSES);
+    for (String playerClass : PLAYER_CLASSES) {
+      Tile spawnLocation = board.getRandomTile();
+      while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+      Player player = null;
+      switch (playerClass) {
+        case "Lord":
+          player = new Lord(spawnLocation);
+          break;
+        case "Archer":
+          player = new Archer(spawnLocation);
+          if (BOARD == 2){ //Board 2 is the special weapons. Lord is not given special weapons because the brave sword is already a special weapon
+            Weapon special = new Bow("Sleep");
             player.give(special);
             player.equip(special);
           }
-          else{
-            Weapon special = new Tome("Blizzard");
+          break;
+        case "Barbarian":
+          player = new Barbarian(spawnLocation);
+          if (BOARD == 2){
+            Weapon special = new Axe("Killer");
             player.give(special);
-            player.equip(special); //every tome the mage is technically a special weapon, so what weapon they get for Board 2 is decided randomly
+            player.equip(special);
           }
-        }
-        break;
-      case "Thief":
-        player = new Thief(spawnLocation);
-        if (BOARD == 2){
-          Weapon special = new Sword("Sleep");
-          player.give(special);
-          player.equip(special);
-        }
-        break;
-      case "Cavalier":
-        player = new Cavalier(spawnLocation);
-        if (BOARD == 2){
-          Weapon special = new Lance("Javelin");
-          player.give(special);
-          player.equip(special);
-        }
-        break;
-     }
-     players.add(player);
-     if (BOARD == 4){
-       player.give(new Vulnerary());
-       player.give(new PureWater());
-     }
-  }
-  int numEnemies = 7;
-  if (BOARD == 7) numEnemies = 1;
-  for (int i = 0; i < numEnemies; i++) {
-    Tile spawnLocation = board.getRandomTile();
-    while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
-    if (BOARD == 0) {
-      enemies.add(new Slime(spawnLocation));
-    } else if (BOARD == 1) {
-      enemies.add(new Soldier(spawnLocation));
-    } else {
-      int chosenClass = RANDOM.nextInt(4);
-      if (chosenClass == 0) {
+          break;
+        case "Mage":
+          player = new Mage(spawnLocation);
+          if (BOARD == 2){
+            if (RANDOM.nextInt(2) == 0){
+              Weapon special = new Tome("Thunder");
+              player.give(special);
+              player.equip(special);
+            }
+            else{
+              Weapon special = new Tome("Blizzard");
+              player.give(special);
+              player.equip(special); //every tome the mage is technically a special weapon, so what weapon they get for Board 2 is decided randomly
+            }
+          }
+          break;
+        case "Thief":
+          player = new Thief(spawnLocation);
+          if (BOARD == 2){
+            Weapon special = new Sword("Sleep");
+            player.give(special);
+            player.equip(special);
+          }
+          break;
+        case "Cavalier":
+          player = new Cavalier(spawnLocation);
+          if (BOARD == 2){
+            Weapon special = new Lance("Javelin");
+            player.give(special);
+            player.equip(special);
+          }
+          break;
+       }
+       players.add(player);
+       if (BOARD == 4){
+         player.give(new Vulnerary());
+         player.give(new PureWater());
+       }
+    }
+    int numEnemies = 7;
+    if (BOARD == 7) numEnemies = 1;
+    for (int i = 0; i < numEnemies; i++) {
+      Tile spawnLocation = board.getRandomTile();
+      while (spawnLocation.hasEntity()) spawnLocation = board.getRandomTile();
+      if (BOARD == 0) {
         enemies.add(new Slime(spawnLocation));
-      } else if (chosenClass == 1){
+      } else if (BOARD == 1) {
         enemies.add(new Soldier(spawnLocation));
-      } else if (chosenClass == 2){
-        enemies.add(new Bully(spawnLocation));
-      } else{
-        enemies.add(new Mercenary(spawnLocation));
+      } else {
+        int chosenClass = RANDOM.nextInt(4);
+        if (chosenClass == 0) {
+          enemies.add(new Slime(spawnLocation));
+        } else if (chosenClass == 1){
+          enemies.add(new Soldier(spawnLocation));
+        } else if (chosenClass == 2){
+          enemies.add(new Bully(spawnLocation));
+        } else{
+          enemies.add(new Mercenary(spawnLocation));
+        }
       }
     }
   }

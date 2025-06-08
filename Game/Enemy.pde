@@ -4,32 +4,34 @@ abstract class Enemy extends Character {
   }
 
   public void takeTurn() {
-    int minDistance = -2;
-    Player closestPlayer = null;
-    for (int i = 0; i < players.size(); i++) {
-      Player player = players.get(i);
-      int distance = getPosition().distanceTo(player.getPosition());
-      if (minDistance == -2 || minDistance > distance) {
-        minDistance = distance;
-        closestPlayer = player;
+    if (!hasCondition("Sleeping")){
+      int minDistance = -2;
+      Player closestPlayer = null;
+      for (int i = 0; i < players.size(); i++) {
+        Player player = players.get(i);
+        int distance = getPosition().distanceTo(player.getPosition());
+        if (minDistance == -2 || minDistance > distance) {
+          minDistance = distance;
+          closestPlayer = player;
+        }
       }
-    }
-    if (closestPlayer == null) return;
-
-    LinkedList<Tile> path = getPosition().pathTo(closestPlayer.getPosition());
-    if (path == null) return;
-
-    int index = -1;
-    Resource movement = getMovement().copy();
-    Tile current = null, next;
-    while (!path.isEmpty()) {
-      next = path.pop();
-      if (!movement.consume(next.getMovementPenalty())) break; // No Movement
-      current = next;
-      index++;
-    }
-    if (index != -1) {
-      moveTo(current);
+      if (closestPlayer == null) return;
+  
+      LinkedList<Tile> path = getPosition().pathTo(closestPlayer.getPosition());
+      if (path == null) return;
+  
+      int index = -1;
+      Resource movement = getMovement().copy();
+      Tile current = null, next;
+      while (!path.isEmpty()) {
+        next = path.pop();
+        if (!movement.consume(next.getMovementPenalty())) break; // No Movement
+        current = next;
+        index++;
+      }
+      if (index != -1) {
+        moveTo(current);
+      }
     }
   }
 }

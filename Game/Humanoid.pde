@@ -26,7 +26,7 @@ public class Soldier extends Humanoid {
       put("Strength", (RANDOM.nextInt(5) - 2) + 5);
       put("Skill", 4);
       put("Speed", 4);
-      put("Defense", (RANDOM.nextInt(5) - 1) + 8);
+      put("Defense", 8);
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Lance")), new Lance("Javelin"));
@@ -39,7 +39,7 @@ public class Bully extends Humanoid {
       put("Strength", (RANDOM.nextInt(5) - 1) + 7);
       put("Skill", 2);
       put("Speed", 2);
-      put("Defense", (RANDOM.nextInt(3) - 1) + 6);
+      put("Defense", 6);
       put("Magic", 0);
       put("Resistance", 2);
     }}, new ArrayList<String>(Arrays.asList("Axe")), new Axe("Iron"));

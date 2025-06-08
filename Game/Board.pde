@@ -15,14 +15,29 @@ public class Board {
     }
     movementPenalties.put("Plains", 1);
     movementPenalties.put("Forest", 2);
-    movementPenalties.put("Hills", 2);
+    movementPenalties.put("Hills", 3);
   }
 
   public Board(int rows, int cols) {
     board = new Tile[rows][cols];
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < cols; x++) {
-        board[y][x] = new Tile(TERRAINS[RANDOM.nextInt(TERRAINS.length)], x, y);
+        if (BOARD == 5){
+          board[y][x] = new Tile(TERRAINS[0], x, y);
+        }
+        else{
+          int randTerrain = RANDOM.nextInt(100);
+          if (randTerrain <= 50){
+            randTerrain = 0;
+          }
+          else if (randTerrain <= 90){
+            randTerrain = 1;
+          }
+          else{
+            randTerrain = 2;
+          }
+          board[y][x] = new Tile(TERRAINS[randTerrain], x, y);
+        }
       }
     }
     initializeConstants();
