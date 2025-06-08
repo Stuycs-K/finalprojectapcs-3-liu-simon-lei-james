@@ -5,7 +5,7 @@ public class Tile {
   public static final int HEIGHT = 32, WIDTH = 32;
 
   // Possible Values: None, Red, Blue
-  private String hue;
+  private boolean highlighted;
   private String terrain;
   private Entity entity;
   private Coordinate coordinate;
@@ -13,19 +13,17 @@ public class Tile {
   public Tile(String terrain, int x, int y) {
     this.terrain = terrain;
     coordinate = new Coordinate(x, y);
-    hue = "None";
+    highlighted = false;
   }
 
   public void display() {
-    switch (hue) {
-      case "Blue":
-        tint(0, 125, 250);
-        break;
-      case "Red":
+    if (highlighted) {
+      if (hasEntity() && getEntity() instanceof Enemy) {
         tint(250, 125, 0);
-        break;
+      } else {
+        tint(0, 125, 250);
+      }
     }
-
     image(board.images.get(terrain), WIDTH * coordinate.getX(), HEIGHT * coordinate.getY(), HEIGHT, WIDTH);
     noTint();
     if (hasEntity()) entity.display();
@@ -33,13 +31,18 @@ public class Tile {
   
   // Coloring
 
-  public void transform(String newColor) {
-    hue = newColor;
+  public void highlight() {
+    highlighted = true;
     display();
   }
   
-  public String getHue() {
-    return hue;
+  public void unhighlight() {
+    highlighted = false;
+    display();
+  }
+  
+  public boolean isHighlighted() {
+    return highlighted;
   }
   
   // Entities

@@ -254,7 +254,7 @@ void keyPressed() {
 
 private void highlightTile(Tile tile) {
   highlighted = tile;
-  highlighted.transform("Blue");
+  tile.highlight();
   actionBar.focus(tile);
 }
 
@@ -269,7 +269,7 @@ void mouseClicked() {
     board.reset();
     actionBar.status = "None";
     action = "None";
-    if (highlighted != null) highlighted.transform("None");
+    if (highlighted != null) highlighted.unhighlight();
     highlighted = null;
     return;
   }
@@ -297,22 +297,22 @@ void mouseClicked() {
         action = "Moving";
         ArrayList<Tile> range = ((Player) entity).movementRange();
         for (Tile tile : range) {
-          tile.transform("Blue");
-          if (tile.getEntity() instanceof Enemy) tile.transform("Red");
-          if (tile.getEntity() instanceof Player) tile.transform("None");
+          if (!(tile.getEntity() instanceof Player)) tile.highlight();
         }
       }
       highlightTile(clickedTile);
     } else if (action.equals("Moving")) {
-      board.reset();
-      if (((Player) highlighted.getEntity()).moveTo(clickedTile)) { // Within Range
+      if (clickedTile.isHighlighted()) {
+        ((Player) highlighted.getEntity()).moveTo(clickedTile);
         removeHighlighted();
+        board.reset();
       } else {
+        board.reset();
         highlightTile(clickedTile);
         action = "None";
       }
     } else if (action.equals("Attacking")) {
-      if (entity instanceof Enemy && clickedTile.getHue().equals("Red")) {
+      if (entity instanceof Enemy && clickedTile.isHighlighted()) {
         ((Player) highlighted.getEntity()).attack((Character) entity);
         removeHighlighted();
       } else {

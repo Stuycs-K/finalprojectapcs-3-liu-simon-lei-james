@@ -58,7 +58,7 @@ public class Board {
   public void reset() {
     for (Tile[] row : board) {
       for (Tile tile : row) {
-        tile.transform("None");
+        tile.unhighlight();
         tile.display();
       }
     }

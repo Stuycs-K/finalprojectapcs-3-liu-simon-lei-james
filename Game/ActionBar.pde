@@ -68,7 +68,7 @@ public class ActionBar {
   }
   
   public void displayConditions() {
-    ArrayList<Condition> conditions = ((Player) highlighted.getEntity()).getConditions();
+    ArrayList<Condition> conditions = ((Character) highlighted.getEntity()).getConditions();
     for (int i = 0; i < conditions.size(); i++) {
         write(i / 2, i % 2, conditions.get(i).toString() +  " " + conditions.get(i).getDuration());
     }
@@ -97,7 +97,11 @@ public class ActionBar {
           setOptions(new String[]{"Inventory", "Character Stats"});
         }
       } else {
-        setOptions(new String[]{"Character Stats", "View Weapon"});
+        if (character.hasWeapon()) {
+          setOptions(new String[]{"Character Stats", "View Weapon"});
+        } else {
+          setOptions(new String[]{"Character Stats"});
+        }
       }
       displayOptions();
       write(1, 0, "Health: " + character.getHealth());
@@ -142,18 +146,8 @@ public class ActionBar {
   public void displayItem() {
     if (displayed instanceof Consumable) {
       write(0, 0, displayed.toString());
-      if (((Player) highlighted.getEntity()).turn) {
-        setOptions(new String[] {"Inventory", "Consume", "Give"});
-      } else {
-        setOptions(new String[] {"Inventory"});
-      }
       write(0, 1, "Uses: " + ((Consumable) displayed).getUses());
     } else {
-      if (((Player) highlighted.getEntity()).turn) {
-        setOptions(new String[] {"Inventory", "Equip", "Give"});
-      } else {
-        setOptions(new String[] {"Inventory"});
-      }
       write(0, 0, "Durability: " + ((Weapon) displayed).getDurability());
       write(0, 1, "Range: " + ((Weapon) displayed).getStat("Range"));
       write(1, 0, "Hit: " + ((Weapon) displayed).getStat("Hit"));
@@ -190,7 +184,7 @@ public class ActionBar {
         }
         setOptions(options);
         break;
-      case "View Weapons":
+      case "View Weapon":
         setOptions(new String[] {"Return"});
         displayed = ((Character) highlighted.getEntity()).getWeapon();
         status = "Item";
@@ -210,7 +204,7 @@ public class ActionBar {
         Game.action = "Attacking";
         ArrayList<Tile> range = ((Player) highlighted.getEntity()).attackRange();
         for (Tile tile : range) {
-          if (tile.getEntity() instanceof Enemy) tile.transform("Red");
+          if (tile.getEntity() instanceof Enemy) tile.highlight();
         }
         break;
       case "End Turn":
@@ -232,13 +226,22 @@ public class ActionBar {
         Game.action = "Giving";
         ArrayList<Tile> adjacent = ((Player) highlighted.getEntity()).getPosition().tilesInRadius(1);
         for (Tile tile : adjacent) {
-          if (tile.getEntity() instanceof Player) tile.transform("Blue");
+          if (tile.getEntity() instanceof Player) tile.highlight();
         }
-        highlighted.transform("None");
+        highlighted.unhighlight();
         break;
       default:
         status = "Item";
         displayed = ((Player) highlighted.getEntity()).getItem(action);
+        if (((Player) highlighted.getEntity()).turn) {
+          if (displayed instanceof Consumable) {
+            setOptions(new String[] {"Inventory", "Consume", "Give"});
+          } else {
+            setOptions(new String[] {"Inventory", "Equip", "Give"});
+          }
+        } else {
+          setOptions(new String[] {"Inventory"});
+        }
         displayItem();
         break;
     }

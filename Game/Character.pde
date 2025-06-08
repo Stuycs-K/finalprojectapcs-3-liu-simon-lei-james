@@ -86,7 +86,7 @@ abstract class Character extends Entity {
           enemies.remove((Enemy) this);
           position.removeEntity();
         }
-        position.transform("None");
+        position.unhighlight();
       }
     }
   }
@@ -141,18 +141,14 @@ abstract class Character extends Entity {
       if (copy) {
         if (newPosition.getEntity() instanceof Character) {
           attack((Character) newPosition.getEntity());
-          newPosition.transform("Red");
-          int start = tick;
-          while (tick == start) sleep(1);
-          newPosition.transform("None");
         }
         if (newPosition.getEntity() instanceof Chest) {
           ((Chest) newPosition.getEntity()).collect((Player) this);
-          newPosition.transform("Red");
-          int start = tick;
-          while (tick == start) sleep(1);
-          newPosition.transform("None");
         }
+        newPosition.highlight();
+        int start = tick;
+        while (tick == start) sleep(1);
+        newPosition.unhighlight();
       }
     }
     );
