@@ -56,3 +56,10 @@ This document must be updated daily every time you finish a work session.
 - Modified the way conditions are displayed
 - Condensed multiple classes into a single file for cohesive development
 - Allowed players to equip new items and use consumables
+
+### 2025-05-06 - Cleaning
+- Added displays for additional stats and for enemies
+- Added end screen and lose condition for lord
+- Added key presses to toggle cheats and change maps
+- Made giving require adjacency and implemented giving of consumables
+- Allowed chests to give random items

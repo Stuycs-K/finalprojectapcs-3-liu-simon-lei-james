@@ -1,5 +1,3 @@
-// Cleaned
-
 abstract class Player extends Character {
   private ArrayList<Item> inventory = new ArrayList<Item>();
 

@@ -1,5 +1,3 @@
-// CLEANED
-
 abstract class Character extends Entity {
   private String name;
   private final ArrayList<String> POSSIBLE_NAMES = new ArrayList<String>(Arrays.asList("Arthur", "Bartre", "Cole", "Diarmuid", "Eirika", "Fergus", "Garcia", "Holyn", "Ilia", "Joshua",
