@@ -15,6 +15,7 @@ public static final int GAME_SPEED = 1; // Speed the Board Updates; Lower = Fast
 public static int BOARD = 0;
 public static int HIT_CHANCE = 0;
 public static int CONDITION_CHANCE = 0;
+public static int CRIT_CHANCE = 0;
 
 private static final ArrayList<String> PLAYER_CLASSES = new ArrayList<String>(Arrays.asList("Lord", "Archer", "Barbarian", "Mage", "Thief", "Cavalier"));
 /* additional classes that could be nice to have:
@@ -248,6 +249,15 @@ void keyPressed() {
       } else {
         HIT_CHANCE = 0;
         actionBar.write("Chance of hitting has been decreased!");
+      }
+      break;
+    case 'k':
+      if (CRIT_CHANCE == 0) {
+        CRIT_CHANCE = 100;
+        actionBar.write("Chance of critting has increased!");
+      } else {
+        CRIT_CHANCE = 0;
+        actionBar.write("Chance of critting has decreased!");
       }
       break;
   }

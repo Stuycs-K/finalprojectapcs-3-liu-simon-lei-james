@@ -14,7 +14,7 @@ abstract class Weapon extends Item {
     this.material = material;
     this.weaponType = weaponType;
   }
-  
+
   // Accessors
 
   public Resource getDurability() {
@@ -29,14 +29,14 @@ abstract class Weapon extends Item {
   public String getMaterial() {
     return material;
   }
-  
+
   // Durability
 
   public boolean reduceDurability(int tear) { // Returns false when weapon breaks
     if (!durability.consume(tear)) return false;
     return durability.getCurrent() <= 0;
   }
-  
+
   // Attack
 
   public void attack(Character wielder, Character target) {
@@ -45,13 +45,13 @@ abstract class Weapon extends Item {
     int attackSpeed = wielder.getStat("Speed") - heavy;
     int hit = getStat("Hit") + (wielder.getStat("Skill") * 2);
     int avoid = target.getStat("Speed");
-    
+
     if (target.hasWeapon()) {
       avoid -= (target.getWeapon().getStat("Weight") - target.getStat("Strength"));
     }
-    
+
     avoid *= 2;
-    
+
     switch (wielder.getPosition().getTerrain()) {
       case "Hills":
         switch (getWeaponType()) {
@@ -71,26 +71,26 @@ abstract class Weapon extends Item {
         avoid += 20;
         break;
     }
-    
+
     avoid = min(avoid, 99);
-    
+
     if (getWeaponType().equals("Tome")) {
       damage = wielder.getStat("Magic") + getStat("Power") - target.getStat("Resistance");
     } else {
       damage = wielder.getStat("Strength") + getStat("Power") - target.getStat("Defense");
     }
-    
+
     HashMap<String, String> weaknesses = new HashMap<String, String>() {{
-      put("Axe", "Lance"); // Axe is weak to lance
-      put("Lance", "Sword");
-      put("Sword", "Axe");
+      put("Lance", "Axe"); // Axe is weak to lance
+      put("Sword", "Lance");
+      put("Axe", "Sword");
     }};
     Set<String> weaponTriangle = weaknesses.keySet();
-    
+
     if (target.hasWeapon() && wielder.hasWeapon()) {
       String wielderWeaponType = wielder.getWeapon().getWeaponType();
       String targetWeaponType = target.getWeapon().getWeaponType();
-      
+
       if (weaponTriangle.contains(wielderWeaponType) && weaponTriangle.contains(targetWeaponType)) {
         if (weaknesses.get(wielderWeaponType).equals(targetWeaponType)) {
           damage--;
@@ -102,18 +102,26 @@ abstract class Weapon extends Item {
         }
       }
     }
-    
+
     damage = max(0, damage);
     hit -= avoid;
     hit = min(hit, 100);
-    
+
     int numAttacks = 1;
     if (attackSpeed >= (target.getStat("Speed") + 4)) numAttacks++;
-    
+
     for (int i = 0; i < numAttacks; i++) {
       // Hit calculation from FE6 onwards. Makes hit rates lower than 50 lower than displayed, and hit rates higher than 50 higher than displayed
       if (((RANDOM.nextInt(100) + RANDOM.nextInt(100)) / 2) <= hit + HIT_CHANCE) {
-        target.damage(damage);
+        int crit = (wielder.getStat("Skill")/2) + CRIT_CHANCE - (target.getStat("Skill")/2);
+        if (getMaterial().equals("Killer")) crit+= 30;
+        if (getMaterial().equals("Fireball")) crit+= 12;
+        if (RANDOM.nextInt(100) <= crit){
+          critical(wielder, target);
+        }
+        else{
+          target.damage(damage);
+        }
         actionBar.write(wielder.toString() + " dealt " + damage + " damage to " + target.toString() + " with a " + hit + " percent chance to hit.");
         reduceDurability(1);
       } else {
@@ -134,7 +142,7 @@ abstract class Weapon extends Item {
     }
     target.damage(damage);
     reduceDurability(1);
-    actionBar.write(0, 2, wielder.toString() + " crit!");
+    actionBar.write(wielder.toString() + " crit for " + damage + " damage!");
   }
 }
 
@@ -151,16 +159,7 @@ public class Axe extends Weapon {
   specifically unable to double, but have a higher chance to inflict bleed. */
 
   public void attack(Character wielder, Character target){
-    if (getMaterial().equals("Killer")) {
-      if (RANDOM.nextInt(100) <= 30){
-        critical(wielder, target);
-      }
-      else {
-        super.attack(wielder, target);
-      }
-    } else {
-      super.attack(wielder, target);
-    }
+    super.attack(wielder, target);
     if (RANDOM.nextInt(100) <= 15 + CONDITION_CHANCE) target.applyCondition("Bleeding");
   }
 }
@@ -243,13 +242,6 @@ public class Tome extends Weapon {
   }
 
   public void attack(Character wielder, Character target) {
-    if (getMaterial().equals("Fireball")) {
-      if (RANDOM.nextInt(100) <= 12 + CONDITION_CHANCE) {
-        super.critical(wielder, target);
-      } else {
-        super.attack(wielder, target);
-      }
-    }
     super.attack(wielder, target);
     if (getMaterial().equals("Thunder")) super.attack(wielder, target);
     if (getMaterial().equals("Blizzard")) target.applyCondition("Sleeping");
