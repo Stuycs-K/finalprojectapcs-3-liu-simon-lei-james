@@ -141,6 +141,6 @@ public class Cavalier extends Player {
       put("Defense", 5);
       put("Magic", 0);
       put("Resistance", 2);
-    }}, new ArrayList<String>(Arrays.asList("Sword", "Axe", "Lance")), new Lance("Javelin"));
+    }}, new ArrayList<String>(Arrays.asList("Sword", "Axe", "Lance")), new Lance("Iron"));
   }
 }
