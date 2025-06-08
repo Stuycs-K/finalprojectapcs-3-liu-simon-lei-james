@@ -71,12 +71,19 @@ abstract class Character extends Entity {
   // Damage
 
   public void damage(int ouch) {
-    if (!health.consume(ouch) || health.getCurrent() == 0) {
-      sleep(10);
-      actionBar.write(toString() + " died!");
-      if (this instanceof Lord) {
-        endGame("Lost (Lord Died)");
-      } else {
+    Thread newThread = new Thread(() -> {
+      getPosition().unhighlight();
+      int start = tick;
+      while (tick == start) sleep(1);
+      getPosition().highlight("Red");
+      start = tick;
+      while (tick == start) sleep(1);
+      getPosition().unhighlight();
+      if (!health.consume(ouch) || health.getCurrent() == 0) {
+        actionBar.write(toString() + " died!");
+        if (this instanceof Lord) {
+          endGame("Lost (Lord Died)");
+        }
         if (this instanceof Player) {
           players.remove((Player) this);
           position.removeEntity();
@@ -86,7 +93,9 @@ abstract class Character extends Entity {
         }
         position.unhighlight();
       }
-    }
+    });
+    newThread.start();
+
   }
 
   public void attack(Character target) {
@@ -143,13 +152,8 @@ abstract class Character extends Entity {
         if (newPosition.getEntity() instanceof Chest) {
           ((Chest) newPosition.getEntity()).collect((Player) this);
         }
-        newPosition.highlight();
-        int start = tick;
-        while (tick == start) sleep(1);
-        newPosition.unhighlight();
       }
-    }
-    );
+    });
     newThread.start();
     return true;
   }

@@ -49,7 +49,14 @@ public class Chest extends Entity {
   public void collect(Player player) {
     player.turn = false;
     player.give(content);
+    Thread newThread = new Thread(() -> {
+      getPosition().highlight();
+      int start = tick;
+      while (tick == start) sleep(1);
+      getPosition().unhighlight();
+      position.removeEntity();
+    });
+    newThread.start();
     actionBar.write(player.toString() + " recieved one " + content);
-    position.removeEntity();
   }
 }

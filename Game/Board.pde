@@ -20,7 +20,7 @@ public class Board {
     board = new Tile[rows][cols];
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < cols; x++) {
-        if (BOARD == 5) {
+        if (BOARD == 6) {
           board[y][x] = new Tile(TERRAINS[0], x, y);
         } else {          
           int randomNum = RANDOM.nextInt(100);

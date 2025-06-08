@@ -45,9 +45,9 @@ public static void sleep(int time) {
 
 public void endGame(String winner) {
   background(0);
+  players = new ArrayList<Player>();
   textAlign(CENTER, CENTER);
   text("You " + winner + "!", width / 2, height / 2);
-  noLoop();
 }
 
 void setup() {
@@ -212,6 +212,7 @@ void keyPressed() {
         players.get(i).endTurn();
       }
       for (int i = 0; i < enemies.size(); i++) {
+        enemies.get(i).turn = true;
         enemies.get(i).takeTurn();
         enemies.get(i).endTurn();
       }
@@ -259,6 +260,7 @@ private void highlightTile(Tile tile) {
 }
 
 private void removeHighlighted() {
+  if (highlighted != null) highlighted.unhighlight();
   highlighted = null;
   action = "None";
   actionBar.status = "None";
@@ -266,15 +268,13 @@ private void removeHighlighted() {
 
 void mouseClicked() {
   if (mouseButton == RIGHT) {
+    removeHighlighted();
     board.reset();
-    actionBar.status = "None";
-    action = "None";
-    if (highlighted != null) highlighted.unhighlight();
-    highlighted = null;
     return;
   }
   if (mouseY > height - ACTION_BAR_SIZE) {
     board.reset();
+    highlighted.highlight();
     actionBar.click();
   } else {
     Tile clickedTile = board.get(mouseX / Tile.WIDTH, mouseY / Tile.HEIGHT);
@@ -314,7 +314,6 @@ void mouseClicked() {
     } else if (action.equals("Attacking")) {
       if (entity instanceof Enemy && clickedTile.isHighlighted()) {
         ((Player) highlighted.getEntity()).attack((Character) entity);
-        removeHighlighted();
       } else {
         highlightTile(clickedTile);
       }
