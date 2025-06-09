@@ -74,7 +74,7 @@ Maps are toggled by their respective numbers:
 | Slime     | 5        | None                 | Debuffer         | Chance to apply poison with attacks |
 | Soldier   | 5        | Lances               | Melee DPS        |                                     |
 | Bully     | 5        | Axes                 | Tank             |                                     |
-| Mercenary | 5        | Swords               | Mobile Melee DPS | Death ends the game                 |
+| Mercenary | 5        | Swords               | Mobile Melee DPS |                                     |
 
 ### Weapon Stats
 | Stat   | Effects                                      |
