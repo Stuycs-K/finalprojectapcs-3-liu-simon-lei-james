@@ -27,6 +27,7 @@ Maps are toggled by their respective numbers:
 
 # Description of features:
 
+### Tiles
 | Tile   | Movement Penalty | Hit Modifier | Dodge Modifier |
 | :----- | :--------------- | :----------- | :------------- |
 | Hills  | 3                | Bow: 50%     | +30%           |
@@ -34,4 +35,41 @@ Maps are toggled by their respective numbers:
 |        |                  | Other: - 10% |                |
 | Forest | 2                | None         | +20%           |
 | Plains | 1                | None         | None           |
+
+### Consumables
+| Consumable | Uses | Effect                        |
+| :--------- | :--- | :---------------------------- |
+| Vulnerary  | 3    | Restores 10 HP                |
+| Pure Water | 1    | Applies condition Pure Water  |
+
+### Character Stats
+| Stat       | Effect                                                      |
+| :--------- | :---------------------------------------------------------- |
+| Speed      | Increases likelihood of attacking twice and dodging attacks |
+| Strength   | Decreases penalty from holding heavy weapons                |
+|            | Increases damage dealt with physical weapons                |
+| Skill      | Increases crit chance and likelihood of hittiing an enemy   |
+|            | Decreases likelihood of getting critted                     |
+| Defense    | Decreases damage received from physical weapons             |
+| Magic      | Increases damage dealt with magic weapons                   |
+| Resistance | Decreases damage received from magic weapons                |
+
+### Character Classes
+| Class       | Movement | Weapon Proficiencies | Role                | Additional Notes                     |
+| :---------- | :------- | :------------------- | :------------------ | :----------------------------------- |
+| Lord        | 5        | Swords               | Melee DPS           | Death ends the game                  |
+| Archer      | 6        | Bows                 | Ranged Physical DPS |                                      |
+| Barbarian   | 5        | Axes                 | DPS Tank            |                                      |
+| Cavalier    | 8        | Swords, Lances, Axes | Mobile Melee DPS    |                                      |
+| Mage        | 4        | Tomes                | Ranged Caster DPS   |                                      |
+| Thief       | 6        | Swords               | Debuffer            | Higher chance of applying conditions |
+
+### Enemy Classes
+| Class     | Movement | Weapon Proficiencies | Role             | Additional Notes                    |
+| :-------- | :------- | :------------------- | :--------------- | :---------------------------------- |
+| Slime     | 5        | None                 | Debuffer         | Chance to apply poison with attacks |
+| Soldier   | 5        | Lances               | Melee DPS        |                                     |
+| Bully     | 5        | Axes                 | Tank             |                                     |
+| Mercenary | 5        | Swords               | Mobile Melee DPS | Death ends the game                 |
+
 
