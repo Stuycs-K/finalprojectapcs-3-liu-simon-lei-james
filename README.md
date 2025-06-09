@@ -1,7 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/YxXKqIeT)
 # Project Description
 
-This project is a turn-based strategy role-playing game taking inspiration from Fire Emblem, particularly the GBA games. Playable characters have a default weapon, and can be 5 different classes. Lords are all-rounders and a lose condition, Barbarians have good health and attack but have middling stats otherwise, Thiefs have great speed and increased chances to apply conditions but have horrible bulk, Archers can attack from range, and Mages attack with magic but are particularly susceptible to physical attacks. Enemies are only slimes and soldiers. Conditions include sleep, which makes a unit stop moving; bleed, which decreases defense significantly; poison, which hurts the victim each turn for; and pure water boosted, which increases resistance. Each condition lasts for 3 turns, save for the pure water which lasts for 4. The goal is to kill every enemy, however you will lose as soon as your lord dies.
+This project is a turn-based strategy role-playing game taking inspiration from Fire Emblem, particularly the GBA games. Playable characters have a default weapon, and can be 6 different classes. There are 4 classes of enemies. Each class has unique abilities, weapon proficiencies, and stats. Characters can move to attack each other and the game ends when either the lord, all the players, or all the enemies, die. There are different tiles that affect movement and attacks. There are two different types of damage-magic and physical-and characters can apply different conditions. There are 5 different types of weapons, each with their own stats, strengths, and weaknesses. Weapons can also break. Consumables exist to provide temporary bonuses. Both consumables and items can be obtained from chests.
 
 # Intended usage:
 
@@ -25,7 +25,7 @@ Maps are toggled by their respective numbers:
 6. Showcase weapon triangle
 7. Only spawn one enemy
 
-# Description of features:
+# Specifics
 
 ### Tiles
 | Tile   | Movement Penalty | Hit Modifier | Dodge Modifier |
@@ -72,4 +72,31 @@ Maps are toggled by their respective numbers:
 | Bully     | 5        | Axes                 | Tank             |                                     |
 | Mercenary | 5        | Swords               | Mobile Melee DPS | Death ends the game                 |
 
+### Weapon Stats
+| Stat   | Effects                                      |
+| :----- | :------------------------------------------- |
+| Hit    | Increases likelihood of hitting an enemy     |
+| Weight | Decreases likelihood of attacking twice      |
+| Power  | Increases amount of damage dealt             |
+| Range  | Distance from which an enemy can be attacked |
 
+### Weapon Types
+| Type  | Weak To | Strong Against | Max Range | Special Variants                |
+| :---- | :------ | :------------- | :-------- | :------------------------------ |
+| Sword | Lance   | Axe            | 1         | Sleep: Chance to apply sleep    |
+|       |         |                |           | Brave: Attacks twice            |
+| Lance | Axe     | Sword          | 1         | Javelin: Can attack at range    |
+| Axe   | Sword   | Lance          | 1         | Killer: Increased crit chance   |
+| Bow   | None    | None           | 2         | Sleep: Applies sleep on hit     |
+| Tome  | None    | None           | 2         | Fireball: Increased crit chance |
+|       |         |                |           | Thunder: Attacks twice          |
+|       |         |                |           | Blizzard: Applies sleep on hit  |
+
+### Conditions
+| Condition  | Duration | Effect                                             |
+| :--------- | :------- | :------------------------------------------------- |
+| Sleeping   | 3        | Unit cannot move                                   |
+| Bleeding   | 3        | Unit's defense is halved                           |
+| Poisoned   | 3        | Unit takes 1/8 of their health as damage each turn |
+| Pure Water | 4        | Unit's resistance is increased by 8                |
+|            |          | Resistance decreases by 2 each turn                |
