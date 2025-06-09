@@ -46,3 +46,6 @@ I started the implementation on the Cavalier class, and made slight changes to s
 
 ### 2025-06-07 finishing touches, new boards, finished cavalier and two enemy humanoid classes, added tiles to the hit formula
 I made boards to showcase unique weapons, characters starting with consumables, and the weapon triangle. The cavalier class was finished and I decided to make two new enemy subclasses, those being the bully and the mercenary. These are meant to fulfill the weapon triangle, and makes displaying it in the weapon triangle board easier. Lastly, I've added the tiles into the hit formula. The formula now checks the target's tile and adds to their avoid depending on it, and may even add to the wielder's hit.
+
+### Confirmation Statement
+James Lei - I believe this document accurately reflects the contributions of my teamate.

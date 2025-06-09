@@ -63,3 +63,9 @@ This document must be updated daily every time you finish a work session.
 - Added key presses to toggle cheats and change maps
 - Made giving require adjacency and implemented giving of consumables
 - Allowed chests to give random items
+
+### 2025-05-08 - Final Dev Log
+- Allowed multiple messages to be displayed at once
+- Added animations for all instances of taking damage
+- Changed highlight to preserve while action bar is being changed
+- Added cheats to toggle wear rate
