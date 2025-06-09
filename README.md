@@ -3,6 +3,10 @@
 
 This project is a turn-based strategy role-playing game taking inspiration from Fire Emblem, particularly the GBA games. Playable characters have a default weapon, and can be 6 different classes. There are 4 classes of enemies. Each class has unique abilities, weapon proficiencies, and stats. Characters can move to attack each other and the game ends when either the lord, all the players, or all the enemies, die. There are different tiles that affect movement and attacks. There are two different types of damage-magic and physical-and characters can apply different conditions. There are 5 different types of weapons, each with their own stats, strengths, and weaknesses. Weapons can also break. Consumables exist to provide temporary bonuses. Both consumables and items can be obtained from chests.
 
+# Link to Final Video
+
+https://drive.google.com/file/d/1fxfGfjH9pBCMHgLYzPUBtuCfTaE3GFDp/view?usp=sharing
+
 # Intended usage:
 
 Click on a character / tile in order to view the acitons you can take. The are buttons labelled 'Character Stats' (displays character stats), 'Attack' (highlights every enemy in the range of your weapon), 'End Turn' (stops the character from taking any more actions), and 'Inventory' (displays their inventory). Please wait for all the animations to end before moving. The GAME_SPEED constant can be adjusted to make the animations slower. (Lower is faster and 1 is the minimum.)
