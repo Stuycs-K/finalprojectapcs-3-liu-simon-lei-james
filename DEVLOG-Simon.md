@@ -44,8 +44,11 @@ To help with implementing the weapon triangle, I've moved over the weapon method
 ### 2025-06-06 - cavalier, minor code alterations
 I started the implementation on the Cavalier class, and made slight changes to some of the code, including an alteration to the hit formula that accounts for units that don't use weapons. A few bug fixes were also made.
 
-### 2025-06-07 finishing touches, new boards, finished cavalier and two enemy humanoid classes, added tiles to the hit formula
+### 2025-06-07 - finishing touches, new boards, finished cavalier and two enemy humanoid classes, added tiles to the hit formula
 I made boards to showcase unique weapons, characters starting with consumables, and the weapon triangle. The cavalier class was finished and I decided to make two new enemy subclasses, those being the bully and the mercenary. These are meant to fulfill the weapon triangle, and makes displaying it in the weapon triangle board easier. Lastly, I've added the tiles into the hit formula. The formula now checks the target's tile and adds to their avoid depending on it, and may even add to the wielder's hit.
 
+### 2025-06-08 - minor bug fixes, final video
+I made some final bug fixes, and created the final video. However, the final video is too big for GitHub, so I am having trouble uploading it.
+
 ### Confirmation Statement
-James Lei - I believe this document accurately reflects the contributions of my teamate.
+James Lei - I believe this document accurately reflects the contributions of my teammate.

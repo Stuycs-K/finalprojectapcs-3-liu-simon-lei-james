@@ -69,3 +69,6 @@ This document must be updated daily every time you finish a work session.
 - Added animations for all instances of taking damage
 - Changed highlight to preserve while action bar is being changed
 - Added cheats to toggle wear rate
+
+### Confirmation Statement
+Simon Liu - I believe this document accurately reflects the contributions of my teammate.
